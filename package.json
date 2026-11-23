@@ -25,7 +25,9 @@
     "locale/*.json",
     "icon.svg",
     "NOTICE.md",
-    "tools"
+    "tools",
+    "local-skills",
+    "addenda"
   ],
   "dsh": {
     "bundle": {

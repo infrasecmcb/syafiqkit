@@ -97,5 +97,6 @@
   "vlog-auto-edit": "Automatically edit raw travel or daily footage into a finished vlog using ffmpeg, speech transcription and a vision model.",
   "subagent-driven-development": "Execute a written plan by dispatching a fresh subagent per task with review after each. Needs bash (Git Bash on Windows) for its helper scripts.",
   "using-git-worktrees": "Create an isolated git worktree before starting feature work or executing a plan, so the main checkout stays clean.",
-  "finishing-a-development-branch": "When implementation is done and tests pass, decide how to integrate: merge, pull request, keep or discard the branch."
+  "finishing-a-development-branch": "When implementation is done and tests pass, decide how to integrate: merge, pull request, keep or discard the branch.",
+  "delegate-and-verify": "Hand bulk, parallel or mechanical work (30+ files, rows or reports, multi-pass rewrites) to subagents, then verify the results before reporting. Use wherever a skill says to dispatch to haiku."
 }

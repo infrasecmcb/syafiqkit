@@ -27,7 +27,8 @@ This skill was written for Claude Code and other agents and ported to DeepSeek H
 - Slash commands like /build, /review, /ship or /syafiqkit:*: not available here; do the step yourself.
 - CLAUDE.md files: treat AGENTS.md as the project's instruction file; read or update CLAUDE.md only where the project already has one.
 - \`claude -p\`, \`claude plugin ...\`, the syafiqkit band or /sk menu: not available here. Do the step yourself or skip it and say so.
-- Skills named haiku, taste, impeccable, update-plugin, skill-creator or agent-setup are not in this bundle. When a step says to run one, do that step yourself in the simplest way that works, or skip it and say so.
+- A step that says to dispatch to haiku, load Skill(haiku) or run "syafiqkit:haiku": load the \`delegate-and-verify\` skill instead and follow it; there is no haiku tier here.
+- Skills named taste, impeccable, update-plugin, skill-creator or agent-setup are not in this bundle. When a step says to run one, do that step yourself in the simplest way that works, or skip it and say so.
 - Tools or software a skill needs (ffmpeg, Remotion, whisper, Node, pip packages): check they exist first and tell the user what is missing before installing anything.
 </harness-note>
 
@@ -75,6 +76,8 @@ export function createProvider(options = {}) {
         .replaceAll('{{SKILL_DIR}}', c.resourceBase.path)
         .replaceAll('{{ROOT}}', ROOT)
         .replaceAll('{{AGENTS}}', path.join(ROOT, 'agents'));
+      let addendum = '';
+      try { addendum = readFileSync(path.join(ROOT, 'addenda', `${c.name}.md`), 'utf8').replaceAll('{{ROOT}}', ROOT); } catch { /* most skills have none */ }
       return {
         name: c.name,
         description: c.description,
@@ -82,7 +85,7 @@ export function createProvider(options = {}) {
         provider: c.provider,
         source: c.source,
         resourceBase: c.resourceBase,
-        content: note + body,
+        content: note + addendum + body,
       };
     },
   };

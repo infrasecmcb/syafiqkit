@@ -83,6 +83,13 @@
       "commit": "b6429ab550a64c595dc68d42c47cf2b489a50619",
       "license": "MIT",
       "skills": 1
+    },
+    {
+      "id": "local",
+      "repo": "this repository",
+      "commit": "n/a",
+      "license": "MIT",
+      "skills": 1
     }
   ],
   "defaultExclude": [
@@ -202,6 +209,13 @@
       "dir": "continue-session",
       "source": "syafiqkit",
       "description": "Produce a copy-paste prompt that starts a fresh session where this one stopped (doc path, next goal, uncommitted state).",
+      "modelInvocable": true
+    },
+    {
+      "name": "delegate-and-verify",
+      "dir": "delegate-and-verify",
+      "source": "local",
+      "description": "Hand bulk, parallel or mechanical work (30+ files, rows or reports, multi-pass rewrites) to subagents, then verify the results before reporting. Use wherever a skill says to dispatch to haiku.",
       "modelInvocable": true
     },
     {

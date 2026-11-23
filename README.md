@@ -1,6 +1,6 @@
 # Skill library for DeepSeek Harness
 
-A DeepSeek Harness bundle with 99 agent skills from 12 open-source authors, in one plugin.
+A DeepSeek Harness bundle with 100 agent skills from 12 open-source authors plus one written here, in one plugin.
 Each skill loads with a short note that maps Claude Code tool names (Agent, AskUserQuestion,
 TodoWrite, `${CLAUDE_SKILL_DIR}` …) onto Harness tools. Authors and licences are in
 [NOTICE.md](NOTICE.md) and `licenses/`.
@@ -9,6 +9,7 @@ TodoWrite, `${CLAUDE_SKILL_DIR}` …) onto Harness tools. Authors and licences a
 
 | Area | Skills | From |
 |---|---|---|
+| Delegation | delegate-and-verify: hand bulk or parallel work to subagents and verify it (replaces the Claude-only haiku skill) | written for this bundle (`local-skills/`) |
 | Workflow, docs, shipping | commit, done, ship, task-summary, setup-project-docs, read-summary, user-manual, … (55 on by default) | [syafiqkit](https://github.com/syafiq555/syafiqkit) |
 | UI/UX and animation | uiux, emil-animate, emil-review-animations, emil-gestures, … | syafiqkit (Emil Kowalski's skills inside) |
 | Engineering | test-driven-development, systematic-debugging, writing-plans, executing-plans, subagent-driven-development, verification-before-completion, requesting/receiving-code-review, git worktrees | [obra/superpowers](https://github.com/obra/superpowers) |
@@ -38,6 +39,10 @@ In the plugin row's config (`cordis.patch.yml`):
 |---|---|---|
 | `outputStyle` | `false` | Add syafiqkit's ADHD-oriented answer-style rules to every session |
 | `exclude` | invoicing, Google Chat, casual messages, pull-db | Skill names to hide. Setting it replaces the default list; `[]` turns everything on |
+
+## Harness overrides
+
+`addenda/<skill>.md` is prepended to that skill when it loads. It rewrites the Claude Code parts of `done`, `quick-done`, `refresh-instructions`, `understanding-guide`, `update-claude-docs` and `score-loop` (agent types, the haiku tier, `update-plugin`) into Harness `subagent` calls. `local-skills/` holds skills written for this bundle.
 
 ## Rebuild from upstream
 

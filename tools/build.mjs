@@ -111,6 +111,17 @@ for (const source of config.sources) {
   sourceInfo.push({ ...source, commit: headOf(root), count: manifest.length - before });
 }
 
+// Skills written for this bundle (not copied from upstream).
+const localRoot = path.join(bundle, 'local-skills');
+if (fs.existsSync(localRoot)) {
+  const local = { id: 'local', repo: 'this repository', license: 'MIT', copyright: 'this repository', commit: 'n/a' };
+  let n = 0;
+  for (const e of fs.readdirSync(localRoot, { withFileTypes: true })) {
+    if (!e.isDirectory() || !fs.existsSync(path.join(localRoot, e.name, 'SKILL.md'))) continue;
+    addSkill(local, e.name, path.join(localRoot, e.name)); n++;
+  }
+  sourceInfo.push({ ...local, count: n });
+}
 manifest.sort((a, b) => a.name.localeCompare(b.name));
 const stale = Object.keys(overrides).filter((k) => !used.has(k));
 if (stale.length) problems.push(`descriptions.json has entries for skills that are not built: ${stale.join(', ')}`);
@@ -122,7 +133,7 @@ fs.writeFileSync(path.join(bundle, 'skills.json'), JSON.stringify({
   skipped,
 }, null, 2) + '\n');
 
-const rows = sourceInfo.map((s) => `| ${s.id} | ${s.repo} | ${s.commit.slice(0, 7)} | ${s.license} | ${s.copyright} | ${s.count} |`).join('\n');
+const rows = sourceInfo.filter((s) => s.id !== 'local').map((s) => `| ${s.id} | ${s.repo} | ${s.commit.slice(0, 7)} | ${s.license} | ${s.copyright} | ${s.count} |`).join('\n');
 fs.writeFileSync(path.join(bundle, 'NOTICE.md'), `# Notice
 
 This bundle redistributes skills written by other people. Each skill keeps its author's licence

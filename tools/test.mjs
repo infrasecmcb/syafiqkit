@@ -111,6 +111,14 @@ for (const c of all) {
   bytes += d.content.length;
 }
 
+// every addendum must belong to a skill and have no unreplaced placeholder
+for (const f of fs.existsSync(path.join(ROOT, 'addenda')) ? fs.readdirSync(path.join(ROOT, 'addenda')) : []) {
+  const n = f.replace(/\.md$/, '');
+  if (!names.has(n)) fail(`addenda/${f}: no skill named ${n}`);
+  const d = await providers[1].get(all.find((c) => c.name === n) || { name: n });
+  if (d && !d.content.includes('<harness-addendum')) fail(`addenda/${f}: not loaded`);
+  if (d && /\{\{ROOT\}\}/.test(d.content.split('</harness-addendum>')[0])) fail(`addenda/${f}: unreplaced {{ROOT}}`);
+}
 console.log(`skills: ${all.length} (${defaultList.length} on by default)`);
 console.log(`catalog: ${totalDesc} description chars (average ${Math.round(totalDesc / all.length)})`);
 console.log(`known and accepted reference gaps: ${known.length}`);
