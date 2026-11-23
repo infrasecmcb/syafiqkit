@@ -24,7 +24,30 @@ If a skill does not fire when you expected it to, name it. If the wrong one fire
 
 ## Common workflows
 
-### Build a feature properly
+### Ship a feature end to end (recommended)
+
+`plan-to-ship` is the one to start with for anything non-trivial. It sizes the job, checks the project can prove its own work, then runs the stages below and asks you only at the gates.
+
+```text
+Use plan-to-ship: add streaming replies to Nova.
+```
+
+| Stage | Skill | Ask you? |
+|---|---|---|
+| Prime | `prime-codebase` | no |
+| Intent (big jobs) | `plan-create-prd` | yes, it interviews you |
+| Architecture (big jobs) | `plan-architecture` | yes, options and a recommendation |
+| Slice into tickets (big jobs) | `piv-slice-epic` | confirm |
+| Plan one ticket | `piv-plan-implementation` | yes, you approve the plan |
+| Build, then validate | `piv-implement`, `piv-validate` | no |
+| Review by a fresh agent | `piv-review-changes` | no |
+| Fix findings | `piv-fix-review-findings` | yes, fix now or defer |
+| Commit, then push or PR | `piv-commit`, `piv-create-pr` | push always asks |
+| Retro | `system-execution-report`, `system-evolution-review` | you approve edits |
+
+Before you start on a project, run `harness-check`: it scores the project's setup for agents (instructions, one-command checks, tests that can fail, guardrails) and fixes the gaps with your approval. `piv-validate` is a template and needs the project's real test commands.
+
+### Build a feature (the pieces on their own)
 
 1. `brainstorming`: settle what to build (asks you questions, one at a time).
 2. `spec-driven-development`: write the spec if there is none.
@@ -128,6 +151,7 @@ licenses/           licence text per source; NOTICE.md lists them
 tools/build.mjs     rebuild from .upstream checkouts
 tools/test.mjs      validate skills, references and addenda
 tools/docs.mjs      regenerate docs/SKILLS.md
+addenda/_<source>.md  note prepended to every skill from one source (e.g. _cole-skills.md)
 ```
 
 To add a skill from another repository: clone it into `.upstream/`, add it to `sources.json` with its licence, add a one-line entry to `descriptions.json`, put it in an area in `tools/docs.mjs`, then run build, test and docs. Scan it first (downloads, hidden text, secret access, destructive commands) and check its licence allows redistribution.

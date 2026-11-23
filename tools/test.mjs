@@ -115,6 +115,7 @@ for (const c of all) {
 for (const f of fs.existsSync(path.join(ROOT, 'addenda')) ? fs.readdirSync(path.join(ROOT, 'addenda')) : []) {
   if (fs.readFileSync(path.join(ROOT, 'addenda', f), 'utf8').charCodeAt(0) === 0xFEFF) fail(`addenda/${f}: starts with a byte-order mark`);
   const n = f.replace(/\.md$/, '');
+  if (n.startsWith('_')) { if (!manifest.sources.some((s) => s.id === n.slice(1))) fail(`addenda/${f}: no source named ${n.slice(1)}`); continue; }
   if (!names.has(n)) fail(`addenda/${f}: no skill named ${n}`);
   const d = await providers[1].get(all.find((c) => c.name === n) || { name: n });
   if (d && !d.content.includes('<harness-addendum')) fail(`addenda/${f}: not loaded`);

@@ -1,6 +1,6 @@
 # Skill library for DeepSeek Harness
 
-104 ready-made agent skills in one DeepSeek Harness plugin: plan, build, debug, review, secure, document, design and ship.
+130 ready-made agent skills in one DeepSeek Harness plugin: plan, build, debug, review, secure, document, design and ship.
 
 Skills are short instruction packs. Ask your agent for one by name, or just describe the job and it picks a matching skill. The agent then follows a proven procedure instead of improvising.
 
@@ -8,9 +8,10 @@ Skills are short instruction packs. Ask your agent for one by name, or just desc
 
 ## Features
 
-- **104 skills, 100 on by default**, grouped in 8 areas: planning and building, review and shipping, security, UI/UX and accessibility, animation, documentation, video, and client workflow. Full list: [docs/SKILLS.md](docs/SKILLS.md).
-- **Short catalog.** Each skill shows the agent a one-line description (about 11,000 characters for all 100, versus about 26,000 with the original text), so conversations stay lean. The full instructions load only when a skill is used.
+- **130 skills, 126 on by default**, grouped in 8 areas: planning and building, review and shipping, security, UI/UX and accessibility, animation, documentation, video, and client workflow. Full list: [docs/SKILLS.md](docs/SKILLS.md).
+- **Short catalog.** Each skill shows the agent a one-line description (about 14,500 characters for all 126, versus about 26,000 with the original text), so conversations stay lean. The full instructions load only when a skill is used.
 - **Made to run in Harness.** Every skill loads with a note mapping Claude Code's tools to Harness equivalents (`subagent`, `ask_user_question`, `todo_write`, shell, file tools). The agent-heavy skills (`done`, `refresh-instructions`, `score-loop` and others) carry extra Harness-specific instructions.
+- **A planning-to-shipping pipeline with human gates.** `plan-to-ship` chains idea, architecture, tickets, plan, build, validate, review and retro, and stops for you only where a human decision matters. It is built on [Cole Medin's](https://github.com/coleam00/skills) plan-implement-validate loop. `harness-check` scores how well a project is set up for AI agents.
 - **Delegation built in.** `delegate-and-verify` splits bulk work across subagents, backs up files first, and checks what comes back.
 - **Security-reviewed sources.** Every added skill was scanned for downloads, hidden characters, secret access and destructive commands before inclusion. See [Trust](#trust-and-safety).
 - **Self-checking.** `node tools/test.mjs` validates every skill, checks 449 file references, and confirms each Harness override loads.
@@ -21,6 +22,7 @@ Skills are short instruction packs. Ask your agent for one by name, or just desc
 
 | Area | Examples |
 |---|---|
+| Plan to ship (Cole Medin's loop) | `plan-to-ship`, `harness-check`, `plan-create-prd`, `plan-architecture`, `piv-slice-epic`, `piv-plan-implementation`, `piv-implement`, `piv-validate`, `system-evolution-review` |
 | Plan and build | `brainstorming`, `writing-plans`, `test-driven-development`, `systematic-debugging`, `subagent-driven-development` |
 | Review, git and shipping | `code-review-and-quality`, `commit`, `done`, `ship`, `verification-before-completion` |
 | Security and privacy | `security-and-hardening`, `secpriv-code-review`, `owasp-llm-top10`, `owasp-ai-testing` |
@@ -69,7 +71,7 @@ Edit the plugin's row in Harness (it is defined in [cordis.patch.yml](cordis.pat
 | Setting | Default | What it does |
 |---|---|---|
 | `outputStyle` | `false` | Adds syafiqkit's answer-style rules: lead with the action, numbered steps, no filler openers or closers. Applies to every session while on. |
-| `exclude` | `commit-invoice-generator`, `casual-message`, `gchat-format`, `pull-db` | Skills to hide. Setting it **replaces** the default list. `exclude: []` turns all 104 on; add names to hide more. |
+| `exclude` | `commit-invoice-generator`, `casual-message`, `gchat-format`, `pull-db` | Skills to hide. Setting it **replaces** the default list. `exclude: []` turns all 130 on; add names to hide more. |
 
 ## Requirements for some skills
 
@@ -82,6 +84,7 @@ Most skills need nothing beyond the agent. A few need software this plugin does 
 | `uiux` measuring scripts, `taste` | Node 22+ and Edge or Chrome (`CHROME_PATH` to choose) |
 | `impeccable` | Downloads a 23 MB helper program from GitHub on first use (checked against a shipped fingerprint; the agent asks first) |
 | `subagent-driven-development` | Bash (Git Bash on Windows) for its helper scripts |
+| `piv-create-pr`, `piv-review-pr`, `piv-investigate-issue`, `piv-implement-issue`, `plan-create-stories` | GitHub CLI (`gh`) installed and signed in |
 | `setup-tools`, `setup-tracker`, `watch-sheets` | Google Cloud project and sign-in |
 
 ## Limits (read this)
@@ -120,6 +123,7 @@ git clone --depth 1 https://github.com/iart-ai/b-roll-skills.git
 git clone --depth 1 https://github.com/znyupup/ai-video-editing-skill.git
 git clone --depth 1 https://github.com/pbakaus/impeccable.git
 git clone --depth 1 https://github.com/Leonxlnx/taste-skill.git
+git clone --depth 1 https://github.com/coleam00/skills.git cole-skills
 cd ..
 node tools\build.mjs     # skills/, agents/, references/, licenses/, NOTICE.md, skills.json
 node tools\test.mjs      # validate everything
@@ -133,6 +137,7 @@ Restart Harness afterwards and read `git diff` before trusting new skill text. H
 | Source | Author | Licence |
 |---|---|---|
 | [syafiqkit](https://github.com/syafiq555/syafiqkit) (workflow skills, Emil Kowalski's animation skills inside) | Syafiq | used with the author's permission |
+| [coleam00/skills](https://github.com/coleam00/skills) (PRD, architecture, plan, implement, validate, review, worktrees, rules) | Cole Medin | MIT |
 | [impeccable](https://github.com/pbakaus/impeccable) | Paul Bakaus | Apache-2.0 |
 | [taste-skill](https://github.com/Leonxlnx/taste-skill) | Leonxlnx | MIT |
 | [superpowers](https://github.com/obra/superpowers) | Jesse Vincent | MIT |

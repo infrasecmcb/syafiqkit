@@ -99,11 +99,18 @@
       "skills": 1
     },
     {
+      "id": "cole-skills",
+      "repo": "https://github.com/coleam00/skills",
+      "commit": "8c30da9d042935248293eaab22439754f494c006",
+      "license": "MIT",
+      "skills": 24
+    },
+    {
       "id": "local",
       "repo": "this repository",
       "commit": "n/a",
       "license": "MIT",
-      "skills": 3
+      "skills": 5
     }
   ],
   "defaultExclude": [
@@ -401,6 +408,13 @@
       "modelInvocable": true
     },
     {
+      "name": "harness-check",
+      "dir": "harness-check",
+      "source": "local",
+      "description": "Audit how well a project is set up for AI agents (instructions, one-command checks, tests that can fail, guardrails, skills, feedback loop), score it and fix the gaps.",
+      "modelInvocable": true
+    },
+    {
       "name": "hobby-review",
       "dir": "hobby-review",
       "source": "syafiqkit",
@@ -485,6 +499,118 @@
       "modelInvocable": true
     },
     {
+      "name": "piv-commit",
+      "dir": "piv-commit",
+      "source": "cole-skills",
+      "description": "Create one atomic, conventionally tagged git commit for the current changes, without staging secrets. Never pushes.",
+      "modelInvocable": true
+    },
+    {
+      "name": "piv-create-pr",
+      "dir": "piv-create-pr",
+      "source": "cole-skills",
+      "description": "Push the branch and open a pull request with a real body from the plan and report (needs gh; asks before pushing).",
+      "modelInvocable": true
+    },
+    {
+      "name": "piv-fix-review-findings",
+      "dir": "piv-fix-review-findings",
+      "source": "cole-skills",
+      "description": "Triage review findings with the user, fix the chosen ones one at a time with tests, defer the rest, then validate.",
+      "modelInvocable": true
+    },
+    {
+      "name": "piv-implement",
+      "dir": "piv-implement",
+      "source": "cole-skills",
+      "description": "Carry out an implementation plan task by task, running each task's validation, then the full checks, and write a report with deviations.",
+      "modelInvocable": true
+    },
+    {
+      "name": "piv-implement-issue",
+      "dir": "piv-implement-issue",
+      "source": "cole-skills",
+      "description": "Implement the fix for a GitHub issue from its root cause analysis, with regression tests (needs gh).",
+      "modelInvocable": true
+    },
+    {
+      "name": "piv-investigate-issue",
+      "dir": "piv-investigate-issue",
+      "source": "cole-skills",
+      "description": "Investigate a GitHub issue in parallel to an evidence-backed root cause analysis (needs gh).",
+      "modelInvocable": true
+    },
+    {
+      "name": "piv-plan-implementation",
+      "dir": "piv-plan-implementation",
+      "source": "cole-skills",
+      "description": "Write a one-pass-ready implementation plan for a ticket or feature: codebase patterns, research, tasks with validation commands, acceptance criteria. No code.",
+      "modelInvocable": true
+    },
+    {
+      "name": "piv-review-changes",
+      "dir": "piv-review-changes",
+      "source": "cole-skills",
+      "description": "Review recently changed files for bugs, security issues and standards, and write the findings to a file.",
+      "modelInvocable": true
+    },
+    {
+      "name": "piv-review-pr",
+      "dir": "piv-review-pr",
+      "source": "cole-skills",
+      "description": "Review an open pull request with fresh eyes: severity-ranked findings posted to GitHub (needs gh).",
+      "modelInvocable": true
+    },
+    {
+      "name": "piv-slice-epic",
+      "dir": "piv-slice-epic",
+      "source": "cole-skills",
+      "description": "Slice an epic and its architecture into tickets sized for one agent loop, with a dependency graph and what can run in parallel.",
+      "modelInvocable": true
+    },
+    {
+      "name": "piv-validate",
+      "dir": "piv-validate",
+      "source": "cole-skills",
+      "description": "Run the project's full check suite (tests, types, lint) and return one PASS or FAIL verdict. A template: needs the project's real commands.",
+      "modelInvocable": true
+    },
+    {
+      "name": "plan-architecture",
+      "dir": "plan-architecture",
+      "source": "cole-skills",
+      "description": "Decide how to build it: explore 2-3 approaches, stack, data shape, boundaries and risks with the user, then write a high-level architecture note.",
+      "modelInvocable": true
+    },
+    {
+      "name": "plan-create-prd",
+      "dir": "plan-create-prd",
+      "source": "cole-skills",
+      "description": "Interview the user into a problem-first PRD (problem, evidence, hypothesis, MVP) that states intent and leaves engineering choices to the architecture step.",
+      "modelInvocable": true
+    },
+    {
+      "name": "plan-create-stories",
+      "dir": "plan-create-stories",
+      "source": "cole-skills",
+      "description": "Turn a PRD into a backlog of stories in GitHub or Jira (needs gh or a tracker connection).",
+      "modelInvocable": true
+    },
+    {
+      "name": "plan-to-ship",
+      "dir": "plan-to-ship",
+      "source": "local",
+      "description": "Take a feature from rough idea to reviewed, committed code with human gates: prime, intent, architecture, slices, plan, build, validate, review, retro. Use for any non-trivial change.",
+      "modelInvocable": true
+    },
+    {
+      "name": "plan-with-priorities",
+      "dir": "plan-with-priorities",
+      "source": "cole-skills",
+      "description": "Plan a decision by first eliciting what matters to the user, then recommend options with small spikes and explicit trade-offs.",
+      "modelInvocable": true
+    },
+    {
       "name": "plan-worklist",
       "dir": "plan-worklist",
       "source": "syafiqkit",
@@ -496,6 +622,27 @@
       "dir": "posthog-replay-frames",
       "source": "syafiqkit",
       "description": "Find what one user actually did and saw in a PostHog session, from raw events and replay screenshots.",
+      "modelInvocable": true
+    },
+    {
+      "name": "prime-backend",
+      "dir": "prime-backend",
+      "source": "cole-skills",
+      "description": "Orient in a codebase's backend: API routes, services, data layer, tests. Use before backend work.",
+      "modelInvocable": true
+    },
+    {
+      "name": "prime-codebase",
+      "dir": "prime-codebase",
+      "source": "cole-skills",
+      "description": "Orient in a codebase before planning or building: structure, docs, entry points, conventions. Run at the start of work in an unfamiliar project.",
+      "modelInvocable": true
+    },
+    {
+      "name": "prime-frontend",
+      "dir": "prime-frontend",
+      "source": "cole-skills",
+      "description": "Orient in a codebase's frontend: components, routing, state, styling. Use before frontend work.",
       "modelInvocable": true
     },
     {
@@ -559,6 +706,20 @@
       "dir": "reverse-engineer",
       "source": "syafiqkit",
       "description": "Study a web app the client already uses and rebuild its mechanism in your own app, with a reviewed write-up before design.",
+      "modelInvocable": true
+    },
+    {
+      "name": "rules-check-drift",
+      "dir": "rules-check-drift",
+      "source": "cole-skills",
+      "description": "Check whether AGENTS.md or CLAUDE.md is still true after recent changes: commands, paths and rules that no longer match.",
+      "modelInvocable": true
+    },
+    {
+      "name": "rules-create-global",
+      "dir": "rules-create-global",
+      "source": "cole-skills",
+      "description": "Write a lean AGENTS.md (global project rules) derived from the codebase or specs, with recurring detail moved to reference docs.",
       "modelInvocable": true
     },
     {
@@ -664,6 +825,20 @@
       "dir": "sweep-doc-overlaps",
       "source": "syafiqkit",
       "description": "Scan all task-doc domains for cross-domain overlaps and hand confirmed groups to merge-task-docs.",
+      "modelInvocable": true
+    },
+    {
+      "name": "system-evolution-review",
+      "dir": "system-evolution-review",
+      "source": "cole-skills",
+      "description": "Review how an implementation followed its plan and find bugs in the process: edits to AGENTS.md, plan template or skills.",
+      "modelInvocable": true
+    },
+    {
+      "name": "system-execution-report",
+      "dir": "system-execution-report",
+      "source": "cole-skills",
+      "description": "After finishing an implementation, record what was done, what diverged from the plan and why.",
       "modelInvocable": true
     },
     {
@@ -814,6 +989,20 @@
       "modelInvocable": true
     },
     {
+      "name": "worktree-create",
+      "dir": "worktree-create",
+      "source": "cole-skills",
+      "description": "Create several git worktrees for parallel work, each on its own branch with config copied, dependencies installed and health-checked.",
+      "modelInvocable": true
+    },
+    {
+      "name": "worktree-merge",
+      "dir": "worktree-merge",
+      "source": "cole-skills",
+      "description": "Merge branches from parallel worktrees through one integration branch, validating after each.",
+      "modelInvocable": true
+    },
+    {
       "name": "write-a-skill",
       "dir": "write-a-skill",
       "source": "local",
@@ -862,6 +1051,86 @@
       "name": "diagnosing-superpowers",
       "source": "superpowers",
       "reason": "debugs the superpowers plugin itself"
+    },
+    {
+      "name": "piv-run-full-loop",
+      "source": "cole-skills",
+      "reason": "replaced by plan-to-ship, which adds the human gates"
+    },
+    {
+      "name": "skills-create",
+      "source": "cole-skills",
+      "reason": "write-a-skill covers this for Harness"
+    },
+    {
+      "name": "hooks-create",
+      "source": "cole-skills",
+      "reason": "writes Claude Code hooks"
+    },
+    {
+      "name": "ablate-ai-layer",
+      "source": "cole-skills",
+      "reason": "needs a Claude Code runner to drive both arms"
+    },
+    {
+      "name": "agent-config-audit",
+      "source": "cole-skills",
+      "reason": "audits Claude Code configuration"
+    },
+    {
+      "name": "opportunity-scan",
+      "source": "cole-skills",
+      "reason": "reads Claude Code usage history"
+    },
+    {
+      "name": "build-dark-factory",
+      "source": "cole-skills",
+      "reason": "1.4 MB and built on Claude Code and Archon"
+    },
+    {
+      "name": "build-signal-engine",
+      "source": "cole-skills",
+      "reason": "unrelated to planning"
+    },
+    {
+      "name": "second-brain-audit",
+      "source": "cole-skills",
+      "reason": "second-brain tooling"
+    },
+    {
+      "name": "second-brain-fix",
+      "source": "cole-skills",
+      "reason": "second-brain tooling"
+    },
+    {
+      "name": "second-brain-prd",
+      "source": "cole-skills",
+      "reason": "second-brain tooling"
+    },
+    {
+      "name": "edit-video",
+      "source": "cole-skills",
+      "reason": "755 KB video tooling"
+    },
+    {
+      "name": "drive-screen",
+      "source": "cole-skills",
+      "reason": "desktop control"
+    },
+    {
+      "name": "agent-browser",
+      "source": "cole-skills",
+      "reason": "needs an extra CLI"
+    },
+    {
+      "name": "ast-grep",
+      "source": "cole-skills",
+      "reason": "needs an extra CLI"
+    },
+    {
+      "name": "setup-ai-tutor",
+      "source": "cole-skills",
+      "reason": "course setup"
     },
     {
       "name": "agent-setup",

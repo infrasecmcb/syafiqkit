@@ -50,6 +50,7 @@ export function createProvider(options = {}) {
   const manifest = options.manifest ?? loadManifest();
   const exclude = new Set(options.exclude ?? manifest.defaultExclude ?? []);
   const entries = manifest.skills.filter((s) => !exclude.has(s.name));
+  const sourceOf = new Map(entries.map((s) => [s.name, s.source]));
   const candidates = entries.map((s) => {
     const dir = path.join(ROOT, 'skills', s.dir);
     return {
@@ -77,7 +78,8 @@ export function createProvider(options = {}) {
         .replaceAll('{{ROOT}}', ROOT)
         .replaceAll('{{AGENTS}}', path.join(ROOT, 'agents'));
       let addendum = '';
-      try { addendum = readFileSync(path.join(ROOT, 'addenda', `${c.name}.md`), 'utf8').replace(/^\uFEFF/, '').replaceAll('{{ROOT}}', ROOT); } catch { /* most skills have none */ }
+      try { addendum += readFileSync(path.join(ROOT, 'addenda', `_${sourceOf.get(c.name)}.md`), 'utf8').replace(/^\uFEFF/, '').replaceAll('{{ROOT}}', ROOT); } catch { /* no source-level note */ }
+      try { addendum += readFileSync(path.join(ROOT, 'addenda', `${c.name}.md`), 'utf8').replace(/^\uFEFF/, '').replaceAll('{{ROOT}}', ROOT); } catch { /* most skills have none */ }
       return {
         name: c.name,
         description: c.description,

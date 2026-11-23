@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Skill library",
-    "description": "104 agent skills in one bundle: syafiqkit workflows (commits, shipping, task docs, UI/UX design judgement, animation) plus engineering (test-first, debugging, planning, code review), security review (OWASP, LLM and privacy checks), documentation, UX and accessibility audits, design toolkits (impeccable, taste), and video (Remotion captions, explainers, b-roll, vlog editing). Ask for a skill by name or let the agent choose. Skills load with a note mapping Claude Code tools to Harness tools. Set outputStyle: true for syafiqkit's answer style; exclude hides skills. Video skills need Node, ffmpeg or Remotion installed."
+    "description": "130 agent skills in one bundle: syafiqkit workflows (commits, shipping, task docs, UI/UX design judgement, animation) plus engineering (test-first, debugging, planning, code review), security review (OWASP, LLM and privacy checks), documentation, UX and accessibility audits, design toolkits (impeccable, taste), and video (Remotion captions, explainers, b-roll, vlog editing). A plan-to-ship pipeline (idea, architecture, plan, build, validate, review) with human gates. Ask for a skill by name or let the agent choose. Skills load with a note mapping Claude Code tools to Harness tools. Set outputStyle: true for syafiqkit's answer style; exclude hides skills. Video skills need Node, ffmpeg or Remotion installed."
   }
 }

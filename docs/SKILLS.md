@@ -1,6 +1,6 @@
 # Skill catalog
 
-104 skills, 100 on by default. Generated from `skills.json` by `node tools/docs.mjs`; do not edit by hand.
+130 skills, 126 on by default. Generated from `skills.json` by `node tools/docs.mjs`; do not edit by hand.
 Skills marked **off** are hidden until you set `exclude: []` in the plugin config.
 
 ## Plan and build
@@ -9,6 +9,23 @@ Decide what to build, plan it, build it in small checked steps.
 
 | Skill | What it does | From |
 |---|---|---|
+| `plan-to-ship` | Take a feature from rough idea to reviewed, committed code with human gates: prime, intent, architecture, slices, plan, build, validate, review, retro. Use for any non-trivial change. | this repo |
+| `harness-check` | Audit how well a project is set up for AI agents (instructions, one-command checks, tests that can fail, guardrails, skills, feedback loop), score it and fix the gaps. | this repo |
+| `prime-codebase` | Orient in a codebase before planning or building: structure, docs, entry points, conventions. Run at the start of work in an unfamiliar project. | Cole Medin |
+| `prime-backend` | Orient in a codebase's backend: API routes, services, data layer, tests. Use before backend work. | Cole Medin |
+| `prime-frontend` | Orient in a codebase's frontend: components, routing, state, styling. Use before frontend work. | Cole Medin |
+| `plan-create-prd` | Interview the user into a problem-first PRD (problem, evidence, hypothesis, MVP) that states intent and leaves engineering choices to the architecture step. | Cole Medin |
+| `plan-architecture` | Decide how to build it: explore 2-3 approaches, stack, data shape, boundaries and risks with the user, then write a high-level architecture note. | Cole Medin |
+| `plan-with-priorities` | Plan a decision by first eliciting what matters to the user, then recommend options with small spikes and explicit trade-offs. | Cole Medin |
+| `plan-create-stories` | Turn a PRD into a backlog of stories in GitHub or Jira (needs gh or a tracker connection). | Cole Medin |
+| `piv-slice-epic` | Slice an epic and its architecture into tickets sized for one agent loop, with a dependency graph and what can run in parallel. | Cole Medin |
+| `piv-plan-implementation` | Write a one-pass-ready implementation plan for a ticket or feature: codebase patterns, research, tasks with validation commands, acceptance criteria. No code. | Cole Medin |
+| `piv-implement` | Carry out an implementation plan task by task, running each task's validation, then the full checks, and write a report with deviations. | Cole Medin |
+| `piv-validate` | Run the project's full check suite (tests, types, lint) and return one PASS or FAIL verdict. A template: needs the project's real commands. | Cole Medin |
+| `rules-create-global` | Write a lean AGENTS.md (global project rules) derived from the codebase or specs, with recurring detail moved to reference docs. | Cole Medin |
+| `rules-check-drift` | Check whether AGENTS.md or CLAUDE.md is still true after recent changes: commands, paths and rules that no longer match. | Cole Medin |
+| `system-execution-report` | After finishing an implementation, record what was done, what diverged from the plan and why. | Cole Medin |
+| `system-evolution-review` | Review how an implementation followed its plan and find bugs in the process: edits to AGENTS.md, plan template or skills. | Cole Medin |
 | `brainstorming` | Explore intent and requirements before building: new features where what to build is still open, or architecture changes. Use for 'how should we build X'. | syafiqkit |
 | `spec-driven-development` | Write a spec before coding when starting a project, feature or significant change that has none. | Osmani |
 | `writing-plans` | Turn a spec or requirements into a detailed step-by-step implementation plan before touching code. | superpowers |
@@ -38,6 +55,15 @@ Review changes, commit, wrap up and release.
 |---|---|---|
 | `requesting-code-review` | Ask a reviewer subagent to check finished work against the requirements before merging. | superpowers |
 | `receiving-code-review` | Handle review feedback with rigour: verify it, clarify unclear items, push back when it is wrong instead of agreeing. | superpowers |
+| `piv-review-changes` | Review recently changed files for bugs, security issues and standards, and write the findings to a file. | Cole Medin |
+| `piv-fix-review-findings` | Triage review findings with the user, fix the chosen ones one at a time with tests, defer the rest, then validate. | Cole Medin |
+| `piv-commit` | Create one atomic, conventionally tagged git commit for the current changes, without staging secrets. Never pushes. | Cole Medin |
+| `piv-create-pr` | Push the branch and open a pull request with a real body from the plan and report (needs gh; asks before pushing). | Cole Medin |
+| `piv-review-pr` | Review an open pull request with fresh eyes: severity-ranked findings posted to GitHub (needs gh). | Cole Medin |
+| `piv-investigate-issue` | Investigate a GitHub issue in parallel to an evidence-backed root cause analysis (needs gh). | Cole Medin |
+| `piv-implement-issue` | Implement the fix for a GitHub issue from its root cause analysis, with regression tests (needs gh). | Cole Medin |
+| `worktree-create` | Create several git worktrees for parallel work, each on its own branch with config copied, dependencies installed and health-checked. | Cole Medin |
+| `worktree-merge` | Merge branches from parallel worktrees through one integration branch, validating after each. | Cole Medin |
 | `code-review-and-quality` | Five-axis code review (correctness, readability, architecture, security, performance) before merging a change or PR. | Osmani |
 | `using-git-worktrees` | Create an isolated git worktree before starting feature work or executing a plan, so the main checkout stays clean. | superpowers |
 | `finishing-a-development-branch` | When implementation is done and tests pass, decide how to integrate: merge, pull request, keep or discard the branch. | superpowers |

@@ -295,6 +295,59 @@
           ]
         }
       ]
+    },
+    {
+      "id": "cole-skills",
+      "dir": "cole-skills",
+      "repo": "https://github.com/coleam00/skills",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2026 Cole Medin",
+      "skillsDir": ".claude/skills",
+      "skills": [
+        "prime-codebase",
+        "prime-backend",
+        "prime-frontend",
+        "plan-create-prd",
+        "plan-architecture",
+        "plan-with-priorities",
+        "plan-create-stories",
+        "piv-slice-epic",
+        "piv-plan-implementation",
+        "piv-implement",
+        "piv-validate",
+        "piv-review-changes",
+        "piv-fix-review-findings",
+        "piv-commit",
+        "piv-create-pr",
+        "piv-review-pr",
+        "piv-investigate-issue",
+        "piv-implement-issue",
+        "worktree-create",
+        "worktree-merge",
+        "rules-create-global",
+        "rules-check-drift",
+        "system-execution-report",
+        "system-evolution-review"
+      ],
+      "notIncluded": {
+        "piv-run-full-loop": "replaced by plan-to-ship, which adds the human gates",
+        "skills-create": "write-a-skill covers this for Harness",
+        "hooks-create": "writes Claude Code hooks",
+        "ablate-ai-layer": "needs a Claude Code runner to drive both arms",
+        "agent-config-audit": "audits Claude Code configuration",
+        "opportunity-scan": "reads Claude Code usage history",
+        "build-dark-factory": "1.4 MB and built on Claude Code and Archon",
+        "build-signal-engine": "unrelated to planning",
+        "second-brain-audit": "second-brain tooling",
+        "second-brain-fix": "second-brain tooling",
+        "second-brain-prd": "second-brain tooling",
+        "edit-video": "755 KB video tooling",
+        "drive-screen": "desktop control",
+        "agent-browser": "needs an extra CLI",
+        "ast-grep": "needs an extra CLI",
+        "setup-ai-tutor": "course setup"
+      }
     }
   ]
 }

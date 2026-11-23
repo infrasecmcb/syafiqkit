@@ -20,6 +20,7 @@ This bundle redistributes skills written by other people. Each skill keeps its a
 | ai-video-editing-skill | https://github.com/znyupup/ai-video-editing-skill | b6429ab | MIT | Copyright (c) 2025 nyx研究所 (https://github.com/znyupup) | 1 |
 | impeccable | https://github.com/pbakaus/impeccable | b49177d | Apache-2.0 | Paul Bakaus and contributors | 1 |
 | taste-skill | https://github.com/Leonxlnx/taste-skill | 6c0b5c7 | MIT | Copyright (c) 2026 Leonxlnx | 1 |
+| cole-skills | https://github.com/coleam00/skills | 8c30da9 | MIT | Copyright (c) 2026 Cole Medin | 24 |
 
 syafiqkit declares no licence upstream; its skills are included with the author's permission.
 Vendored skills inside syafiqkit (`emil-*`) keep their own MIT licences, shipped in each skill folder.
