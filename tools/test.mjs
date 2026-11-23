@@ -18,7 +18,7 @@ const failures = [];
 //  - paths that are examples of the user's own project, not files of the skill
 //  - files the upstream author never shipped
 const LEFT_OUT = /(^|\/)(\.\.\/)+(haiku|taste|impeccable|update-plugin|skill-creator|agent-setup)\b|^\.\.\/(haiku|taste|impeccable|update-plugin)\b/;
-const PROJECT_EXAMPLES = /^(\.\/)?(\.claude\/)?(app\/|react\/)?(Domain\/X\/)?CLAUDE(\.local)?\.md$|^\.\.\/CHANGELOG\.md$/;
+const PROJECT_EXAMPLES = /^assets\/client\/|^(\.\/)?(\.claude\/)?(app\/|react\/)?(Domain\/X\/)?CLAUDE(\.local)?\.md$|^\.\.\/CHANGELOG\.md$/;
 const UPSTREAM_MISSING = new Set(['scripts/README.md', 'assets/voice/words.json', 'assets/charts.js', 'assets/app.css', 'references/ship-deploy-verification.md', 'scripts/doc_outline.py', 'scripts/copy-lint.mjs', 'scripts/check-render.mjs', 'scripts/consistency.mjs', '../choreograph/SKILL.md', '../../agents/accessibility-auditor.md']);
 const known = [];
 const fail = (m) => failures.push(m);

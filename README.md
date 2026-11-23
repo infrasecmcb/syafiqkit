@@ -1,6 +1,6 @@
 # Skill library for DeepSeek Harness
 
-100 ready-made agent skills in one DeepSeek Harness plugin: plan, build, debug, review, secure, document, design and ship.
+104 ready-made agent skills in one DeepSeek Harness plugin: plan, build, debug, review, secure, document, design and ship.
 
 Skills are short instruction packs. Ask your agent for one by name, or just describe the job and it picks a matching skill. The agent then follows a proven procedure instead of improvising.
 
@@ -8,8 +8,8 @@ Skills are short instruction packs. Ask your agent for one by name, or just desc
 
 ## Features
 
-- **100 skills, 96 on by default**, grouped in 8 areas: planning and building, review and shipping, security, UI/UX and accessibility, animation, documentation, video, and client workflow. Full list: [docs/SKILLS.md](docs/SKILLS.md).
-- **Short catalog.** Each skill shows the agent a one-line description (about 10,000 characters for all 96, versus about 26,000 with the original text), so conversations stay lean. The full instructions load only when a skill is used.
+- **104 skills, 100 on by default**, grouped in 8 areas: planning and building, review and shipping, security, UI/UX and accessibility, animation, documentation, video, and client workflow. Full list: [docs/SKILLS.md](docs/SKILLS.md).
+- **Short catalog.** Each skill shows the agent a one-line description (about 11,000 characters for all 100, versus about 26,000 with the original text), so conversations stay lean. The full instructions load only when a skill is used.
 - **Made to run in Harness.** Every skill loads with a note mapping Claude Code's tools to Harness equivalents (`subagent`, `ask_user_question`, `todo_write`, shell, file tools). The agent-heavy skills (`done`, `refresh-instructions`, `score-loop` and others) carry extra Harness-specific instructions.
 - **Delegation built in.** `delegate-and-verify` splits bulk work across subagents, backs up files first, and checks what comes back.
 - **Security-reviewed sources.** Every added skill was scanned for downloads, hidden characters, secret access and destructive commands before inclusion. See [Trust](#trust-and-safety).
@@ -24,8 +24,9 @@ Skills are short instruction packs. Ask your agent for one by name, or just desc
 | Plan and build | `brainstorming`, `writing-plans`, `test-driven-development`, `systematic-debugging`, `subagent-driven-development` |
 | Review, git and shipping | `code-review-and-quality`, `commit`, `done`, `ship`, `verification-before-completion` |
 | Security and privacy | `security-and-hardening`, `secpriv-code-review`, `owasp-llm-top10`, `owasp-ai-testing` |
-| UI, UX and accessibility | `uiux`, `nielsen-heuristics-audit`, `wcag-accessibility-audit`, `cognitive-walkthrough` |
+| UI, UX and accessibility | `uiux`, `impeccable`, `taste`, `nielsen-heuristics-audit`, `wcag-accessibility-audit`, `cognitive-walkthrough` |
 | Animation | `emil-animate`, `emil-review-animations`, `emil-gestures`, `emil-mobile-native` |
+| Tools for the agent | `delegate-and-verify`, `schedule-checks`, `write-a-skill` |
 | Documentation | `documentation-and-adrs`, `codebase-documenter`, `setup-project-docs`, `user-manual` |
 | Video | `remotion-motion-graphics`, `explainer-video`, `caption-animation`, `vlog-auto-edit` |
 | Client workflow (some off) | `casual-message`, `gchat-format`, `setup-tracker`, `uat-script` |
@@ -68,7 +69,7 @@ Edit the plugin's row in Harness (it is defined in [cordis.patch.yml](cordis.pat
 | Setting | Default | What it does |
 |---|---|---|
 | `outputStyle` | `false` | Adds syafiqkit's answer-style rules: lead with the action, numbered steps, no filler openers or closers. Applies to every session while on. |
-| `exclude` | `commit-invoice-generator`, `casual-message`, `gchat-format`, `pull-db` | Skills to hide. Setting it **replaces** the default list. `exclude: []` turns all 100 on; add names to hide more. |
+| `exclude` | `commit-invoice-generator`, `casual-message`, `gchat-format`, `pull-db` | Skills to hide. Setting it **replaces** the default list. `exclude: []` turns all 104 on; add names to hide more. |
 
 ## Requirements for some skills
 
@@ -78,14 +79,16 @@ Most skills need nothing beyond the agent. A few need software this plugin does 
 |---|---|
 | Video (`remotion-motion-graphics`, `explainer-video`, `caption-animation`, `short-form-video`, `audiogram`, `youtube-intro-outro`, `talking-head-b-roll`) | Node.js, Remotion, usually Chrome or Edge, `ffmpeg` |
 | `vlog-auto-edit` | `ffmpeg`, Python, a speech-to-text model and a vision-model API key |
-| `uiux` measuring scripts | Node 22+ and Edge or Chrome (`CHROME_PATH` to choose) |
+| `uiux` measuring scripts, `taste` | Node 22+ and Edge or Chrome (`CHROME_PATH` to choose) |
+| `impeccable` | Downloads a 23 MB helper program from GitHub on first use (checked against a shipped fingerprint; the agent asks first) |
 | `subagent-driven-development` | Bash (Git Bash on Windows) for its helper scripts |
 | `setup-tools`, `setup-tracker`, `watch-sheets` | Google Cloud project and sign-in |
 
 ## Limits (read this)
 
 - **Built for another agent.** The skills were written for Claude Code. They are translated by a note and a few rewrites, not rewritten one by one, so an occasional step may refer to something Harness does not have. The agent is told to do that step itself or skip it and say so.
-- **Not included:** skills that depend on Claude Code features (`taste`, `impeccable`, `haiku`, `skill-creator`, `update-plugin`, `agent-setup`, `headless-watch`, `self-organize-agent-memory`, `claude-server-token`, `reclaim-disk`) and syafiqkit's Claude Code mod (menu bar, `/sk`, pane viewers). The `haiku` role is covered by `delegate-and-verify`.
+- **Not included:** `update-plugin`, `agent-setup`, `self-organize-agent-memory`, `claude-server-token`, `reclaim-disk` (depend on Claude Code or macOS) and syafiqkit's Claude Code mod (menu bar, `/sk`, pane viewers). Replaced rather than dropped: `haiku` by `delegate-and-verify`, `skill-creator` by `write-a-skill`, `headless-watch` by `schedule-checks`, and syafiqkit's copies of `taste` and `impeccable` by the original authors' versions (`impeccable` from its Harness build).
+- **`taste` ships without its photograph library** (about 20 MB of images, mixed licences). Its scripts still run; for photographs the agent downloads credited stand-ins (asking first) or uses yours. Its finish gate is a manual step here (the Claude Code hook that ran it automatically is removed).
 - **Lightly tested.** The bundle's checks are automated and pass, and a few skills were loaded in a live session. Most skills have not been run on a real task yet. Treat results as drafts and review what the agent changes.
 - **Skills are instructions your agent will follow.** Read a skill before trusting a new one, especially after an update.
 
@@ -115,6 +118,8 @@ git clone --depth 1 https://github.com/iart-ai/tiktok-video-skills.git
 git clone --depth 1 https://github.com/iart-ai/youtube-video-skills.git
 git clone --depth 1 https://github.com/iart-ai/b-roll-skills.git
 git clone --depth 1 https://github.com/znyupup/ai-video-editing-skill.git
+git clone --depth 1 https://github.com/pbakaus/impeccable.git
+git clone --depth 1 https://github.com/Leonxlnx/taste-skill.git
 cd ..
 node tools\build.mjs     # skills/, agents/, references/, licenses/, NOTICE.md, skills.json
 node tools\test.mjs      # validate everything
@@ -128,6 +133,8 @@ Restart Harness afterwards and read `git diff` before trusting new skill text. H
 | Source | Author | Licence |
 |---|---|---|
 | [syafiqkit](https://github.com/syafiq555/syafiqkit) (workflow skills, Emil Kowalski's animation skills inside) | Syafiq | used with the author's permission |
+| [impeccable](https://github.com/pbakaus/impeccable) | Paul Bakaus | Apache-2.0 |
+| [taste-skill](https://github.com/Leonxlnx/taste-skill) | Leonxlnx | MIT |
 | [superpowers](https://github.com/obra/superpowers) | Jesse Vincent | MIT |
 | [agent-skills](https://github.com/addyosmani/agent-skills) | Addy Osmani | MIT |
 | [claude-skills](https://github.com/mastepanoski/claude-skills) | mastepanoski | MIT |

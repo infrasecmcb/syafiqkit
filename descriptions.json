@@ -98,5 +98,9 @@
   "subagent-driven-development": "Execute a written plan by dispatching a fresh subagent per task with review after each. Needs bash (Git Bash on Windows) for its helper scripts.",
   "using-git-worktrees": "Create an isolated git worktree before starting feature work or executing a plan, so the main checkout stays clean.",
   "finishing-a-development-branch": "When implementation is done and tests pass, decide how to integrate: merge, pull request, keep or discard the branch.",
-  "delegate-and-verify": "Hand bulk, parallel or mechanical work (30+ files, rows or reports, multi-pass rewrites) to subagents, then verify the results before reporting. Use wherever a skill says to dispatch to haiku."
+  "delegate-and-verify": "Hand bulk, parallel or mechanical work (30+ files, rows or reports, multi-pass rewrites) to subagents, then verify the results before reporting. Use wherever a skill says to dispatch to haiku.",
+  "impeccable": "Design director toolkit for any frontend: shape, critique, audit, polish, bolder, quieter, animate, harden. Say \"impeccable polish\" or \"impeccable audit\". Original author's Harness build.",
+  "taste": "Build or redesign a landing page, company or product site so it looks designed, not templated: layout, type, palette, licensed stand-in photos, copy checks, browser finish gate. Needs Node 22+ and Edge or Chrome.",
+  "write-a-skill": "Write or improve a Harness skill (SKILL.md): where it goes, a description that triggers, a short body, and how to test it.",
+  "schedule-checks": "Run a check on a repeating schedule (CI, a page, a file, a sheet) and be told only when something needs you, using Harness scheduled tasks."
 }

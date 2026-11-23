@@ -28,7 +28,7 @@ This skill was written for Claude Code and other agents and ported to DeepSeek H
 - CLAUDE.md files: treat AGENTS.md as the project's instruction file; read or update CLAUDE.md only where the project already has one.
 - \`claude -p\`, \`claude plugin ...\`, the syafiqkit band or /sk menu: not available here. Do the step yourself or skip it and say so.
 - A step that says to dispatch to haiku, load Skill(haiku) or run "syafiqkit:haiku": load the \`delegate-and-verify\` skill instead and follow it; there is no haiku tier here.
-- Skills named taste, impeccable, update-plugin, skill-creator or agent-setup are not in this bundle. When a step says to run one, do that step yourself in the simplest way that works, or skip it and say so.
+- Skills named update-plugin, agent-setup, self-organize-agent-memory or claude-server-token are not in this bundle (skill-creator is write-a-skill; headless-watch is schedule-checks). When a step says to run one that is missing, do that step yourself in the simplest way that works, or skip it and say so.
 - Tools or software a skill needs (ffmpeg, Remotion, whisper, Node, pip packages): check they exist first and tell the user what is missing before installing anything.
 </harness-note>
 
@@ -70,7 +70,7 @@ export function createProvider(options = {}) {
     async get(candidate) {
       const c = candidates.find((x) => x.name === candidate.name);
       if (!c) return undefined;
-      const raw = await readFile(c.locator, 'utf8');
+      const raw = (await readFile(c.locator, 'utf8')).replace(/^\uFEFF/, '');
       const body = raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
       const note = PREAMBLE
         .replaceAll('{{SKILL_DIR}}', c.resourceBase.path)

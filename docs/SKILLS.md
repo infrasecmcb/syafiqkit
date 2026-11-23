@@ -1,6 +1,6 @@
 # Skill catalog
 
-100 skills, 96 on by default. Generated from `skills.json` by `node tools/docs.mjs`; do not edit by hand.
+104 skills, 100 on by default. Generated from `skills.json` by `node tools/docs.mjs`; do not edit by hand.
 Skills marked **off** are hidden until you set `exclude: []` in the plugin config.
 
 ## Plan and build
@@ -16,6 +16,8 @@ Decide what to build, plan it, build it in small checked steps.
 | `subagent-driven-development` | Execute a written plan by dispatching a fresh subagent per task with review after each. Needs bash (Git Bash on Windows) for its helper scripts. | superpowers |
 | `dispatching-parallel-agents` | Split 2+ independent tasks across parallel subagents, one per problem domain, then integrate the results. | superpowers |
 | `delegate-and-verify` | Hand bulk, parallel or mechanical work (30+ files, rows or reports, multi-pass rewrites) to subagents, then verify the results before reporting. Use wherever a skill says to dispatch to haiku. | this repo |
+| `schedule-checks` | Run a check on a repeating schedule (CI, a page, a file, a sheet) and be told only when something needs you, using Harness scheduled tasks. | this repo |
+| `write-a-skill` | Write or improve a Harness skill (SKILL.md): where it goes, a description that triggers, a short body, and how to test it. | this repo |
 | `plan-worklist` | Turn an already-scoped list of work items into a sized, sequenced build plan before any code is written. | syafiqkit |
 | `tackle` | Continue a doc with several open items: read it, judge what is buildable, then build it. | syafiqkit |
 | `test-driven-development` | Write the failing test first, then the minimal code, then refactor. Use before implementing any feature or bugfix. | superpowers |
@@ -68,6 +70,8 @@ Design judgement, audits and building accessible interfaces.
 | Skill | What it does | From |
 |---|---|---|
 | `uiux` | Design judgement for UI/UX at any scope: polish, redesign, critique, research, go-live check. Measures real renders at several widths. | syafiqkit |
+| `impeccable` | Design director toolkit for any frontend: shape, critique, audit, polish, bolder, quieter, animate, harden. Say "impeccable polish" or "impeccable audit". Original author's Harness build. | Paul Bakaus |
+| `taste` | Build or redesign a landing page, company or product site so it looks designed, not templated: layout, type, palette, licensed stand-in photos, copy checks, browser finish gate. Needs Node 22+ and Edge or Chrome. | Leonxlnx |
 | `design-handoff` | Write a brief for someone else to design a screen (external designer, contractor): purpose, audience, rules, measured failures, no design decisions. | syafiqkit |
 | `frontend-ui-engineering` | Build production-quality, accessible, responsive user interfaces and components. | Osmani |
 | `ui-design-review` | Visual design review: typography, colour, spacing, hierarchy and consistency. | mastepanoski |

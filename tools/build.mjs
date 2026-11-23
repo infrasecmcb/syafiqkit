@@ -56,19 +56,51 @@ fs.mkdirSync(path.join(bundle, 'licenses'), { recursive: true });
 const manifest = [], skipped = [], used = new Map(), problems = [], sourceInfo = [];
 for (const s of config.sources) for (const [n, reason] of Object.entries(s.notIncluded || {})) skipped.push({ name: n, source: s.id, reason });
 
+// Remove files a source asks to leave out: { "exclude": ["assets/photos/img", "*.mp4"] } (relative to the skill folder).
+function pruneExcluded(target, patterns = []) {
+  for (const p of patterns) {
+    if (p.includes('/*.') || p.startsWith('*.')) {
+      const [dirPart, extPart] = p.startsWith('*.') ? ['', p] : [p.slice(0, p.indexOf('/*.')), p.slice(p.indexOf('/*.') + 1)];
+      const root = dirPart ? path.join(target, ...dirPart.split('/')) : target;
+      if (!fs.existsSync(root)) continue;
+      const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const f = path.join(d, e.name); if (e.isDirectory()) walk(f); else if (e.name.endsWith(extPart.slice(1))) fs.rmSync(f); } };
+      walk(root);
+    } else fs.rmSync(path.join(target, ...p.split('/')), { recursive: true, force: true });
+  }
+}
+
+// Replace the frontmatter block: drop keys that only work in Claude Code (hooks) and rename the skill.
+function rewriteFrontmatter(file, name, description, drop = []) {
+  const raw = fs.readFileSync(file, 'utf8');
+  const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+  const body = m ? raw.slice(m[0].length) : raw;
+  const lines = m ? m[1].split(/\r?\n/) : [];
+  const keep = [];
+  let skipping = false;
+  for (const l of lines) {
+    const key = l.match(/^([A-Za-z][\w-]*):/);
+    if (key) skipping = ['name', 'description', ...drop].includes(key[1]);
+    if (!skipping) keep.push(l);
+  }
+  fs.writeFileSync(file, '---\nname: ' + name + '\ndescription: ' + JSON.stringify(description) + '\n' + (keep.length ? keep.join('\n') + '\n' : '') + '---\n' + body.replace(/^\r?\n/, '\n'));
+}
+
 function addSkill(source, name, srcDir, extra = {}) {
   if (!NAME.test(name)) { skipped.push({ name, source: source.id, reason: 'invalid name' }); return; }
   if (used.has(name)) { problems.push(`duplicate skill name "${name}" (${used.get(name)} and ${source.id})`); return; }
   const target = path.join(bundle, 'skills', name);
   const include = extra.include;
   copyDir(srcDir, target, include && srcDir === extra.root ? (e) => include.includes(e.name) : () => true);
+  pruneExcluded(target, extra.exclude);
   const file = path.join(target, 'SKILL.md');
-  const raw = fs.readFileSync(file, 'utf8');
+  const raw = fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, '');
+  if (raw !== fs.readFileSync(file, 'utf8')) fs.writeFileSync(file, raw);
   const fm = parseFrontmatter(raw);
   const description = overrides[name] || fm?.data.description;
   if (!description) { problems.push(`${source.id}/${name}: no description (add one to descriptions.json)`); return; }
   if (!overrides[name]) problems.push(`${source.id}/${name}: no entry in descriptions.json (using upstream text)`);
   if (!fm) fs.writeFileSync(file, `---\nname: ${name}\ndescription: ${JSON.stringify(description)}\n---\n\n${raw}`);
+  else if (extra.renameFrom || extra.dropFrontmatter) rewriteFrontmatter(file, name, description, extra.dropFrontmatter);
   used.set(name, source.id);
   manifest.push({
     name, dir: name, source: source.id, description,
@@ -97,7 +129,7 @@ for (const source of config.sources) {
       const spec = typeof s === 'string' ? { name: s, path: path.posix.join(source.skillsDir, s) } : s;
       const dir = spec.root ? root : path.join(root, spec.path);
       if (!fs.existsSync(path.join(dir, 'SKILL.md'))) { problems.push(`${source.id}: ${spec.name} not found at ${dir}`); continue; }
-      addSkill(source, spec.name, dir, spec.root ? { include: spec.include, root: dir } : {});
+      addSkill(source, spec.name, dir, { ...(spec.root ? { include: spec.include, root: dir } : {}), exclude: spec.exclude, renameFrom: spec.renameFrom, dropFrontmatter: spec.dropFrontmatter });
     }
   }
   for (const c of source.copy || []) {

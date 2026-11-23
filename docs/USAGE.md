@@ -67,6 +67,8 @@ If a skill does not fire when you expected it to, name it. If the wrong one fire
 | Goal | Skill |
 |---|---|
 | Polish, redesign or critique a screen (measures real renders at several widths) | `uiux` |
+| Design-director commands: shape, critique, audit, polish, bolder, quieter, harden ("impeccable polish") | `impeccable` |
+| Build or redesign a landing page or company site so it does not look templated | `taste` |
 | Usability audit | `nielsen-heuristics-audit`, `cognitive-walkthrough`, `ux-audit-rethink` |
 | Accessibility | `wcag-accessibility-audit`, `accessibility-engineering` |
 | Visual design review | `ui-design-review` |
@@ -83,6 +85,10 @@ If a skill does not fire when you expected it to, name it. If the wrong one fire
 ### Wrap up and ship
 
 `done` is the full wrap-up (simplify, review, update docs, capture lessons) and starts subagents. `quick-done` is the cheap version for a small change. `ship` commits, pushes and checks the deploy; run it after `done`.
+
+### Write your own skills, schedule checks
+
+`write-a-skill` explains where a Harness skill lives, how to write a description that triggers, and how to test it. `schedule-checks` sets up a repeating check with Harness scheduled tasks and tells you only when something needs you.
 
 ### Big, repetitive jobs
 
@@ -117,7 +123,7 @@ skills.json         generated: the manifest the plugin reads
 skills/             generated: copies of the included skills
 agents/ references/ generated: role briefs and shared references the skills point to
 addenda/<skill>.md  Harness-specific text prepended to one skill when it loads
-local-skills/       skills written for this bundle (delegate-and-verify)
+local-skills/       skills written for this bundle (delegate-and-verify, write-a-skill, schedule-checks)
 licenses/           licence text per source; NOTICE.md lists them
 tools/build.mjs     rebuild from .upstream checkouts
 tools/test.mjs      validate skills, references and addenda

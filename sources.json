@@ -16,16 +16,16 @@
       "skillsDir": "skills",
       "all": true,
       "skip": {
-        "taste": "needs Claude Code skill hooks and a 35 MB toolchain",
-        "impeccable": "downloads a native binary on first use",
         "claude-server-token": "manages Claude Code server tokens",
         "update-plugin": "patches the Claude Code plugin itself",
-        "skill-creator": "registers skills in Claude Code",
-        "headless-watch": "runs `claude -p` on a schedule",
+        "skill-creator": "replaced by write-a-skill (local-skills)",
+        "headless-watch": "replaced by schedule-checks (local-skills), which uses Harness scheduled tasks",
         "haiku": "drives Claude haiku agents",
         "self-organize-agent-memory": "Claude Code agent-memory files",
         "agent-setup": "writes Claude Code .claude/agents definitions",
-        "reclaim-disk": "macOS only"
+        "reclaim-disk": "macOS only",
+        "taste": "replaced by the original taste-skill (source taste-skill)",
+        "impeccable": "replaced by the original impeccable .dsh build (source impeccable)"
       },
       "copy": [
         {
@@ -247,6 +247,51 @@
             "scripts",
             "templates",
             "examples"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "impeccable",
+      "dir": "impeccable",
+      "repo": "https://github.com/pbakaus/impeccable",
+      "license": "Apache-2.0",
+      "licenseFile": "LICENSE",
+      "copyright": "Paul Bakaus and contributors",
+      "skills": [
+        {
+          "name": "impeccable",
+          "path": ".dsh/skills/impeccable"
+        }
+      ],
+      "copy": [
+        {
+          "from": "NOTICE.md",
+          "to": "licenses/impeccable-NOTICE.md"
+        }
+      ]
+    },
+    {
+      "id": "taste-skill",
+      "dir": "taste-skill",
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2026 Leonxlnx",
+      "skills": [
+        {
+          "name": "taste",
+          "path": "skills/taste-skill",
+          "renameFrom": "design-taste-frontend",
+          "dropFrontmatter": [
+            "hooks"
+          ],
+          "exclude": [
+            "assets/photos/img",
+            "assets/moments/_demo/*.jpg",
+            "assets/scenes/_demo/*.jpg",
+            "assets/layout/img",
+            "assets/objects/photo-kit/photos"
           ]
         }
       ]

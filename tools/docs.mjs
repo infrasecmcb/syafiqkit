@@ -9,7 +9,7 @@ const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'skills.json'), 'utf
 export const AREAS = [
   ['Plan and build', 'Decide what to build, plan it, build it in small checked steps.', [
     'brainstorming', 'spec-driven-development', 'writing-plans', 'executing-plans', 'subagent-driven-development',
-    'dispatching-parallel-agents', 'delegate-and-verify', 'plan-worklist', 'tackle', 'test-driven-development',
+    'dispatching-parallel-agents', 'delegate-and-verify', 'schedule-checks', 'write-a-skill', 'plan-worklist', 'tackle', 'test-driven-development',
     'systematic-debugging', 'verification-before-completion', 'api-and-interface-design', 'code-simplification',
     'performance-optimization', 'function-parameter-limits', 'extract-shared-package', 'setup-playwright',
   ]],
@@ -22,7 +22,7 @@ export const AREAS = [
     'security-and-hardening', 'secpriv-code-review', 'owasp-llm-top10', 'owasp-ai-testing', 'patch-advisory',
   ]],
   ['UI, UX and accessibility', 'Design judgement, audits and building accessible interfaces.', [
-    'uiux', 'design-handoff', 'frontend-ui-engineering', 'ui-design-review', 'nielsen-heuristics-audit',
+    'uiux', 'impeccable', 'taste', 'design-handoff', 'frontend-ui-engineering', 'ui-design-review', 'nielsen-heuristics-audit',
     'cognitive-walkthrough', 'ux-audit-rethink', 'wcag-accessibility-audit', 'accessibility-engineering', 'product-still',
   ]],
   ['Animation and interaction', "Emil Kowalski's motion and interaction skills.", [
@@ -53,7 +53,7 @@ const srcName = (id) => ({
   syafiqkit: 'syafiqkit', superpowers: 'superpowers', 'agent-skills': 'Osmani', 'claude-skills': 'mastepanoski',
   'secpriv-skill': 'Meta', 'claude-skills-marketplace': 'mhattingpete', 'claude-remotion-skill': 'haidrrrry',
   'explainer-video-skills': 'iart.ai', 'tiktok-video-skills': 'iart.ai', 'youtube-video-skills': 'iart.ai',
-  'b-roll-skills': 'iart.ai', 'ai-video-editing-skill': 'znyupup', local: 'this repo',
+  'b-roll-skills': 'iart.ai', 'ai-video-editing-skill': 'znyupup', impeccable: 'Paul Bakaus', 'taste-skill': 'Leonxlnx', local: 'this repo',
 }[id] || id);
 
 let out = `# Skill catalog

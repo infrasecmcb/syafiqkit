@@ -85,11 +85,25 @@
       "skills": 1
     },
     {
+      "id": "impeccable",
+      "repo": "https://github.com/pbakaus/impeccable",
+      "commit": "b49177d32788f2dc585c42831d845dacf1ebed2c",
+      "license": "Apache-2.0",
+      "skills": 1
+    },
+    {
+      "id": "taste-skill",
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "commit": "6c0b5c78f5d31776e2210305abaa210cdc0030bf",
+      "license": "MIT",
+      "skills": 1
+    },
+    {
       "id": "local",
       "repo": "this repository",
       "commit": "n/a",
       "license": "MIT",
-      "skills": 1
+      "skills": 3
     }
   ],
   "defaultExclude": [
@@ -394,6 +408,13 @@
       "modelInvocable": true
     },
     {
+      "name": "impeccable",
+      "dir": "impeccable",
+      "source": "impeccable",
+      "description": "Design director toolkit for any frontend: shape, critique, audit, polish, bolder, quieter, animate, harden. Say \"impeccable polish\" or \"impeccable audit\". Original author's Harness build.",
+      "modelInvocable": true
+    },
+    {
       "name": "judgement",
       "dir": "judgement",
       "source": "syafiqkit",
@@ -541,6 +562,13 @@
       "modelInvocable": true
     },
     {
+      "name": "schedule-checks",
+      "dir": "schedule-checks",
+      "source": "local",
+      "description": "Run a check on a repeating schedule (CI, a page, a file, a sheet) and be told only when something needs you, using Harness scheduled tasks.",
+      "modelInvocable": true
+    },
+    {
       "name": "score-loop",
       "dir": "score-loop",
       "source": "syafiqkit",
@@ -667,6 +695,13 @@
       "modelInvocable": true
     },
     {
+      "name": "taste",
+      "dir": "taste",
+      "source": "taste-skill",
+      "description": "Build or redesign a landing page, company or product site so it looks designed, not templated: layout, type, palette, licensed stand-in photos, copy checks, browser finish gate. Needs Node 22+ and Edge or Chrome.",
+      "modelInvocable": true
+    },
+    {
       "name": "technical-doc-creator",
       "dir": "technical-doc-creator",
       "source": "claude-skills-marketplace",
@@ -779,6 +814,13 @@
       "modelInvocable": true
     },
     {
+      "name": "write-a-skill",
+      "dir": "write-a-skill",
+      "source": "local",
+      "description": "Write or improve a Harness skill (SKILL.md): where it goes, a description that triggers, a short body, and how to test it.",
+      "modelInvocable": true
+    },
+    {
       "name": "write-summary",
       "dir": "write-summary",
       "source": "syafiqkit",
@@ -839,12 +881,12 @@
     {
       "name": "headless-watch",
       "source": "syafiqkit",
-      "reason": "runs `claude -p` on a schedule"
+      "reason": "replaced by schedule-checks (local-skills), which uses Harness scheduled tasks"
     },
     {
       "name": "impeccable",
       "source": "syafiqkit",
-      "reason": "downloads a native binary on first use"
+      "reason": "replaced by the original impeccable .dsh build (source impeccable)"
     },
     {
       "name": "reclaim-disk",
@@ -859,12 +901,12 @@
     {
       "name": "skill-creator",
       "source": "syafiqkit",
-      "reason": "registers skills in Claude Code"
+      "reason": "replaced by write-a-skill (local-skills)"
     },
     {
       "name": "taste",
       "source": "syafiqkit",
-      "reason": "needs Claude Code skill hooks and a 35 MB toolchain"
+      "reason": "replaced by the original taste-skill (source taste-skill)"
     },
     {
       "name": "update-plugin",
