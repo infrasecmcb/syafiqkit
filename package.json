@@ -1,7 +1,7 @@
 {
   "name": "@local/dsh-syafiqkit",
   "version": "1.467.4",
-  "description": "syafiqkit workflow skills ported from Claude Code to DeepSeek Harness.",
+  "description": "Curated agent skills for DeepSeek Harness: syafiqkit workflows plus vetted open-source skills for engineering, security review, documentation, UX/UI and video.",
   "private": true,
   "type": "module",
   "icon": "./icon.svg",
@@ -11,6 +11,25 @@
     "./icon": "./icon.svg",
     "./package.json": "./package.json"
   },
-  "files": ["index.js", "cordis.patch.yml", "skills.json", "skills", "agents", "RULESET.md", "locale/*.json", "icon.svg", "NOTICE.md", "tools"],
-  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "skills.json",
+    "sources.json",
+    "descriptions.json",
+    "skills",
+    "agents",
+    "references",
+    "licenses",
+    "RULESET.md",
+    "locale/*.json",
+    "icon.svg",
+    "NOTICE.md",
+    "tools"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
 }

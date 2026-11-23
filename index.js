@@ -1,5 +1,6 @@
-// syafiqkit for DeepSeek Harness: serves the ported syafiqkit skills through
-// ctx.skills and optionally adds the ADHD output-style ruleset to the prompt.
+// syafiqkit for DeepSeek Harness: serves a curated set of agent skills (syafiqkit plus
+// vetted skills from other open-source authors) through ctx.skills, and optionally adds
+// syafiqkit's output-style ruleset to the system prompt.
 import { readFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -15,15 +16,19 @@ const DESCRIPTION_MAX = 480; // the catalog shows at most 500 characters per ski
 
 // Prepended to every loaded skill so Claude Code wording maps onto this Harness.
 const PREAMBLE = `<harness-note>
-This skill was written for Claude Code and ported to DeepSeek Harness. Translate as you follow it:
-- "Agent"/"Task" tool, subagent_type, Explore, general-purpose agents: use \`subagent\` (or \`subagent_fork\` when the child needs this conversation). Put the role brief in the prompt; a named role's brief is in the bundle's agents folder: {{AGENTS}}
+This skill was written for Claude Code and other agents and ported to DeepSeek Harness. Translate as you follow it:
+- "Agent"/"Task" tool, subagent_type, Explore, general-purpose or reviewer agents: use \`subagent\` (or \`subagent_fork\` when the child needs this conversation). Put the role brief in the prompt; role briefs are in {{AGENTS}}
 - model "haiku" or "sonnet" for agents: omit it and use the child default.
 - AskUserQuestion: \`ask_user_question\`. TodoWrite: \`todo_write\`. ExitPlanMode: \`exit_plan_mode\` when available.
 - Bash: the shell tool you have (pwsh on Windows); WebFetch/WebSearch: \`web_fetch\`/\`web_search\` when available.
 - Read/Write/Edit/Glob/Grep: \`read\`, \`write\`, \`edit\`, \`glob\`, \`grep\`.
-- \${CLAUDE_SKILL_DIR} = this skill's directory: {{SKILL_DIR}}; \${CLAUDE_PLUGIN_ROOT} = {{ROOT}}; "../../_shared/..." resolves from {{SKILL_DIR}}.
+- Another skill named like "superpowers:test-driven-development" or "agent-skills:x": load that skill with the \`skill\` tool using the part after the colon.
+- \${CLAUDE_SKILL_DIR} = this skill's directory: {{SKILL_DIR}}; \${CLAUDE_PLUGIN_ROOT} = {{ROOT}}; a relative path such as "../../references/x.md" or "../other-skill/SKILL.md" resolves from {{SKILL_DIR}} (shared references live in {{ROOT}}\\references and {{ROOT}}\\skills\\_shared).
+- Slash commands like /build, /review, /ship or /syafiqkit:*: not available here; do the step yourself.
 - CLAUDE.md files: treat AGENTS.md as the project's instruction file; read or update CLAUDE.md only where the project already has one.
-- \`claude -p\`, \`claude plugin ...\`, /syafiqkit:* slash commands, the syafiqkit band or /sk menu: not available here. Do the step yourself or skip it and say so.
+- \`claude -p\`, \`claude plugin ...\`, the syafiqkit band or /sk menu: not available here. Do the step yourself or skip it and say so.
+- Skills named haiku, taste, impeccable, update-plugin, skill-creator or agent-setup are not in this bundle. When a step says to run one, do that step yourself in the simplest way that works, or skip it and say so.
+- Tools or software a skill needs (ffmpeg, Remotion, whisper, Node, pip packages): check they exist first and tell the user what is missing before installing anything.
 </harness-note>
 
 `;
@@ -32,19 +37,19 @@ function loadManifest() {
   return JSON.parse(readFileSync(path.join(ROOT, 'skills.json'), 'utf8'));
 }
 
-function shorten(text) {
+export function shorten(text) {
   const t = text.replace(/\s+/g, ' ').trim();
   if (t.length <= DESCRIPTION_MAX) return t;
   const cut = t.slice(0, DESCRIPTION_MAX);
   const end = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('; '));
-  return (end > DESCRIPTION_MAX * 0.5 ? cut.slice(0, end + 1) : cut.replace(/\s+\S*$/, '') + '…');
+  return end > DESCRIPTION_MAX * 0.5 ? cut.slice(0, end + 1) : cut.replace(/\s+\S*$/, '') + '…';
 }
 
 export function createProvider(options = {}) {
   const manifest = options.manifest ?? loadManifest();
-  const exclude = new Set(options.exclude ?? []);
+  const exclude = new Set(options.exclude ?? manifest.defaultExclude ?? []);
   const entries = manifest.skills.filter((s) => !exclude.has(s.name));
-  const toCandidate = (s) => {
+  const candidates = entries.map((s) => {
     const dir = path.join(ROOT, 'skills', s.dir);
     return {
       name: s.name,
@@ -57,8 +62,7 @@ export function createProvider(options = {}) {
       locator: path.join(dir, 'SKILL.md'),
       path: path.join(dir, 'SKILL.md'),
     };
-  };
-  const candidates = entries.map(toCandidate);
+  });
   return {
     name: PROVIDER,
     list: () => Promise.resolve(candidates),
@@ -85,6 +89,7 @@ export function createProvider(options = {}) {
 }
 
 export function apply(ctx, config = {}) {
+  // `exclude` replaces the default list; set `exclude: []` to turn every skill on.
   const provider = createProvider({ exclude: config.exclude });
   ctx.effect(() => ctx.skills.registerProvider(() => provider), 'syafiqkit.skills');
 

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "syafiqkit skills",
-    "description": "59 workflow skills from the syafiqkit Claude Code plugin: commits, shipping, task docs, AGENTS.md upkeep, UI/UX design judgement, animation, PDFs, user manuals and more. Ask for a skill by name or let the agent pick one. Each skill is translated to Harness tools when loaded. Claude Code-only parts (menu bar, /sk, haiku agents) are not included. Optional: set outputStyle: true in the plugin config to add syafiqkit's ADHD-oriented answer style to every session."
+    "title": "Skill library",
+    "description": "99 agent skills in one bundle: syafiqkit workflows (commits, shipping, task docs, UI/UX design judgement, animation) plus engineering (test-first, debugging, planning, code review), security review (OWASP, LLM and privacy checks), documentation, UX and accessibility audits, and video (Remotion captions, explainers, b-roll, vlog editing). Ask for a skill by name or let the agent choose. Skills load with a note mapping Claude Code tools to Harness tools. Set outputStyle: true for syafiqkit's answer style; exclude hides skills. Video skills need Node, ffmpeg or Remotion installed."
   }
 }

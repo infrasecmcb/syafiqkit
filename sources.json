@@ -1,0 +1,255 @@
+{
+  "defaultExclude": [
+    "commit-invoice-generator",
+    "casual-message",
+    "gchat-format",
+    "pull-db"
+  ],
+  "sources": [
+    {
+      "id": "syafiqkit",
+      "dir": "syafiqkit",
+      "repo": "https://github.com/syafiq555/syafiqkit",
+      "license": "No license declared upstream; redistributed with the author's permission",
+      "licenseFile": null,
+      "copyright": "Syafiq",
+      "skillsDir": "skills",
+      "all": true,
+      "skip": {
+        "taste": "needs Claude Code skill hooks and a 35 MB toolchain",
+        "impeccable": "downloads a native binary on first use",
+        "claude-server-token": "manages Claude Code server tokens",
+        "update-plugin": "patches the Claude Code plugin itself",
+        "skill-creator": "registers skills in Claude Code",
+        "headless-watch": "runs `claude -p` on a schedule",
+        "haiku": "drives Claude haiku agents",
+        "self-organize-agent-memory": "Claude Code agent-memory files",
+        "agent-setup": "writes Claude Code .claude/agents definitions",
+        "reclaim-disk": "macOS only"
+      },
+      "copy": [
+        {
+          "from": ".claude/agents",
+          "to": "agents"
+        },
+        {
+          "from": "hooks/RULESET.md",
+          "to": "RULESET.md"
+        }
+      ]
+    },
+    {
+      "id": "superpowers",
+      "dir": "superpowers",
+      "repo": "https://github.com/obra/superpowers",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2025 Jesse Vincent",
+      "skillsDir": "skills",
+      "skills": [
+        "test-driven-development",
+        "systematic-debugging",
+        "writing-plans",
+        "executing-plans",
+        "requesting-code-review",
+        "receiving-code-review",
+        "verification-before-completion",
+        "dispatching-parallel-agents",
+        "subagent-driven-development",
+        "using-git-worktrees",
+        "finishing-a-development-branch"
+      ],
+      "notIncluded": {
+        "writing-skills": "about writing skills for Claude Code; 107 KB",
+        "using-superpowers": "bootstraps the superpowers plugin itself",
+        "brainstorming": "syafiqkit brainstorming is used instead; superpowers version ships a helper web server",
+        "diagnosing-superpowers": "debugs the superpowers plugin itself"
+      }
+    },
+    {
+      "id": "agent-skills",
+      "dir": "agent-skills",
+      "repo": "https://github.com/addyosmani/agent-skills",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2025 Addy Osmani",
+      "skillsDir": "skills",
+      "skills": [
+        "api-and-interface-design",
+        "code-simplification",
+        "performance-optimization",
+        "git-workflow-and-versioning",
+        "shipping-and-launch",
+        "spec-driven-development",
+        "security-and-hardening",
+        "code-review-and-quality",
+        "accessibility-engineering",
+        "frontend-ui-engineering",
+        "documentation-and-adrs"
+      ],
+      "copy": [
+        {
+          "from": "references",
+          "to": "references"
+        },
+        {
+          "from": "agents/accessibility-auditor.md",
+          "to": "agents/accessibility-auditor.md"
+        },
+        {
+          "from": "agents/security-auditor.md",
+          "to": "agents/security-auditor.md"
+        },
+        {
+          "from": "agents/test-engineer.md",
+          "to": "agents/test-engineer.md"
+        },
+        {
+          "from": "agents/web-performance-auditor.md",
+          "to": "agents/web-performance-auditor.md"
+        },
+        {
+          "from": "agents/code-reviewer.md",
+          "to": "agents/osmani-code-reviewer.md"
+        }
+      ]
+    },
+    {
+      "id": "claude-skills",
+      "dir": "claude-skills",
+      "repo": "https://github.com/mastepanoski/claude-skills",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2026 mastepanoski",
+      "skillsDir": "skills",
+      "skills": [
+        "owasp-llm-top10",
+        "owasp-ai-testing",
+        "nielsen-heuristics-audit",
+        "wcag-accessibility-audit",
+        "cognitive-walkthrough",
+        "ux-audit-rethink",
+        "ui-design-review"
+      ]
+    },
+    {
+      "id": "secpriv-skill",
+      "dir": "secpriv-skill",
+      "repo": "https://github.com/facebookresearch/secpriv-skill",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+      "skills": [
+        {
+          "name": "secpriv-code-review",
+          "root": true,
+          "include": [
+            "SKILL.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "claude-skills-marketplace",
+      "dir": "claude-skills-marketplace",
+      "repo": "https://github.com/mhattingpete/claude-skills-marketplace",
+      "license": "Apache-2.0",
+      "licenseFile": "LICENSE",
+      "copyright": "mhattingpete and contributors",
+      "skills": [
+        {
+          "name": "codebase-documenter",
+          "path": "productivity-skills-plugin/skills/codebase-documenter"
+        },
+        {
+          "name": "technical-doc-creator",
+          "path": "visual-documentation-plugin/skills/technical-doc-creator"
+        }
+      ]
+    },
+    {
+      "id": "claude-remotion-skill",
+      "dir": "claude-remotion-skill",
+      "repo": "https://github.com/haidrrrry/claude-remotion-skill",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2025 haidrrrry",
+      "skills": [
+        {
+          "name": "remotion-motion-graphics",
+          "path": "remotion-motion-graphics"
+        }
+      ]
+    },
+    {
+      "id": "explainer-video-skills",
+      "dir": "explainer-video-skills",
+      "repo": "https://github.com/iart-ai/explainer-video-skills",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2026 iart.ai",
+      "skillsDir": "skills",
+      "skills": [
+        "explainer-video"
+      ]
+    },
+    {
+      "id": "tiktok-video-skills",
+      "dir": "tiktok-video-skills",
+      "repo": "https://github.com/iart-ai/tiktok-video-skills",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2026 iart.ai",
+      "skillsDir": "skills",
+      "skills": [
+        "caption-animation",
+        "short-form-video"
+      ]
+    },
+    {
+      "id": "youtube-video-skills",
+      "dir": "youtube-video-skills",
+      "repo": "https://github.com/iart-ai/youtube-video-skills",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2026 iart.ai",
+      "skillsDir": "skills",
+      "skills": [
+        "audiogram",
+        "youtube-intro-outro"
+      ]
+    },
+    {
+      "id": "b-roll-skills",
+      "dir": "b-roll-skills",
+      "repo": "https://github.com/iart-ai/b-roll-skills",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2026 iart.ai",
+      "skillsDir": "skills",
+      "skills": [
+        "talking-head-b-roll"
+      ]
+    },
+    {
+      "id": "ai-video-editing-skill",
+      "dir": "ai-video-editing-skill",
+      "repo": "https://github.com/znyupup/ai-video-editing-skill",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "copyright": "Copyright (c) 2025 nyx研究所 (https://github.com/znyupup)",
+      "skills": [
+        {
+          "name": "vlog-auto-edit",
+          "root": true,
+          "include": [
+            "SKILL.md",
+            "scripts",
+            "templates",
+            "examples"
+          ]
+        }
+      ]
+    }
+  ]
+}

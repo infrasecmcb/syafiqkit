@@ -1,403 +1,860 @@
 {
-  "upstream": {
-    "version": "1.467.4",
-    "commit": "ec7bc8e4d4465ab8e08fac1ff35ff51dbf98336d"
-  },
+  "sources": [
+    {
+      "id": "syafiqkit",
+      "repo": "https://github.com/syafiq555/syafiqkit",
+      "commit": "ec7bc8e4d4465ab8e08fac1ff35ff51dbf98336d",
+      "license": "No license declared upstream; redistributed with the author's permission",
+      "skills": 59
+    },
+    {
+      "id": "superpowers",
+      "repo": "https://github.com/obra/superpowers",
+      "commit": "22f0b463e7a5e579904dd6211a520321035526f7",
+      "license": "MIT",
+      "skills": 11
+    },
+    {
+      "id": "agent-skills",
+      "repo": "https://github.com/addyosmani/agent-skills",
+      "commit": "8c99fa36d90068c82d547f7c12a9d67a3e95f4ee",
+      "license": "MIT",
+      "skills": 11
+    },
+    {
+      "id": "claude-skills",
+      "repo": "https://github.com/mastepanoski/claude-skills",
+      "commit": "ac3023830834f9c7c181649f31fbfd48c91837d3",
+      "license": "MIT",
+      "skills": 7
+    },
+    {
+      "id": "secpriv-skill",
+      "repo": "https://github.com/facebookresearch/secpriv-skill",
+      "commit": "70e1269a988cb401ac838164b3db9434ffa9f4ea",
+      "license": "MIT",
+      "skills": 1
+    },
+    {
+      "id": "claude-skills-marketplace",
+      "repo": "https://github.com/mhattingpete/claude-skills-marketplace",
+      "commit": "b5b34bcf4c920bb72cee1c391b54a33cb5353c12",
+      "license": "Apache-2.0",
+      "skills": 2
+    },
+    {
+      "id": "claude-remotion-skill",
+      "repo": "https://github.com/haidrrrry/claude-remotion-skill",
+      "commit": "1dcbe5e3fc6cf970bd10d3cc05f0a8a5d19d0383",
+      "license": "MIT",
+      "skills": 1
+    },
+    {
+      "id": "explainer-video-skills",
+      "repo": "https://github.com/iart-ai/explainer-video-skills",
+      "commit": "3c13a1bc360c08503f24f9c9a99fda6d3d35de56",
+      "license": "MIT",
+      "skills": 1
+    },
+    {
+      "id": "tiktok-video-skills",
+      "repo": "https://github.com/iart-ai/tiktok-video-skills",
+      "commit": "88e7152fc2710fa16852d013959cfd988a8adc8b",
+      "license": "MIT",
+      "skills": 2
+    },
+    {
+      "id": "youtube-video-skills",
+      "repo": "https://github.com/iart-ai/youtube-video-skills",
+      "commit": "7838388571a3a6301bf5633e91941f9dfed0abfd",
+      "license": "MIT",
+      "skills": 2
+    },
+    {
+      "id": "b-roll-skills",
+      "repo": "https://github.com/iart-ai/b-roll-skills",
+      "commit": "bcd56742a8a99edaa699a6f7bc5a45922a8ec567",
+      "license": "MIT",
+      "skills": 1
+    },
+    {
+      "id": "ai-video-editing-skill",
+      "repo": "https://github.com/znyupup/ai-video-editing-skill",
+      "commit": "b6429ab550a64c595dc68d42c47cf2b489a50619",
+      "license": "MIT",
+      "skills": 1
+    }
+  ],
+  "defaultExclude": [
+    "commit-invoice-generator",
+    "casual-message",
+    "gchat-format",
+    "pull-db"
+  ],
   "skills": [
+    {
+      "name": "accessibility-engineering",
+      "dir": "accessibility-engineering",
+      "source": "agent-skills",
+      "description": "Audit existing interfaces for WCAG 2.2 AA conformance and fix the violations found.",
+      "modelInvocable": true
+    },
+    {
+      "name": "api-and-interface-design",
+      "dir": "api-and-interface-design",
+      "source": "agent-skills",
+      "description": "Design stable APIs and module boundaries: contracts, error shapes, versioning, backward compatibility.",
+      "modelInvocable": true
+    },
+    {
+      "name": "audiogram",
+      "dir": "audiogram",
+      "source": "youtube-video-skills",
+      "description": "Turn podcast or voice audio into a waveform video clip for social media.",
+      "modelInvocable": true
+    },
     {
       "name": "brainstorming",
       "dir": "brainstorming",
-      "description": "Use this before creative work that involves design decisions - new features where what to build is still open, or architectural changes. Explores intent and requirements before implementation. Triggers on brainstorming, design exploration, or \"how should we build\". For UI/UX specifically, `uiux` owns design judgement on a surface whose purpose is already settled (polish, rethink, redesign) — this skill runs first only when what to build is itself open, since its hard gate blocks all implementation until the user approves a direction.",
+      "source": "syafiqkit",
+      "description": "Explore intent and requirements before building: new features where what to build is still open, or architecture changes. Use for 'how should we build X'.",
+      "modelInvocable": true
+    },
+    {
+      "name": "caption-animation",
+      "dir": "caption-animation",
+      "source": "tiktok-video-skills",
+      "description": "Animated word-by-word captions from a transcript or SRT, burned into video. Remotion-based.",
       "modelInvocable": true
     },
     {
       "name": "casual-message",
       "dir": "casual-message",
-      "description": "Write a message in the sender's own voice to a specific person or small group — a WhatsApp reply, a Google Chat DM to a colleague, texting someone back, telling a named person something. Casual by default: short, in a copyable fence, no section headers, closes the way the sender actually talks. Fires on \"reply to X\", \"tell Y that...\", \"make it sound like me\", \"my usual WhatsApp message\", \"just a quick text\", \"reply casually\", \"what should we reply\", \"what do I say if they ask\", \"what should I tell them\", or naming a recipient by name or relationship rather than by audience category. Includes preparing the sender's answer to a question colleagues are expected to ask about something just posted. Includes a reply on a team thread or task card (ClickUp, Chat) that speaks for the sender, even a long one such as a timeline. NOT for a document being posted or converted — a changelog, release note, status update, or already-drafted prose someone wants reformatted for Chat's markdown is `gchat-format`, even when the destination is a 1:1 DM.",
+      "source": "syafiqkit",
+      "description": "Write a short casual message in the sender's own voice (WhatsApp reply, DM) in a copyable block.",
       "modelInvocable": true
     },
     {
       "name": "ci-ssh-deploy-timeout",
       "dir": "ci-ssh-deploy-timeout",
-      "description": "Diagnose and fix CI/CD deploys that intermittently fail when the runner can't SSH into the target server — errors like `dial tcp ***:22: i/o timeout`, `ssh: connect to host ... port 22: Connection timed out`, `Connection refused`, or a deploy step that \"usually passes on the 2nd or 3rd re-run.\" Use this WHENEVER a GitHub Actions / GitLab CI / generic SSH deploy step times out reaching a server, ESPECIALLY before adding a firewall rule or IP allowlist — those are usually the wrong fix. The skill rules out firewall / fail2ban / sshd throttling systematically, then converts the deploy to a connect-retry pattern that self-heals transient drops without re-running genuine failures. Triggers on \"deploy keeps timing out\", \"ssh i/o timeout in CI\", \"runner can't connect to my server\", \"flaky deploy\", \"should I allowlist the runner IPs\", \"deploy fails intermittently then works on retry\".",
+      "source": "syafiqkit",
+      "description": "Diagnose CI deploys that intermittently fail with SSH timeouts or connection refused, before touching firewall rules; applies a connect-only retry fix.",
+      "modelInvocable": true
+    },
+    {
+      "name": "code-review-and-quality",
+      "dir": "code-review-and-quality",
+      "source": "agent-skills",
+      "description": "Five-axis code review (correctness, readability, architecture, security, performance) before merging a change or PR.",
+      "modelInvocable": true
+    },
+    {
+      "name": "code-simplification",
+      "dir": "code-simplification",
+      "source": "agent-skills",
+      "description": "Simplify code for clarity without changing behaviour. Use when code works but is hard to read.",
+      "modelInvocable": true
+    },
+    {
+      "name": "codebase-documenter",
+      "dir": "codebase-documenter",
+      "source": "claude-skills-marketplace",
+      "description": "Write documentation of how a codebase works: architecture, key components, data flow, onboarding.",
+      "modelInvocable": true
+    },
+    {
+      "name": "cognitive-walkthrough",
+      "dir": "cognitive-walkthrough",
+      "source": "claude-skills",
+      "description": "Step through a task as a first-time user to find where people would get lost or stuck.",
       "modelInvocable": true
     },
     {
       "name": "commit",
       "dir": "commit",
-      "description": "Create git commits from staged changes. Works for single repos and multi-repo projects. Use when the user says \"commit\", \"commit this\", \"commit staged changes\", or asks to create a commit message from what's staged. Also pushes when the request includes \"push\" (\"commit and push\", `/commit push`) — a plain \"commit\" never pushes.",
+      "source": "syafiqkit",
+      "description": "Create conventional git commits from staged changes (single or multi-repo). Add 'push' to push too; a plain commit never pushes.",
       "modelInvocable": true
     },
     {
       "name": "commit-invoice-generator",
       "dir": "commit-invoice-generator",
-      "description": "Generate invoice line items from git commit history. Analyzes commits to create billable service descriptions with estimated hours. Use when creating invoices, billing for development work, analyzing commit patterns for time tracking, or when user mentions \"invoice\", \"billable hours\", or \"time log\".",
+      "source": "syafiqkit",
+      "description": "Turn git commit history into billable invoice line items with estimated hours.",
       "modelInvocable": true
     },
     {
       "name": "condense-claude-md",
       "dir": "condense-claude-md",
-      "description": "Aggressively condense and restructure a bloated CLAUDE.md file — strip verbose WHY columns, discoverable content, redundant tables, and overly long rows, then rewrite it shorter and clearer. Use when the user says \"condense\", \"shrink\", \"trim\", \"clean up\", or \"make CLAUDE.md shorter\", or when the file exceeds ~200 lines OR ~40KB — check both, since a dense file can hold its line count while bytes climb well past budget. Also use when asked to \"restructure\" or \"rephrase\" CLAUDE.md sections. Do NOT confuse with claude-md-improver (which adds missing content) — this skill removes excess.",
+      "source": "syafiqkit",
+      "description": "Shrink a bloated CLAUDE.md or similar instruction file in place by cutting verbose, redundant and discoverable content.",
       "modelInvocable": true
     },
     {
       "name": "condense-task-doc",
       "dir": "condense-task-doc",
-      "description": "Aggressively condense a bloated task doc (current.md or any markdown living-doc) — collapse investigation narratives into table rows, strip verification numbers and commit hashes, remove duplicated facts across sections AND sibling files, trim Quick Start to ≤15 lines, and rewrite in place. Trigger on \"condense this\", \"shrink this doc\", \"trim the task doc\", \"remove what's not needed\", \"restructure/rephrase shorter\", or any variation implying the doc has grown too large. A named path is the doc SET (index AND decisions/*.md) unless the request names one decisions file, which is then the whole scope. Also auto-trigger when a decisions/*.md file is over ~40 KB, or when updating a task doc already >300 lines — condense first, then write the update. A whole-doc MADR still >300 lines after conversion is SPLIT (index + decisions/<theme>.md) instead — see Process step 2. Do NOT confuse with condense-claude-md (CLAUDE.md files).",
+      "source": "syafiqkit",
+      "description": "Shrink a bloated task doc (current.md) in place: collapse narratives into tables, drop duplicates, split oversized docs.",
       "modelInvocable": true
     },
     {
       "name": "continue-session",
       "dir": "continue-session",
-      "description": "Produce a copy-paste prompt that starts a fresh session where this one stopped — the task doc path, the next goal and uncommitted state — open decisions stay in the task doc for the NEXT session to ask via AskUserQuestion, never listed in the paste. Use when the user says \"continuation prompt\", \"handoff prompt\", \"carry this over\", \"I'm running out of context\", \"start a new session for this\", \"what do I paste into the next one\", or when a session is ending with work deferred rather than finished. Offered by `done` and `quick-done` at wrap-up. This WRITES A PROMPT and stops — it does not continue the work. \"Let's continue\" / \"do the next steps\", meaning carry on building now in this session, is `tackle`. Briefing a person or an external designer is `design-handoff`.",
+      "source": "syafiqkit",
+      "description": "Produce a copy-paste prompt that starts a fresh session where this one stopped (doc path, next goal, uncommitted state).",
       "modelInvocable": true
     },
     {
       "name": "design-handoff",
       "dir": "design-handoff",
-      "description": "Write a brief for someone ELSE to design a screen — an external designer, a Claude Design project, a contractor, a teammate who cannot read this repo. Fires on \"give me the prompt\", \"brief for the designer\", \"I'll prompt over there\", \"hand it to Claude Design\", \"business side only\", \"what do they need to know\". Also fires when a reply is about to volunteer a layout, component list or step breakdown for work someone else owns, and when a build needs screens or states the team's live design (a Claude Design project, Figma) never drew. Brief those before a builder invents them. NOT for designing it yourself — that is `uiux`, which applies design judgement here; this skill deliberately withholds it and ships context instead.",
+      "source": "syafiqkit",
+      "description": "Write a brief for someone else to design a screen (external designer, contractor): purpose, audience, rules, measured failures, no design decisions.",
+      "modelInvocable": true
+    },
+    {
+      "name": "dispatching-parallel-agents",
+      "dir": "dispatching-parallel-agents",
+      "source": "superpowers",
+      "description": "Split 2+ independent tasks across parallel subagents, one per problem domain, then integrate the results.",
       "modelInvocable": true
     },
     {
       "name": "doc-to-md",
       "dir": "doc-to-md",
-      "description": "Convert a Word (.docx), PDF or Excel (.xlsx) document into Markdown, so its text can be read, grepped, committed and diffed in git. Use when the user asks to \"convert to md\", \"make a markdown copy\", \"turn this docx/pdf/excel into markdown\", \"so I can see the changes between versions\", \"what changed between these two versions\", \"compare/diff these Word files\", or hands over two versions of a document that are hard to compare. The reverse direction (Markdown to PDF) is `md-to-pdf`.",
+      "source": "syafiqkit",
+      "description": "Convert a Word, PDF or Excel file to Markdown so it can be read, searched and diffed in git.",
+      "modelInvocable": true
+    },
+    {
+      "name": "documentation-and-adrs",
+      "dir": "documentation-and-adrs",
+      "source": "agent-skills",
+      "description": "Record architecture decisions (ADRs), update docs when APIs change, and detect docs that drifted from the code.",
       "modelInvocable": true
     },
     {
       "name": "docx-red-edits",
       "dir": "docx-red-edits",
-      "description": "Edit someone else's Word (.docx) file with every change shown in red text, new words in red and removed lines in red strikethrough, while their own formatting, numbering, letterhead and layout stay exactly as they were. Use when the user says \"update their Word file in red\", \"mark our changes in red\", \"changes in red text\", \"show changes in red\", \"red font for what we changed\", \"redline it in red\", \"red strikethrough the deleted lines\", \"edit the quotation/contract/proposal they sent and show what we changed\", or when a colleague or client marks their own revisions in red and expects yours the same way. Saves the result as the next version beside their file, never over it. NOT for Word's own Track Changes (insertions and deletions accepted or rejected in Word's Review pane): that is the `docx` skill's redlining. NOT for comparing two Word versions or making a text copy to diff: that is `doc-to-md`.",
+      "source": "syafiqkit",
+      "description": "Edit someone else's Word file with every change shown in red (deletions struck through), keeping their formatting intact.",
       "modelInvocable": true
     },
     {
       "name": "done",
       "dir": "done",
-      "description": "Post-task cleanup - simplify code, review changes, design-review any screen the diff changed (uiux grading plus impeccable critique, and taste on customer-facing pages), update docs, capture session knowledge. Use when finished implementing or when user says \"done\", \"wrap up\", \"finalize\", \"wrap up with the design skills\", \"done with a design review\".",
+      "source": "syafiqkit",
+      "description": "Post-task wrap-up: simplify code, review changes, design-review changed screens, update docs, capture lessons. Use when finished or the user says 'done'.",
       "modelInvocable": true
     },
     {
       "name": "emil-animate",
       "dir": "emil-animate",
-      "description": "Build an animation from scratch, making the decisions in the order that determines whether it feels right — should it animate at all, what purpose, which tool, which properties, which curve and duration, how it interrupts, how it exits. Writes the implementation. Use when asked to animate something, add motion, make a component feel alive, or build a transition. For critiquing existing motion use emil-review-animations; for auditing a whole codebase use improve-animations (not bundled). In syafiqkit, a general design request (polish, redesign, critique, \"use design skills\") starts at `uiux`, which calls this skill for the motion part; a public-facing page build is `taste`.",
+      "source": "syafiqkit",
+      "description": "Build an animation from scratch in the right order: whether to animate, purpose, properties, easing, duration, interruption, exit. Writes the code.",
       "modelInvocable": true
     },
     {
       "name": "emil-choreograph",
       "dir": "emil-choreograph",
-      "description": "Coordinate several elements that animate together — decide what moves, in what order, how much they overlap, and what stays still — so a group reads as one intentional motion instead of a pile of separate animations. Use when building or fixing a staggered list, a hero entrance, a view swap inside a container, a multi-step flow, an element leaving while its siblings close the gap, a morph between rich states, or any interaction with several moving parts (icon + background + lines, panel + content, items flying into a target). Triggers on — stagger, sequence, choreography, \"one after another\", crossfade, AnimatePresence mode, hero entrance, multi-step, useAnimate, \"feels mechanical\", \"too much going on\", \"feels slow to open\". In syafiqkit, a general design request (polish, redesign, critique, \"use design skills\") starts at `uiux`, which calls this skill for the motion part; a public-facing page build is `taste`.",
+      "source": "syafiqkit",
+      "description": "Coordinate several elements animating together (stagger, entrances, view swaps) so the group reads as one motion.",
       "modelInvocable": true
     },
     {
       "name": "emil-design-eng",
       "dir": "emil-design-eng",
-      "description": "Emil Kowalski's design-engineering philosophy for UI polish, component design, animation decisions, and the invisible details that make software feel great. Use when building or reviewing a UI component's interactions and polish (press and hover states, popover origin, tooltip timing, transitions vs keyframes, clip-path techniques, drag details) and no narrower skill fits. In syafiqkit, a general design request (polish, redesign, critique, \"use design skills\") starts at `uiux`, which calls this skill for the motion part; a public-facing page build is `taste`.",
+      "source": "syafiqkit",
+      "description": "Emil Kowalski's design-engineering philosophy for UI polish: press and hover states, popovers, transitions, invisible details.",
       "modelInvocable": true
     },
     {
       "name": "emil-gestures",
       "dir": "emil-gestures",
-      "description": "Build drag, swipe, and sheet interactions that track the finger 1:1 and stay interruptible. Use when building or fixing anything the user drags, swipes, flings, holds, or dismisses with a gesture — drawers, sheets, swipe-to-dismiss toasts and cards, drag-to-reorder, pull-to-refresh, hold-to-confirm — or when a gesture feels laggy, disconnected from the finger, jumps on release, or can't be caught mid-animation. Triggers on — gesture, drag, swipe, fling, sheet, snap points, Vaul, Motion drag props, rubber-band, pull to refresh, hold to delete, touch-action, \"doesn't follow my finger\", \"jumps when I let go\", \"can't grab it mid-animation\". In syafiqkit, a general design request (polish, redesign, critique, \"use design skills\") starts at `uiux`, which calls this skill for the motion part; a public-facing page build is `taste`.",
+      "source": "syafiqkit",
+      "description": "Build drag, swipe and sheet interactions that track the finger and stay interruptible (drawers, swipe-to-dismiss, reorder).",
       "modelInvocable": true
     },
     {
       "name": "emil-mobile-native",
       "dir": "emil-mobile-native",
-      "description": "Make a web app feel native on a phone — the small CSS and meta-tag fixes that separate \"a website in a browser\" from something that feels installed. Covers sticky hover states, tap highlight flashes, the 100vh bug, inputs that zoom the page, laggy taps, pull-to-refresh hijacking scroll, content under the notch, long-press selecting button text, carousels that scroll the wrong way, mismatched status bars, and the rule that you test on real hardware. Use when a web app is being built for or reviewed on mobile, when something \"works in Chrome but feels wrong on my phone\", when building a PWA, a bottom sheet, a carousel, a full-screen layout, or any touch interaction. For motion itself use emil-animate; for React Native use animate-expo (not bundled). In syafiqkit, a general design request (polish, redesign, critique, \"use design skills\") starts at `uiux`, which calls this skill for the motion part; a public-facing page build is `taste`.",
+      "source": "syafiqkit",
+      "description": "Make a web app feel native on a phone: tap highlights, 100vh bug, input zoom, notch, pull-to-refresh, status bar.",
       "modelInvocable": true
     },
     {
       "name": "emil-pick-ui-library",
       "dir": "emil-pick-ui-library",
-      "description": "Pick the library for a frontend task from a curated list — primitives, toasts, drawers, command menus, OTP, numbers, charts, virtualization, drag and drop, state, styling.",
+      "source": "syafiqkit",
+      "description": "Pick a UI component library for a project. Invoke only on request.",
       "modelInvocable": false
     },
     {
       "name": "emil-remove-animations",
       "dir": "emil-remove-animations",
-      "description": "Find the animations an interface doesn't need and remove them — motion on keyboard actions, high-frequency surfaces, functional data, and decoration with no purpose — then clean up what they leave behind. Edits code, but only to subtract; it never adds or retunes motion. Use when the user says the app \"feels slow\", \"has too much animation\", \"feels over-animated\", wants to \"tone down the motion\", or asks what animations to remove. For finding places that should animate, use find-animation-opportunities (not bundled); for fixing animations that should stay, use improve-animations (not bundled) or emil-review-animations. In syafiqkit, a general design request (polish, redesign, critique, \"use design skills\") starts at `uiux`, which calls this skill for the motion part; a public-facing page build is `taste`.",
+      "source": "syafiqkit",
+      "description": "Find and remove animations an interface doesn't need (keyboard actions, high-frequency surfaces, decoration). Subtracts only.",
       "modelInvocable": true
     },
     {
       "name": "emil-review-animations",
       "dir": "emil-review-animations",
-      "description": "Reviews animation and motion code against a high craft bar derived from Emil Kowalski's design engineering philosophy. Default to flagging; approval is earned. In syafiqkit, a general design request (polish, redesign, critique, \"use design skills\") starts at `uiux`, which calls this skill for the motion part; a public-facing page build is `taste`.",
+      "source": "syafiqkit",
+      "description": "Review animation code against a high craft bar: weak easing, wrong origin, layout animation, missing reduced-motion.",
       "modelInvocable": true
     },
     {
       "name": "excalidraw-board",
       "dir": "excalidraw-board",
-      "description": "Turn a task doc, backlog, worklist or tracker of open questions into a black-and-white Excalidraw discussion board the team can read cold and doodle on later (or, for a decision meeting the user copies onto a physical whiteboard, a short whiteboard panel plus speaker-note cards), and read back or tidy a board the team has already drawn on (a `.excalidraw` path with \"check this latest\", \"what changed on the board\", \"use the excalidraw mcp\" on that file). Columns for now / gated on our own build / waiting on someone else, thick-bordered GATE cards with arrows to what they unblock, a PARKED table with a revive trigger per row, and a right-hand strip for decisions, open questions and actions filled in live. Use when the user says \"excalidraw\", \"whiteboard\", \"let's draw the plan\", \"board for the meeting\", \"something to discuss with KL/HL\", \"what's on hand, what's deferred\", or asks how best to lay out tasks for a discussion. Not for charts or dashboards (that is `dataviz`), not for architecture or sequence diagrams (draw those directly with the Excalidraw MCP), and not for deciding what to build (that is `plan-worklist`; this skill draws a worklist that already exists).",
+      "source": "syafiqkit",
+      "description": "Turn a task doc, backlog or open questions into a black-and-white Excalidraw discussion board, or read back an edited board.",
+      "modelInvocable": true
+    },
+    {
+      "name": "executing-plans",
+      "dir": "executing-plans",
+      "source": "superpowers",
+      "description": "Carry out a written implementation plan in this session, task by task, with checks and review points.",
       "modelInvocable": true
     },
     {
       "name": "explainer-deck",
       "dir": "explainer-deck",
-      "description": "Build a slide deck (Google Slides or .pptx) that explains how a system, process, product, contract or long document works to people in a live meeting, with every mechanism drawn as a picture beside a worked example, each one a person goes through preceded by that person's user journey, and all of it checked against its source. Also a team plan or sprint kick-off deck (who builds what, the system being built), and any change to a deck this skill built (a `deck.json` spec beside the deck). Fires on \"make a deck to explain X\", \"the sprint plan slides are too simple\", \"brief everyone their part in the deck\", \"make the deck more visual/less generic\", \"show the user journey\", \"who does what, step by step\", \"slides for the team on how it works\", \"present this to the boss/client\", \"walkthrough deck\", \"turn this into Google Slides\", \"a presentation of the flow\", \"they can't understand it from words, make it visual\", or a deck whose slides read as walls of text or step lists. NOT for a page one slow reader studies alone (that is `understanding-guide`), a promo or explainer video (`motion-clip`), a designed still image (`product-still`), an end-user guide (`user-manual`), or editing an existing .pptx someone else made (the generic pptx skill).",
+      "source": "syafiqkit",
+      "description": "Build a slide deck (Google Slides or pptx) explaining how a system or document works, each mechanism drawn with a worked example.",
+      "modelInvocable": true
+    },
+    {
+      "name": "explainer-video",
+      "dir": "explainer-video",
+      "source": "explainer-video-skills",
+      "description": "Make a 30-90 second animated explainer: script, storyboard, scenes, narration and captions. Remotion-based.",
       "modelInvocable": true
     },
     {
       "name": "extract-shared-package",
       "dir": "extract-shared-package",
-      "description": "Pull a module that two or more apps need out of the app that has it and ship it as a shared package — Composer or npm, any vendor, any framework — consumed by every app, with the boundary, hosting, versioning, CI and rollout decided in the right order. Use when the user says \"extract this into a package\", \"make this reusable by both apps\", \"shared package\", \"build it once for both\", \"monorepo or separate repo for the shared package?\", \"private composer/npm package\", \"publish this as a library\", \"add a capability to our shared package\", or asks how another project should consume code that lives in this one. Not for scaffolding a brand-new library with no existing consumer (write it in the app first), not for a fact that belongs in CLAUDE.md (that is `update-claude-docs`), not for cutting an app's own release (that is `ship`), not for an open design question with no module to extract yet (that is `brainstorming`); the research legs inside this skill go to `haiku`.",
+      "source": "syafiqkit",
+      "description": "Extract a module shared by several apps into a Composer or npm package: boundary, hosting, versioning, CI, rollout.",
+      "modelInvocable": true
+    },
+    {
+      "name": "finishing-a-development-branch",
+      "dir": "finishing-a-development-branch",
+      "source": "superpowers",
+      "description": "When implementation is done and tests pass, decide how to integrate: merge, pull request, keep or discard the branch.",
+      "modelInvocable": true
+    },
+    {
+      "name": "frontend-ui-engineering",
+      "dir": "frontend-ui-engineering",
+      "source": "agent-skills",
+      "description": "Build production-quality, accessible, responsive user interfaces and components.",
       "modelInvocable": true
     },
     {
       "name": "function-parameter-limits",
       "dir": "function-parameter-limits",
-      "description": "Apply and enforce the function/method parameter-count best practice — 0 params is ideal, 1-2 is fine, 3 is the signal to stop and wrap arguments into an object/DTO, and 4+ almost always means the function is doing too much. Use this WHENEVER you are writing or reviewing a function with a growing argument list, when someone asks \"how many parameters is too many\", \"should I wrap these into an object\", \"is this signature too long\", or \"add a lint rule for parameter count\", and ESPECIALLY before adding a 4th positional argument (or a 2nd boolean/same-typed one) to any function. Also use it to set up an enforceable linter rule — ESLint `max-params` for TS/JS, PHPMD `ExcessiveParameterList` for PHP, Pylint for Python — with the right limit and the right carve-outs. Triggers on \"too many parameters\", \"long parameter list\", \"parameter object\", \"introduce a DTO\", \"max-params\", \"this function takes too many args\", \"wrap these arguments\", \"lint rule for function arguments\".",
+      "source": "syafiqkit",
+      "description": "Apply the 0/2/3+ parameter-count rule: advise wrapping arguments in an object and set up a lint rule.",
       "modelInvocable": true
     },
     {
       "name": "gchat-format",
       "dir": "gchat-format",
-      "description": "Convert Markdown or plain text into Google Chat-compatible formatting. Use this skill whenever the user wants to send a message in Google Chat (\"send this to the team\", \"post it in <space>\", even a document already drafted), format a changelog/release note for Google Chat, convert a Markdown document for posting in Google Chat, or says anything like \"format this for Google Chat\", \"convert to Google Chat\", \"post this in Chat\", \"gchat format\", or \"make this Chat-friendly\". Google Chat has a limited, non-standard subset of Markdown -- this skill ensures correct output every time. NOT for composing a message in the sender's own voice to a named person or small group -- a WhatsApp reply, a quick DM, \"tell X that...\" -- even when the destination is Google Chat: that's `casual-message`.",
+      "source": "syafiqkit",
+      "description": "Convert Markdown to Google Chat formatting for messages, release notes or documents.",
+      "modelInvocable": true
+    },
+    {
+      "name": "git-workflow-and-versioning",
+      "dir": "git-workflow-and-versioning",
+      "source": "agent-skills",
+      "description": "Git practice for any change: small commits, branching, resolving conflicts, versioning.",
       "modelInvocable": true
     },
     {
       "name": "hobby-review",
       "dir": "hobby-review",
-      "description": "Socratic debrief of a hobby item (anime, book, game, etc.) against the taste rubric in the matching current.md. Use when the user says they've watched/read/played something, wants to share their experience, or says \"I finished X\". Derives questions from the existing Criteria Reference Card — does not hardcode any domain. Outputs a structured verdict: axes passed/failed + any new taste signals worth capturing.",
+      "source": "syafiqkit",
+      "description": "Socratic debrief of a finished anime, book or game against the taste rubric in the matching current.md.",
       "modelInvocable": true
     },
     {
       "name": "judgement",
       "dir": "judgement",
-      "description": "Something came up mid-task that is arguably not yours to decide — a defect found while building something else, a fix that would refuse what currently succeeds, a scope question, a workaround whose cost lands on someone else. Use when about to escalate (\"should I fold this in\", \"is this in scope\", \"do you want me to also fix\", \"worth doing now or later\", \"I found something while doing X\"), and equally when about to stay silent about a real finding. Decides whether the call is yours or the user's, and makes the question answerable before asking it. Not for shaping a question you have already decided to ask (that's `_shared/references/decision-first-output.md`), not for choosing between design approaches on work already agreed (that's `brainstorming`), not for scoping a list that already exists (that's `plan-worklist`).",
+      "source": "syafiqkit",
+      "description": "Decide whether a mid-task finding is yours to fix, worth a question, or out of scope; measure who it affects first.",
       "modelInvocable": true
     },
     {
       "name": "md-to-pdf",
       "dir": "md-to-pdf",
-      "description": "Convert Markdown documents to professional PDFs with rendered Mermaid diagrams and charts (bar/line trend charts via xychart-beta). Use when user asks to \"export to PDF\", \"generate PDF\", \"make a PDF\", needs a shareable document from markdown files, or asks for a \"chart\"/\"graph\"/\"diagram\" in a report or document. The reverse direction (a .docx, .pdf or .xlsx into Markdown) is `doc-to-md`.",
+      "source": "syafiqkit",
+      "description": "Convert Markdown to a PDF with rendered Mermaid diagrams and charts.",
       "modelInvocable": true
     },
     {
       "name": "merge-task-docs",
       "dir": "merge-task-docs",
-      "description": "Find related task docs that should be merged together, merge them into a single coherent document, delete the sources, and reconcile all back-references to the deleted paths. Use this whenever the user says \"merge these docs\", \"find payment docs and merge\", \"consolidate task docs\", \"combine related docs\", \"find all X docs and merge\", \"these docs overlap, merge them\", or asks to clean up / reduce the number of task docs in a domain. Also use it proactively when a task-summary update reveals that a doc's content already lives in another doc — don't just update both, propose a merge.",
+      "source": "syafiqkit",
+      "description": "Find overlapping task docs in a domain, merge them, delete the sources and fix back-references.",
       "modelInvocable": true
     },
     {
       "name": "motion-clip",
       "dir": "motion-clip",
-      "description": "Make a short designed video for any product or brand (a launch clip, promo reel, feature teaser or walkthrough, release announcement, app store preview, explainer, client demo, website or SaaS promo, product showcase from photos, brand intro or social reel) by having Claude write the film as code, render it frame by frame, and ship MP4s in vertical, square and widescreen with an original music bed. Fires on \"make a launch clip\", \"promo video\", \"product video\", \"explainer video\", \"motion graphics\", \"reel for Instagram/TikTok\", \"animate the new feature\", \"video for the release\", \"demo video for the client\", \"video for our website\", \"product ad\", \"teaser\", \"trailer\", \"animate my logo\", \"logo animation\", \"video from these photos\", \"showcase video\", \"brand video\", \"add music to the video\". Shows real pixels (screens captured from the product itself, real photos, the real logo), never redrawn UI. NOT for screen recordings of test runs or \"record the e2e flows\" (that is `setup-playwright`), NOT for a still image made from the screens (`product-still`), NOT for still marketing pages (`uiux`), and NOT for a user guide with screenshots (`user-manual`).",
+      "source": "syafiqkit",
+      "description": "Make a short designed product or brand video (launch clip, promo, app preview) written as code and rendered to MP4 in several sizes.",
+      "modelInvocable": true
+    },
+    {
+      "name": "nielsen-heuristics-audit",
+      "dir": "nielsen-heuristics-audit",
+      "source": "claude-skills",
+      "description": "Usability audit of a screen or flow against Nielsen's 10 heuristics, with severity-rated findings.",
       "modelInvocable": true
     },
     {
       "name": "notes-summary",
       "dir": "notes-summary",
-      "description": "Create, update, or read a personal session journal — a living log of non-code conversations, decisions, feedback, and dynamics that don't belong in the repo. Use whenever the user wants to record or recall a discussion that isn't feature work: boss/teammate/client feedback, career or relationship dynamics, strategy and planning chats, vendor calls, or any \"remember this conversation so I can refer back later\" request. Stores logs privately under ~/.claude/notes/<domain-slug>/<thread-slug>.md (never committed, never auto-memory). Trigger this even when the user just says \"log this\", \"save this convo\", \"what did we decide about X\", \"record this somewhere\", \"start a journal for X\", or references an existing notes file.",
+      "source": "syafiqkit",
+      "description": "Create, update or read a personal session journal of non-code conversations and decisions.",
+      "modelInvocable": true
+    },
+    {
+      "name": "owasp-ai-testing",
+      "dir": "owasp-ai-testing",
+      "source": "claude-skills",
+      "description": "AI trustworthiness testing with the OWASP AI Testing Guide: test cases across application, model, infrastructure and data layers.",
+      "modelInvocable": true
+    },
+    {
+      "name": "owasp-llm-top10",
+      "dir": "owasp-llm-top10",
+      "source": "claude-skills",
+      "description": "Security audit of LLM apps against the OWASP Top 10 for LLM Applications: prompt injection, data leakage, excessive agency.",
       "modelInvocable": true
     },
     {
       "name": "patch-advisory",
       "dir": "patch-advisory",
-      "description": "Answer a security advisory across the servers you can reach. Read the CVE into facts, find every host and container running the affected software, judge which are actually exposed (version AND the precondition AND reachability), patch or mitigate the ones the user owns, verify the running process, record it and report back where it was asked. Use when the user pastes a CVE id, a CVSS 9 headline, an NVD or GitHub advisory link, a vendor or researcher write-up (Wiz, oss-security, a vendor security release), or a colleague's \"patch if got any nginx\", \"cve 9+ again\", \"are we affected by\", \"check our servers for\", \"any server running X\", \"PHP/nginx/OpenSSL/OpenSSH/Node/kernel security release\", \"is this CVE on our box\". Not for dependency advisories inside a repo (npm audit, composer audit, Dependabot: a code change shipped through the normal review and `ship`, which also carries a base-image bump), not for deploying an app (`ship`), not for a Mac's own disk (`reclaim-disk`) or its tool setup (`setup-tools`).",
+      "source": "syafiqkit",
+      "description": "Respond to a security advisory: find affected hosts and containers, judge exposure, patch or mitigate, verify, report.",
+      "modelInvocable": true
+    },
+    {
+      "name": "performance-optimization",
+      "dir": "performance-optimization",
+      "source": "agent-skills",
+      "description": "Measure first, then fix the real bottleneck across frontend, backend, queries and databases.",
       "modelInvocable": true
     },
     {
       "name": "plan-worklist",
       "dir": "plan-worklist",
-      "description": "A pre-scoped list of work items already exists — findings from a read-summary/investigation pass, a pasted backlog or ClickUp list, a brainstormed todo list — and the user wants it turned into a build plan before anyone writes code. Dispatch product-reviewer to judge each item against the product's intent (task doc) and size/sequence them, then present the plan and stop. Triggers on \"let's do these\", \"use product reviewer to see it first\", \"scope this list\", \"plan these out\", \"which of these should we build first\", said against an existing list — not a single vague idea. Do NOT use for a vague \"let's continue\" against one doc with no list in hand (that's `tackle`), for exploring a single new feature with multiple design approaches (that's `brainstorming`), or for reviewing code that was just built (that's `done`, which dispatches product-reviewer post-build instead of pre-build).",
+      "source": "syafiqkit",
+      "description": "Turn an already-scoped list of work items into a sized, sequenced build plan before any code is written.",
       "modelInvocable": true
     },
     {
       "name": "posthog-replay-frames",
       "dir": "posthog-replay-frames",
-      "description": "Find out what one real user actually did and saw in a PostHog session, from their raw events and screenshots of the replay at the moments that matter. Use when someone asks \"what did this user see\", \"check the replay\", \"why did this user drop off\", \"where did they get stuck\", forwards a PostHog AI session summary or a shared replay link (us.posthog.com/shared/...), or a sign-up or customer is reported stuck. Works for any product sending events to PostHog. NOT for a product-wide audit across many users (funnels, rage clicks across the app): in Autorentic that is the project skill posthog-uiux-intelligence. NOT for screenshots of your own app's pages (a Playwright spec or uiux does that).",
+      "source": "syafiqkit",
+      "description": "Find what one user actually did and saw in a PostHog session, from raw events and replay screenshots.",
       "modelInvocable": true
     },
     {
       "name": "product-still",
       "dir": "product-still",
-      "description": "Make a designed STILL image from a product's real screens: a \"how it works\" step picture, a feature illustration, a landing-page or hero composite, a social or Open Graph card, a device-style mockup, a marketing image replacing an outdated screenshot. Real captured UI goes into floating, cropped cards with numbered steps, connector lines and an icon badge, rendered from HTML by a headless browser to PNG, with a desktop image, a separate phone image and transparent-background variants. Fires on \"update the images on our website\", \"the screenshots on the page are outdated\", \"make an image like this one\", \"feature image\", \"how it works image\", \"marketing screenshot\", \"hero image from the app\", \"mockup of our screens\", \"put our app in a picture\", \"social card\", \"OG image\", \"image with the UI floating\", \"transparent background version\", \"phone version of the image\", and on a URL or screenshot of an existing composite to redo in the current UI. Any product: web app, mobile app, SaaS, website. NOT for video or animation (`motion-clip`), NOT for building or polishing the web page itself (`taste`, or `uiux` inside an app), NOT for plain screenshots inside a user guide (`user-manual`); a designed composite for that guide's landing page is this skill.",
+      "source": "syafiqkit",
+      "description": "Make a designed still image from a product's real screens: how-it-works steps, feature or hero images, social cards.",
       "modelInvocable": true
     },
     {
       "name": "pull-db",
       "dir": "pull-db",
-      "description": "Pull a remote server's database to the local development environment, or, where the project forbids client personal data on the machine (NDA, PDPA, \"no customer data locally\"), an allowlist copy of only its non-personal tables. Handles mysqldump on server, binary-safe transfer via scp, MariaDB→MySQL compatibility fixes, password reset, and cleanup. Use when the user says \"pull db\", \"copy production database\", \"sync db from server\", \"get real data\", \"import prod db\", \"pull database locally\", or wants to test with production/staging data.",
+      "source": "syafiqkit",
+      "description": "Pull a remote MySQL/MariaDB database to local dev, or an allowlist copy without personal data.",
       "modelInvocable": true
     },
     {
       "name": "quick-done",
       "dir": "quick-done",
-      "description": "The cheap post-task wrap-up for a session you already know was small — the CLAUDE.md capture pass and one task-doc update, nothing else. Use when the user says \"quick done\", \"quick wrap\", \"small change, just quick-done it\", \"wrap it up cheaply\", or otherwise pairs a wrap-up request with a size or cost signal (\"small\", \"quick\", \"cheap\", \"light\", \"just a typo\") — that pairing beats /done's bare \"wrap up\" trigger. This skill is docs-only and spawns no reviewer, so nothing here reads the code for defects; it deliberately skips the code review, the simplifier, and the product reviewer. Use /done instead for anything multi-file, multi-domain, a new user-facing flow, anything about to ship, or when it isn't clear which fits — /done is the safe default, this skill is the deliberate exception.",
+      "source": "syafiqkit",
+      "description": "Cheap wrap-up for a small session: capture lessons and update one task doc, no review.",
       "modelInvocable": true
     },
     {
       "name": "read-summary",
       "dir": "read-summary",
-      "description": "Read task summary context and project instructions before answering investigative questions, implementing work, or starting a new domain within a session. When a request about current system behavior, a deploy question, a bug report, or an unfamiliar domain is asked, this skill finds and reads the right docs first — decisions and gotchas live there, not in the code alone, so skipping them is how confident-but-wrong answers happen.",
+      "source": "syafiqkit",
+      "description": "Read the task docs and project instructions for a domain before answering or building, so recorded decisions and gotchas are not missed.",
+      "modelInvocable": true
+    },
+    {
+      "name": "receiving-code-review",
+      "dir": "receiving-code-review",
+      "source": "superpowers",
+      "description": "Handle review feedback with rigour: verify it, clarify unclear items, push back when it is wrong instead of agreeing.",
       "modelInvocable": true
     },
     {
       "name": "refresh-instructions",
       "dir": "refresh-instructions",
-      "description": "Run a full three-pass refresh on any living doc (a CLAUDE.md, task doc, skill or agent file and its references, project docs set, README, runbook, design doc, or spec sibling) by dispatching restructure, condense, and unhobble-instructions in sequence on `haiku`, each verified before the next, with a reorganization of the files between condense and unhobble wherever it changes what loads when. For a task doc the target is the SET: current.md plus its decisions/*.md siblings; for a CLAUDE.md, the file plus its companions.",
+      "source": "syafiqkit",
+      "description": "Three-pass refresh of any living doc (restructure, condense, unhobble), each pass verified before the next.",
+      "modelInvocable": true
+    },
+    {
+      "name": "remotion-motion-graphics",
+      "dir": "remotion-motion-graphics",
+      "source": "claude-remotion-skill",
+      "description": "Create and edit motion-graphics videos with Remotion (React): intros, promos, captions, animated text. Needs Node.",
+      "modelInvocable": true
+    },
+    {
+      "name": "requesting-code-review",
+      "dir": "requesting-code-review",
+      "source": "superpowers",
+      "description": "Ask a reviewer subagent to check finished work against the requirements before merging.",
       "modelInvocable": true
     },
     {
       "name": "reverse-engineer",
       "dir": "reverse-engineer",
-      "description": "Study a third-party web app that the client or user already works in (their accounting, booking, POS or CRM system, logged in as them) and rebuild its mechanism inside our own app. Fires on \"reverse engineer X\", \"how does <app> do it, build similar in ours\", \"my friend/client uses <app>, we want the same\", \"study <client's tool>\", \"clone the mechanism of\", \"utilize REA\" against a web app someone is logged into. Reads the client's real records read-only through REA and the browser's DevTools protocol, learns how they actually use the tool, and lands findings in a task doc verified by a separate reviewer before any design. Not for decompiling a binary, APK or Electron bundle with no rebuild goal (REA's own `reverse-engineer-anything` skill), not for researching how public products solve a UI pattern (`uiux` research), not for designing screens once findings exist (`uiux`).",
+      "source": "syafiqkit",
+      "description": "Study a web app the client already uses and rebuild its mechanism in your own app, with a reviewed write-up before design.",
       "modelInvocable": true
     },
     {
       "name": "score-loop",
       "dir": "score-loop",
-      "description": "Score a piece of work against a fixed rubric out of N, fix the gaps, re-score with an independent reviewer, and repeat until it meets the user's stop rule or the rest needs the user. Fires on \"score it out of 20\", \"rate it and keep improving\", \"loop until 80%\", \"keep going until it's good\", \"give it a score then fix\", \"run the product reviewer and score it\", \"iterate until N/20\", or a `/goal` that names a score. Works on any artefact a reviewer can judge from evidence: a UI or storefront, a feature, a document, a proposal. Not for a one-off review with no loop (that is `done`'s reviewers, `uiux`/`impeccable` critique, or a single `product-reviewer` dispatch), and not for planning a list before anything is built (`plan-worklist`).",
+      "source": "syafiqkit",
+      "description": "Score work against a fixed rubric, fix the gaps, re-score with an independent reviewer, repeat until the target is met.",
+      "modelInvocable": true
+    },
+    {
+      "name": "secpriv-code-review",
+      "dir": "secpriv-code-review",
+      "source": "secpriv-skill",
+      "description": "Single-pass code review for security weaknesses (CWE) and privacy violations (GDPR), precision first. From Meta.",
+      "modelInvocable": true
+    },
+    {
+      "name": "security-and-hardening",
+      "dir": "security-and-hardening",
+      "source": "agent-skills",
+      "description": "Harden code against vulnerabilities: threat model, input handling, auth, secrets, dependencies, OWASP Top Ten.",
       "modelInvocable": true
     },
     {
       "name": "setup-playwright",
       "dir": "setup-playwright",
-      "description": "Set up or harden a Playwright E2E suite in any project, either first-time scaffolding (config, auth storageState, first spec) or fixing one that is flaky, times out more as workers rise, races between spec files, depends on hand-made local DB rows, or has no CI story. Use when the user says \"set up playwright\", \"add e2e tests\", \"set up e2e\", \"set up browser tests\", \"scaffold browser tests\", \"we need integration tests for the frontend\", \"our e2e tests are flaky\", \"the test suite is flaky\", \"why do the e2e tests time out\", \"the e2e run takes too long\", \"it only passes with one worker\", \"specs pass alone but fail together\", \"e2e breaks after a db reset\", \"e2e writes into my dev database\", \"run e2e on its own database\", \"tests only pass on my machine\", \"make the e2e suite parallel-safe\", \"the e2e never tests mobile\", \"add a mobile viewport project\", \"record the e2e run\", \"video of the tests\", \"watch the flows\", or names Playwright while describing an untrustworthy suite. NOT for writing one more spec in a suite that already works, NOT for backend/unit test setup, NOT for a CI runner that cannot reach a server (ci-ssh-deploy-timeout), NOT for a designed promo video (motion-clip). Bare footage requests against a working suite (\"give me the videos\", \"record these specs\", \"show me the flows\", \"can I see it running\") belong here too, because the traps are in what the recording shows.",
+      "source": "syafiqkit",
+      "description": "Set up or harden a Playwright E2E suite: config, auth, seeded fixtures, parallel-safe data, flaky-test fixes.",
       "modelInvocable": true
     },
     {
       "name": "setup-project-docs",
       "dir": "setup-project-docs",
-      "description": "Establish a project's core documentation set — PRD, ARCHITECTURE.md, ARCHITECTURE-ESSENTIALS.md and the CLAUDE.md/AGENTS.md entry points — either for a greenfield project being scoped or for an EXISTING codebase adopting docs for the first time. Use when the user says \"set up the docs\", \"we need a PRD\", \"scaffold the project docs\", \"adopt this repo\", \"there's no documentation here\", \"write an architecture doc\", \"onboard this codebase\", \"document what this thing actually does\", or names the five-file doc structure. Also fires when work is about to start on a repo whose constraints live only in people's heads or in scattered meeting notes. Do NOT use for capturing one gotcha or pattern into an existing CLAUDE.md (that's `update-claude-docs`), for a feature's task doc under `tasks/` (that's `task-summary`), for an end-user guide (`user-manual`), or for shrinking docs that already exist (`condense-claude-md` / `condense-task-doc`).",
+      "source": "syafiqkit",
+      "description": "Establish a project's core docs: PRD, ARCHITECTURE, ARCHITECTURE-ESSENTIALS and AGENTS.md/CLAUDE.md.",
       "modelInvocable": true
     },
     {
       "name": "setup-tools",
       "dir": "setup-tools",
-      "description": "Set up syafiqkit's own tools on this machine for the person running it - the Google Sheets and Drive tool (gsheets), the Google Chat tool (gchat), the Gmail tool (gmail) and the `remote` SSH command - each with their own Google Cloud project and sign-in, step by step until a real read works. Fires on \"set up the Google Sheets tool\", \"set up gchat / Google Chat for me\", \"set up the Gmail tool\", \"I want Claude to send email\", \"how do I get the Chat tools\", \"gsheets tools are missing\", \"I want the remote command\", \"set up the plugin's tools\", \"the gchat server won't connect\", \"the Sheets or Chat tool stopped working\" (repair: check its sign-in first), or a colleague asking how to use the Sheets, Chat or remote tools named in the syafiqkit README. Not for building a tracker sheet (`setup-tracker`), using the tools once they work, or a server's Claude login (`claude-server-token`).",
+      "source": "syafiqkit",
+      "description": "Set up syafiqkit's Google Sheets, Chat, Gmail and remote-SSH tools on this machine.",
       "modelInvocable": true
     },
     {
       "name": "setup-tracker",
       "dir": "setup-tracker",
-      "description": "Set up, or restructure, a shared tracker spreadsheet for a project: client asks, change requests, issues, questions and what each side owes the other, in Google Sheets. It works for one project shared with a client or with a team, and for a master sheet that rolls several project trackers into one view. Fires on \"set up a tracker\", \"make a client tracker\", \"issue log\", \"bug tracker sheet\", \"change request log\", \"feedback tracker\", \"punch list\", \"snag list\", \"RAID log\", \"decision log\", \"action items sheet\", \"tracker for the new project\", \"one tracker for all our projects\", \"our tracker sheet is messy\", \"the remarks column is too long\", \"client can't tell what's waiting on them\", \"make the tracker intuitive\", \"no tutorial\", \"turn this sheet into a template\", and on a pasted screenshot of a tracker sheet to improve. Any team, any client; every label is set per project, so any language. NOT for a per-person daily or weekly huddle or timesheet, NOT for a UAT test script (test cases with steps and expected results: uat-script), NOT for a project plan or Gantt chart, NOT for moving work into ClickUp, Jira or Linear boards (configure that tool directly), and NOT for planning which items to build (`plan-worklist`).",
+      "source": "syafiqkit",
+      "description": "Set up or restructure a shared Google Sheets tracker for client asks, issues and who owes what.",
       "modelInvocable": true
     },
     {
       "name": "ship",
       "dir": "ship",
-      "description": "Ship code to production — commit, changelog, push, verify CI/CD deploy, generate release note, close the tracker cards the shipped commits name. Use when the user says \"ship\", \"ship it\", \"deploy\", \"push to prod\", \"send it\", or after /done is complete and code is ready to go live. Works with single repos and multi-repo setups (root + sub-repos). Assumes /done (or /quick-done for a small session) was already run.",
+      "source": "syafiqkit",
+      "description": "Ship to production: commit, changelog, push, verify CI/CD, release note, close tracker cards. Run after done.",
+      "modelInvocable": true
+    },
+    {
+      "name": "shipping-and-launch",
+      "dir": "shipping-and-launch",
+      "source": "agent-skills",
+      "description": "Pre-launch checklist for production: tests, security, performance, accessibility, rollout and rollback.",
+      "modelInvocable": true
+    },
+    {
+      "name": "short-form-video",
+      "dir": "short-form-video",
+      "source": "tiktok-video-skills",
+      "description": "Make Reels, TikTok or Shorts: hook, pacing, retention, loops and 9:16 safe areas.",
       "modelInvocable": true
     },
     {
       "name": "sign-pdf",
       "dir": "sign-pdf",
-      "description": "Sign a PDF form with the user's own signature image, initial its pages and fill the date, as a signed copy ready to send. Use when the user says \"sign this form\", \"put my signature\", \"sign it for me\", \"tandatangan borang ni\", \"initial every page\", \"sign here and here\", \"use my signature from somewhere in my laptop\", \"sign and date the application\", \"e-sign this PDF\", or hands over a bank, loan, tenancy, insurance or campaign form that needs their signature. Finds their signature (their notes, or an earlier signed document), confirms it is theirs and which boxes to sign, stamps a copy, checks the rendered page, and never overwrites the original or sends anything. NOT for a cryptographic digital signature (PAdES/certificate) or a DocuSign-style signing request. Filling a form's other fields is the `pdf` skill: it fills, this one signs the result. A Word form is exported to PDF first.",
+      "source": "syafiqkit",
+      "description": "Sign, initial and date a PDF form with your own signature image and return a checked signed copy.",
+      "modelInvocable": true
+    },
+    {
+      "name": "spec-driven-development",
+      "dir": "spec-driven-development",
+      "source": "agent-skills",
+      "description": "Write a spec before coding when starting a project, feature or significant change that has none.",
+      "modelInvocable": true
+    },
+    {
+      "name": "subagent-driven-development",
+      "dir": "subagent-driven-development",
+      "source": "superpowers",
+      "description": "Execute a written plan by dispatching a fresh subagent per task with review after each. Needs bash (Git Bash on Windows) for its helper scripts.",
       "modelInvocable": true
     },
     {
       "name": "sweep-doc-overlaps",
       "dir": "sweep-doc-overlaps",
-      "description": "Fleet-wide scan across ALL tasks/ domains to surface CROSS-domain doc merge candidates that a single-domain `merge-task-docs` invocation would never see (e.g. `payment/stuck-payment` overlapping `payment/gateway`, or a stray doc that belongs under a different domain entirely). Use when the user says \"check for similar docs across domains\", \"find overlapping docs across the whole project\", \"sweep all task docs for merges\", \"is anything duplicated across domains\", or asks a merge question without naming a specific domain/keyword. Hands the resulting candidate list to `merge-task-docs` for execution — this skill does discovery only, never writes/deletes docs itself.",
+      "source": "syafiqkit",
+      "description": "Scan all task-doc domains for cross-domain overlaps and hand confirmed groups to merge-task-docs.",
+      "modelInvocable": true
+    },
+    {
+      "name": "systematic-debugging",
+      "dir": "systematic-debugging",
+      "source": "superpowers",
+      "description": "Find the root cause before fixing: reproduce, trace, test one hypothesis at a time. Use for any bug, test failure or odd behaviour.",
       "modelInvocable": true
     },
     {
       "name": "tackle",
       "dir": "tackle",
-      "description": "Vague multi-item doc continuation (\"let's continue\", \"do the next steps\") — read the doc via read-summary, then use judgment on what's actually buildable before starting; don't just ask which items they want. A specific ask, even against a doc, is read-summary's job, not this. Asking for a prompt to carry the work into a FRESH session — \"continuation prompt\", \"I'm running out of context\" — is `continue-session`; this skill continues the work here and now.",
+      "source": "syafiqkit",
+      "description": "Continue a doc with several open items: read it, judge what is buildable, then build it.",
+      "modelInvocable": true
+    },
+    {
+      "name": "talking-head-b-roll",
+      "dir": "talking-head-b-roll",
+      "source": "b-roll-skills",
+      "description": "Add motion-graphics b-roll to a talking-head video from its transcript. Needs ffmpeg and Node.",
       "modelInvocable": true
     },
     {
       "name": "task-summary",
       "dir": "task-summary",
-      "description": "Create, update, or rewrite task summary documentation (current.md and its decisions/*.md theme files). Handles path resolution, domain inference, template selection, cross-references, Quick Start writing, and splitting an oversized theme file into sub-files. This is `/done` Step 4 — after implementation work, invoke `/done` rather than this skill alone, so the sibling steps (review, CLAUDE.md capture) run too. Use directly for ANY task documentation workflow — including \"rewrite with proper template\", \"conform to template\", \"add a Quick Start\", or continuing/finishing doc work from an earlier turn in the same session — even if the template shape is already known from a prior read. Invoke this skill fresh each time rather than editing docs directly against a recalled structure; its rules (condense/split thresholds, validation greps) can move between sessions.",
+      "source": "syafiqkit",
+      "description": "Create or update task summary docs (current.md plus decisions files): paths, templates, cross-references, Quick Start.",
+      "modelInvocable": true
+    },
+    {
+      "name": "technical-doc-creator",
+      "dir": "technical-doc-creator",
+      "source": "claude-skills-marketplace",
+      "description": "Create HTML technical documentation with code blocks, API workflows, architecture diagrams and syntax highlighting.",
+      "modelInvocable": true
+    },
+    {
+      "name": "test-driven-development",
+      "dir": "test-driven-development",
+      "source": "superpowers",
+      "description": "Write the failing test first, then the minimal code, then refactor. Use before implementing any feature or bugfix.",
       "modelInvocable": true
     },
     {
       "name": "uat-script",
       "dir": "uat-script",
-      "description": "Build or extend a client UAT script: the test scenarios a client's non-technical testers run before sign-off, kept as CSV rows and rendered to an Excel workbook (and a Google Sheet copy) with a tab per role, a status dropdown, a Summary and per-module counts, and a Defects tab. Each check quotes the screen's own words and names the requirement (spec or BRS ID, with its scenario) and the signed quotation line it proves, and a script fails when a quoted screen text no longer exists in the app. Fires on \"prepare UAT\", \"UAT script\", \"UAT pack\", \"UAT workbook\", \"test scenarios for the client\", \"acceptance test pack\", \"test cases for sign-off\", \"the client needs test cases before testing\", \"add UAT checks for this module\", \"the UAT sheet is out of date\". NOT for a client tracker or issue log (setup-tracker), NOT for watching testers' edits on a repeating check (watch-sheets), NOT for an end-user guide (user-manual), NOT for automated Playwright tests (setup-playwright).",
+      "source": "syafiqkit",
+      "description": "Build a client UAT script: test scenarios per role as CSV, rendered to an Excel workbook with status dropdown and summary.",
+      "modelInvocable": true
+    },
+    {
+      "name": "ui-design-review",
+      "dir": "ui-design-review",
+      "source": "claude-skills",
+      "description": "Visual design review: typography, colour, spacing, hierarchy and consistency.",
       "modelInvocable": true
     },
     {
       "name": "uiux",
       "dir": "uiux",
-      "description": "Apply design judgement to UI/UX work at any scope — polish, rethink, redesign, tighten, CRITIQUE/audit/review an existing screen (\"what's wrong with this\", \"does this look generic or AI-made\"), or RESEARCH, or a GO-LIVE CHECK of a website about to launch or just launched (\"is the site ready\", \"check it before launch\", a team's launch SOP to compare against: indexing, titles and descriptions, sitemap, speed, security routes, WordPress settings and hidden login). Making a public-facing page (landing page, marketing site, portfolio, one-pager) look better goes to `taste`, whatever the verb (build, redesign, polish, improve); a request naming impeccable goes to `impeccable`; this skill keeps a critique of such a page, research, and a named small fix. Fire on explicit requests (redesign, rethink, polish, \"make this nicer\"), on any UI request that says \"research\", \"case study\", \"benchmark\" or \"how do other apps do this\" — including research about the user's own screen — which this skill answers with sourced case studies from real products and design systems, never a design from memory; and on implicit ones: a screenshot arrives, or someone reports what they saw (\"looks wrong\", \"shows the old one\") without naming UI. Also fires on greenfield projects (no app language yet), judges whether existing design languages are dated, and treats mobile-first as the default. Will NOT fire on backend-only work or chart building (that is dataviz), nor when the ask is a BRIEF for someone else to design (an external designer, a contractor, a Claude Design project) — that is `design-handoff`, which ships context and withholds the design decisions this skill makes. When exploring what to build comes before how it should look, `brainstorming` runs first.",
+      "source": "syafiqkit",
+      "description": "Design judgement for UI/UX at any scope: polish, redesign, critique, research, go-live check. Measures real renders at several widths.",
       "modelInvocable": true
     },
     {
       "name": "understanding-guide",
       "dir": "understanding-guide",
-      "description": "Turn a large body of text the user must understand (several research reports, a spec set, legal drafts, a long transcript, agent reports in ~/Downloads) into an offline question-and-answer page they can actually read, before any decision is asked. Fires on \"help me understand these\", \"I need to read all of this without missing anything\", \"how would you present these to me\", \"too long to read\", \"I can't read all that\", \"make it easier for me to read\", \"study these reports\", \"explain these documents topic by topic\", and when the user says they are a slow reader or have ADHD and is facing more text than one sitting holds. Each topic gets three plain questions with short answers always visible, every claim checked against its primary source, and proof one tap away. NOT for writing a task doc from a source (that is `task-summary`), converting a .docx or .pdf to Markdown (`doc-to-md`), an end-user product manual (`user-manual`), a deck explaining the material to a meeting (`explainer-deck`), or a quick summary of one short document, which needs no page at all.",
+      "source": "syafiqkit",
+      "description": "Turn long reports or specs into an offline question-and-answer page, every claim checked against its source.",
       "modelInvocable": true
     },
     {
       "name": "unhobble-instructions",
       "dir": "unhobble-instructions",
-      "description": "Read an instruction-bearing file as a whole and rewrite it into better shape — a SKILL.md, an agent definition, a CLAUDE.md/CLAUDE.local.md, a slash command, an on-demand reference table, a task doc (current.md or decisions/*.md), or a payload delivered whole into a context rather than opened by a session (a hook's injected ruleset, a runtime-assembled prompt). This is a whole-file improver, not a marker checker: it judges what the file makes a reader DO (ordering, where each rule sits relative to the moment it applies, what's stated in three places, what the balance trains) and restructures accordingly, then folds rigid imperatives and mechanical thresholds into judgement prose wherever judgement already covers them — while keeping every fact a model can't derive. Moving, merging and resequencing whole sections is in scope and often the main deliverable. Trigger on \"unhobble X\", \"rewrite this as judgement prose\", \"read this file as a whole and improve it\", \"is this skill overconstrained\", \"this file has too many rules\", \"check this agent for rigid instructions\", \"de-constrain this\", or when authoring or reviewing an instruction file carrying more enforcement machinery than the judgement it protects warrants. The lens is judgement-vs-constraint, not length — plain trimming is `condense-claude-md`/`condense-task-doc`. Applies equally to live and half-drafted files; invoking it during authoring, before drift sets in, is legitimate and usually cheaper than fixing later.",
+      "source": "syafiqkit",
+      "description": "Rewrite an instruction file (skill, agent, CLAUDE.md, command) to separate real constraints from over-strict rules.",
       "modelInvocable": true
     },
     {
       "name": "update-claude-docs",
       "dir": "update-claude-docs",
-      "description": "Create, rewrite, condense, or capture-into CLAUDE.md files and their `.claude-companions/` companion files following best-practice structure (a companion's rewrite is Pass 1 when `refresh-instructions` runs on one). Use after implementing features or fixing bugs to capture reusable patterns/gotchas (the /done Step 3 default), OR when the user wants to scaffold a new CLAUDE.md for a repo/subdir, restructure an existing one to the canonical section layout, or shrink a bloated file. The CLAUDE.md analog of task-summary. Triggers on \"update claude docs\", \"capture this into CLAUDE.md\", \"create/write a CLAUDE.md\", \"rewrite/restructure CLAUDE.md\", \"make CLAUDE.md follow best practice\", \"add this gotcha to the docs\".",
+      "source": "syafiqkit",
+      "description": "Create, rewrite or capture lessons into CLAUDE.md files following a best-practice layout.",
       "modelInvocable": true
     },
     {
       "name": "update-summary",
       "dir": "update-summary",
-      "description": "Same skill as task-summary under another name — update task summaries with session findings, creating the doc if missing.",
+      "source": "syafiqkit",
+      "description": "Alias of task-summary: update a task summary with session findings, creating the doc if missing.",
       "modelInvocable": true
     },
     {
       "name": "user-manual",
       "dir": "user-manual",
-      "description": "Write or extend an END-USER manual — a guide for the people who use the product, not the people who build it. Fires on \"write a user manual\", \"buat guide\", \"we need a guide for the dealers/customers/staff\", \"document how to use X\", \"make a manual for the new module\", \"put the guide in the system\", \"a help centre in the app\", \"in-app help\", \"a knowledge base inside the app\", \"help for this screen\", \"drop the PDF, show it in the app\", and on requests for a shareable Word or PDF edition of one. Also fires when someone reports an existing guide is wrong in shape: \"this reads like a reference not a manual\", \"there are no steps\", \"it's just a QnA\", \"where are the screenshots\". Covers scoping against what users actually do, capturing screenshots from the E2E suite rather than by hand, and building .docx/.pdf editions. NOT for internal engineering docs (that is task-summary), NOT for CLAUDE.md instruction files (update-claude-docs), and NOT for plain format conversion of a document whose content is already settled (md-to-pdf), and NOT for a designed marketing composite of the screens (product-still).",
+      "source": "syafiqkit",
+      "description": "Write an end-user manual: scope, tutorials, screenshots, Word or PDF editions, or an in-app help centre.",
+      "modelInvocable": true
+    },
+    {
+      "name": "using-git-worktrees",
+      "dir": "using-git-worktrees",
+      "source": "superpowers",
+      "description": "Create an isolated git worktree before starting feature work or executing a plan, so the main checkout stays clean.",
+      "modelInvocable": true
+    },
+    {
+      "name": "ux-audit-rethink",
+      "dir": "ux-audit-rethink",
+      "source": "claude-skills",
+      "description": "Holistic UX audit using usability factors and interaction dimensions, ending in prioritised recommendations.",
+      "modelInvocable": true
+    },
+    {
+      "name": "verification-before-completion",
+      "dir": "verification-before-completion",
+      "source": "superpowers",
+      "description": "Run the real checks and read their output before claiming work is done, fixed or passing.",
+      "modelInvocable": true
+    },
+    {
+      "name": "vlog-auto-edit",
+      "dir": "vlog-auto-edit",
+      "source": "ai-video-editing-skill",
+      "description": "Automatically edit raw travel or daily footage into a finished vlog using ffmpeg, speech transcription and a vision model.",
       "modelInvocable": true
     },
     {
       "name": "watch-sheets",
       "dir": "watch-sheets",
-      "description": "Keep watching shared Google Sheets that other people write in (a client tracker, UAT or test workbooks, a feedback or issue log) on a repeating check, and alert the user only when something is their turn. Fires on \"keep checking the tracker\", \"watch the tracker\", \"stop watching the tracker\", \"check the tracker and the UAT sheets every 10 minutes\", \"monitor the sheet\", \"alert me when the client replies\", \"tell me if a tester marks something Fail\", \"lots of people are in the sheets today\", a `/loop` whose prompt checks a tracker or a test sheet, and a one-off \"check the tracker\" during a busy testing or launch week. Each check reads only what changed since the last one, tells routing lines (\"Sam pls review\") apart from asks to us, notices a status that moved with no new text, checks live peer sessions for the same work so two sessions don't answer one row, and stays quiet when nothing needs the user. NOT for building or restructuring a tracker (`setup-tracker`), NOT for writing the reply itself in the user's voice (`casual-message`), and NOT for watching CI, a deploy or a log file (use `/loop` or Monitor directly).",
+      "source": "syafiqkit",
+      "description": "Watch shared Google Sheets (client tracker, UAT) on a schedule and alert only when something needs your reply.",
+      "modelInvocable": true
+    },
+    {
+      "name": "wcag-accessibility-audit",
+      "dir": "wcag-accessibility-audit",
+      "source": "claude-skills",
+      "description": "Accessibility audit against WCAG 2.1/2.2 (perceivable, operable, understandable, robust) with fixes.",
       "modelInvocable": true
     },
     {
       "name": "write-summary",
       "dir": "write-summary",
-      "description": "Same skill as task-summary under another name — create task summary documentation when starting new feature work.",
+      "source": "syafiqkit",
+      "description": "Alias of task-summary: create task documentation when starting new feature work.",
+      "modelInvocable": true
+    },
+    {
+      "name": "writing-plans",
+      "dir": "writing-plans",
+      "source": "superpowers",
+      "description": "Turn a spec or requirements into a detailed step-by-step implementation plan before touching code.",
+      "modelInvocable": true
+    },
+    {
+      "name": "youtube-intro-outro",
+      "dir": "youtube-intro-outro",
+      "source": "youtube-video-skills",
+      "description": "Design a YouTube channel intro, logo sting or end card as a reusable template.",
       "modelInvocable": true
     }
   ],
   "skipped": [
     {
+      "name": "writing-skills",
+      "source": "superpowers",
+      "reason": "about writing skills for Claude Code; 107 KB"
+    },
+    {
+      "name": "using-superpowers",
+      "source": "superpowers",
+      "reason": "bootstraps the superpowers plugin itself"
+    },
+    {
+      "name": "brainstorming",
+      "source": "superpowers",
+      "reason": "syafiqkit brainstorming is used instead; superpowers version ships a helper web server"
+    },
+    {
+      "name": "diagnosing-superpowers",
+      "source": "superpowers",
+      "reason": "debugs the superpowers plugin itself"
+    },
+    {
       "name": "agent-setup",
+      "source": "syafiqkit",
       "reason": "writes Claude Code .claude/agents definitions"
     },
     {
       "name": "claude-server-token",
+      "source": "syafiqkit",
       "reason": "manages Claude Code server tokens"
     },
     {
       "name": "haiku",
+      "source": "syafiqkit",
       "reason": "drives Claude haiku agents"
     },
     {
       "name": "headless-watch",
+      "source": "syafiqkit",
       "reason": "runs `claude -p` on a schedule"
     },
     {
       "name": "impeccable",
+      "source": "syafiqkit",
       "reason": "downloads a native binary on first use"
     },
     {
       "name": "reclaim-disk",
+      "source": "syafiqkit",
       "reason": "macOS only"
     },
     {
       "name": "self-organize-agent-memory",
+      "source": "syafiqkit",
       "reason": "Claude Code agent-memory files"
     },
     {
       "name": "skill-creator",
+      "source": "syafiqkit",
       "reason": "registers skills in Claude Code"
     },
     {
       "name": "taste",
+      "source": "syafiqkit",
       "reason": "needs Claude Code skill hooks and a 35 MB toolchain"
     },
     {
       "name": "update-plugin",
+      "source": "syafiqkit",
       "reason": "patches the Claude Code plugin itself"
     }
   ]

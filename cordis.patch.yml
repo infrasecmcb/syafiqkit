@@ -4,5 +4,6 @@
       config:
         # Set true to add syafiqkit's ADHD-oriented answer-style rules to every session.
         outputStyle: false
-        # Skill names to hide, e.g. [casual-message, commit-invoice-generator]
-        exclude: []
+        # Skills to hide. Setting this REPLACES the default list (invoicing, Google Chat,
+        # casual messages, pull-db); use [] to turn every skill on.
+        # exclude: [casual-message, gchat-format]
