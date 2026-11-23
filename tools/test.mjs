@@ -113,6 +113,7 @@ for (const c of all) {
 
 // every addendum must belong to a skill and have no unreplaced placeholder
 for (const f of fs.existsSync(path.join(ROOT, 'addenda')) ? fs.readdirSync(path.join(ROOT, 'addenda')) : []) {
+  if (fs.readFileSync(path.join(ROOT, 'addenda', f), 'utf8').charCodeAt(0) === 0xFEFF) fail(`addenda/${f}: starts with a byte-order mark`);
   const n = f.replace(/\.md$/, '');
   if (!names.has(n)) fail(`addenda/${f}: no skill named ${n}`);
   const d = await providers[1].get(all.find((c) => c.name === n) || { name: n });

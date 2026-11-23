@@ -1,4 +1,4 @@
-﻿<harness-addendum skill="done">
+<harness-addendum skill="done">
 Harness overrides for this skill. Where they conflict with the text below, follow these.
 
 - **Agents.** There is no agent registry and no `.claude/agents` lookup. Skip "Check for project agents" and `project-agent-dispatch.md`. For each reviewer start a `subagent` whose prompt begins with the role brief read from `{{ROOT}}\agents\`: simplifier = `code-simplifier.md`, reviewer = `code-reviewer.md`, product reviewer = `product-reviewer.md`. If the project has its own `.claude\agents\<name>.md` or `.agents\`, prefer that file. Send all agents in ONE message so they run concurrently.

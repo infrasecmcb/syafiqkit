@@ -77,7 +77,7 @@ export function createProvider(options = {}) {
         .replaceAll('{{ROOT}}', ROOT)
         .replaceAll('{{AGENTS}}', path.join(ROOT, 'agents'));
       let addendum = '';
-      try { addendum = readFileSync(path.join(ROOT, 'addenda', `${c.name}.md`), 'utf8').replaceAll('{{ROOT}}', ROOT); } catch { /* most skills have none */ }
+      try { addendum = readFileSync(path.join(ROOT, 'addenda', `${c.name}.md`), 'utf8').replace(/^\uFEFF/, '').replaceAll('{{ROOT}}', ROOT); } catch { /* most skills have none */ }
       return {
         name: c.name,
         description: c.description,
