@@ -1,0 +1,49 @@
+# Richer motion: spotlights, cursor, tilt, photos {#premium-motion}
+
+Every field here is optional, and a story that sets none of them renders exactly as before. Reach for them when a plain device beside captions reads as basic, which on a training or launch film it usually does.
+
+## Which move does what {#which-move}
+
+The moves split by whether they help a viewer follow the screen or only dress the film. A training clip leans on the first group; a hype clip can use more of the second. Research basis (2026-10-22): signalling cues have meta-analytic support for learning (d = .38 over 29 studies; g = .53 for retention over 103), and "if two things move at once, the viewer watches neither", so order each beat as caption, then camera, then tap.
+
+| Field | Helps the viewer follow | What it does |
+|---|---|---|
+| `spotlights: [{ from, to, rect: [x, y, w, h], dim, lift, ease }]` | yes, the strongest | Dims the screen except `rect` (fractions of the screenshot), lifts the target slightly with a shadow and an accent ring. Keep each spotlight clear of the camera move and tap around it. `dim` defaults to 0.55, 0.4 on `browser` |
+| `cursor: true` | yes, on `browser` | Taps draw an arrow travelling on a curve that arrives just before `at`, then presses with a ripple, instead of the finger dot |
+| `softText: true` | neutral | Captions, hook and lockup enter and leave with a blur-to-sharp beside the rise |
+| `motionBlur: { samples, shutter, threshold }` | neutral | Averages `samples` (8) draws across half a frame, only on frames where the camera, a screen push, the device or a photo is moving. A render takes about four times as long |
+| `tilt: { enter, leave, x }` | no, decoration | The device swings in and out in 3D (WebGL perspective; radians, default 0.55 / -0.45 / 0.18). Entry and exit only, because a tilted screen is unreadable mid-step |
+| `ambient: { alpha, colors }` | no, decoration | Slow brand-colour gradients drift behind everything instead of a flat page |
+| `photos: [{ file, from, to, rows, focus, zoom, origin, drift, scrim, accent }]` | context | A full-frame photo opens from a card at `origin`, drifts (`zoom` from-to, `focus` point), and with `rows` carries white captions over a dark scrim. One spanning 0 to `device.enter` replaces the hook |
+| `products: { from, to, files, y, every }` | context | Packshots on white cards pop in one by one, usually under the lockup |
+
+## Getting the rectangles {#rectangles}
+
+A spotlight `rect` is in fractions of the screenshot. Overlay a grid on the shot (`ffmpeg -i shot.png -vf "scale=390:844,drawgrid=w=39:h=84.4:t=1:c=red@0.5"`, ten cells each way) and read the target off it, or record the element's box in the capture spec as `taps.json` already does. Check every spotlight on a still: a rect a row off lights up the wrong control and reads as confident.
+
+## Pictures and sound for these films {#pictures-sound}
+
+- **Product photos**: a Shopify store publishes `/products.json` with each product's image URLs; the client's own packshots are the honest product shot.
+- **Stock**: Pexels serves photo files to scripts at `https://images.pexels.com/photos/<id>/pexels-photo-<id>.jpeg?auto=compress&cs=tinysrgb&w=2400`; find ids through search. Mood only, never presented as the client's customers or staff, and listed in the README.
+- **Voice**: `VOICE_SPEED=0.85` read about 3 words a second with `af_heart`. Spell a product code the way it is said ("C.R.P. forty-five"). Nobody in the session can hear the mix, so transcribe `score.wav` with the local Whisper (`mlx_whisper`) and check every line comes back right at its time.
+- **A licensed track**: 📖 `real-track.md`; `score.py --track` mixes it.
+
+## Camera size and layouts {#camera-size}
+
+A whole screen shown at two-thirds of a 9:16 frame leaves its UI unreadable on a real phone, and a desktop screenshot in a vertical frame is smaller still, so zoom to the part the caption is about. Side-by-side layouts use smaller captions and less camera zoom (a quarter for `phone`, 60% for the wider frames), or the text runs into the picture. A browser shot in widescreen still needs a strong push-in for its UI text to read. One camera rarely frames both shapes well, since the vertical cut uses the full zoom and pan while side-by-side damps them: the renderer sizes the page to the output, so a story wrapped in its IIFE can read `const V = window.innerHeight > window.innerWidth` and give 9:16 its own keyframes (or its own picture files) per beat.
+
+## Room presentations {#room-presentation}
+
+A film played in a room while someone presents (a pitch, tender or keynote) reads best as full-frame `photos` with a `focus` and `zoom` push-in per screen and short labels. Side by side in 16:9, the screen takes half the frame and the camera zoom is damped, so UI text is unreadable from the back of a room. Keep a `rows` subject above the caption band: a strong `scrim`, and a `focus` that puts the subject in the upper 60% of the frame.
+
+## Personal photo films {#photo-film}
+
+An anniversary, birthday or family film is a run of full-frame `photos` with `frame: 'none'`, no screens and an optional `stat` ("3 / tahun kita") before the `lockup`. The brief's "could it belong to someone else" answer is the captions: each names a real moment of theirs, from the person's own words.
+
+- **Overlap the photos.** With each `to` equal to the next `from`, the old photo fades while the new card is still opening, and the page colour flashes at the edges for a few frames. Set each `to` about 0.6 s past the next `from`: the next card is drawn on top, so the old caption never shows through.
+- **Landscape photos in 9:16 keep one face.** A 3:2 photo cropped to 9:16 keeps about a third of its width. Pre-composite each one whole on a blurred, darkened copy of itself (ImageMagick: clone resized to fill and blurred, then the photo resized to the frame width and centred) and use that file.
+- **Choosing from a phone library** is the slow part. On macOS the Photos library's own index (`Photos.sqlite`, read from a copy) already tags people and scores each photo, so pick a person's photos per month by score, export them by id through Photos' AppleScript, and show the user a numbered contact sheet to choose from. Never pick from albums by name alone: they mix in receipts and screenshots.
+
+## Number beat examples {#number-examples}
+
+`stat` examples: "99.9%", "3x faster". `number` examples: twenty bills merged into one payment, twelve tools merged into one app.

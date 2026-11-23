@@ -1,0 +1,49 @@
+---
+name: brainstorming
+description: Use this before creative work that involves design decisions - new features where what to build is still open, or architectural changes. Explores intent and requirements before implementation. Triggers on brainstorming, design exploration, or "how should we build". For UI/UX specifically, `uiux` owns design judgement on a surface whose purpose is already settled (polish, rethink, redesign) — this skill runs first only when what to build is itself open, since its hard gate blocks all implementation until the user approves a direction.
+---
+
+# Brainstorming Ideas Into Designs
+
+Turn ideas into fully formed designs through collaborative dialogue. Every project goes through this process regardless of perceived simplicity — "simple" projects are where unexamined assumptions cause the most wasted work.
+
+<HARD-GATE>
+Do NOT invoke any implementation skill, write any code, or scaffold any project until you have presented a design and the user has approved it.
+
+**Escape hatch**: If the user explicitly says "skip design", "just implement", or "I already know what I want" — acknowledge and delegate to implementation immediately.
+</HARD-GATE>
+
+## Constraints
+
+| ❌ Never | ✅ Always |
+|----------|----------|
+| Skip design for "simple" projects | Present a design (even if a few sentences) and get approval |
+| Ask multiple questions per message | One question at a time via `AskUserQuestion` tool |
+| Use plain text questions | Use `AskUserQuestion` with multiple-choice options |
+| Include speculative features | Apply YAGNI ruthlessly |
+| Invoke any implementation skill before design approval | Wait for explicit user approval before any implementation |
+
+## Steps
+
+Complete in order:
+
+### 1. Explore project context
+Check files, docs, recent commits to understand current state.
+
+### 2. Ask clarifying questions
+Use the `AskUserQuestion` tool for every question. One question per message, focus on purpose, constraints, and success criteria. Prefer multiple-choice options over open-ended questions.
+
+A question about what a screen shows or where something sits on it ("where is it bought", "how does the user get there") is a design question, not a requirement. Invoke `uiux` to produce directions with previews from the app's real surfaces, and put those in the question instead of options drafted from memory. Measured 2026-10-20: a "where is it bought" question went out with hand-written options, and the user answered "can use uiux skill to give suggestions?". **Tell: your option descriptions name screens or placements, and no `uiux` call came before them.**
+
+### 3. Propose 2-3 approaches
+Use `AskUserQuestion` to present the approaches as options. Lead with your recommendation and include trade-offs in the option descriptions.
+
+### 4. Present design
+Scale each section to its complexity — a few sentences if straightforward, up to 200-300 words if nuanced. Cover: architecture, components, data flow, error handling, testing.
+
+After each section, use `AskUserQuestion` to ask if it looks right (options: "Looks good", "Needs changes"). Revise until approved.
+
+⚠️ **The design must reach the user whichever surface renders, so it goes in two places.** Prose ahead of the call can arrive detached from the question (2026-09-05: two rounds came back "wdym?" and "I don't see anything you're talking about"), and an option's `preview` may not render at all (2026-10-27: a script sent only as a preview came back "I don't see the script ?"). Write the whole section in the reply above the call, put it again in the "Looks good" option's `preview`, and restate it in one line in the question text; keep Step 3's trade-offs in the option descriptions.
+
+### 5. Transition to implementation
+Present a concise implementation plan inline and ask the user how they want to proceed.

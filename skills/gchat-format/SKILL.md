@@ -1,0 +1,204 @@
+---
+name: gchat-format
+description: >
+  Convert Markdown or plain text into Google Chat-compatible formatting. Use this
+  skill whenever the user wants to send a message in Google Chat ("send this to the
+  team", "post it in <space>", even a document already drafted), format a
+  changelog/release note for Google Chat, convert a Markdown document for posting
+  in Google Chat, or says anything like "format this for Google Chat", "convert to
+  Google Chat", "post this in Chat", "gchat format", or "make this Chat-friendly".
+  Google Chat has a limited, non-standard subset of Markdown -- this skill ensures
+  correct output every time. NOT for composing a message in the sender's own voice
+  to a named person or small group -- a WhatsApp reply, a quick DM, "tell X that..."
+  -- even when the destination is Google Chat: that's `casual-message`.
+---
+
+# Google Chat Formatter
+
+Convert Markdown or plain text into Google Chat's formatting syntax.
+
+## Whose thread is this? Settle standing before drafting
+
+A Chat message lands in a thread with an existing power structure, and the draft encodes an assumption about where the sender sits in it. Getting that wrong produces text that is well-formed, on-topic, and still wrong to send: it assigns work to people who don't report to the sender, @-mentions one of them with an action item, or closes out a discussion that isn't the sender's to close.
+
+The common case is a vendor or support engineer answering into a **customer's** internal thread. There, the participants are coordinating among themselves and the sender is a guest: state what the product does and what was found, then leave the decision with them, and where a fix touches their data or their tenant, offer rather than direct. Reverse the posture and it reads as the vendor running their operations.
+
+Ask who the participants are to the sender before drafting, not after a rejected draft. A draft that tells a named person on the other side what to do, or ends with a summary block closing out their conversation, has the standing wrong.
+
+The same holds inside the sender's own team for an ask the sender never made: an `@` tag asking a colleague to act (check billing, approve, decide) goes in only when the user's request named that ask, and an ask you inferred goes above the fence as an offer. An edit later removes the line but not the notification it already sent (23/11/2026: a release follow-up tagged a colleague to check the org's billing on a guessed cause, and the sender had it edited out: "no need lol, we are not gonna upgrade"). **Tell: the draft tags someone with a request that appears nowhere in the user's words.**
+
+## Is this a document, or a message in your own voice?
+
+Settling standing answers who receives this. It does not answer how dressed-up it should be, and those are different axes — conflating them is why this section exists. A correct "client" audience answer still produced a fenced, headed, formally-closed draft for a one-line reply to a single named colleague, and the shape was the thing that was wrong.
+
+If the ask is "reply to X", "tell Y that…", or a message in the sender's own words to a named person, that's `casual-message`, not this skill. Hand off **before** drafting rather than after producing a document that gets rejected. This skill's shape — fence, bold headers, structured bullets, formal close — is for something that exists independently of who reads it. The exception runs the other way: a post into a client group that answers with findings and asks several questions takes this shape, numbered questions included, while keeping the sender's voice from the thread. `casual-message` carries the same boundary.
+
+⚠️ **When the user invokes this skill by name for a reply to a colleague, it supplies the syntax and the fence, and `casual-message` still supplies the content.** A typed `/gchat-format` reads as the user having chosen the document shape, so the handoff above feels overruled and the reply gets drafted as a document: a reason under every point, the question restated, a closing plan. Load `casual-message`, write to its rules (the answer and the sender's lean, one line a point, nothing the recipient already said), then apply the conversion here. A point still has to carry what it means for the reader: a bare label ("3.1 Advanced") is as unreadable as a reason under every point is padded, so state what the draft says against what the system does, or what the choice changes for the user, inside the one line. Measured 2026-10-14: a reply to a colleague's three review messages was drafted as four fenced documents and came back as "a lot of filler". Measured 2026-10-21, the other direction: a 25-point reply cut to labels came back as "need ellaboration a bit". **Tell: the slash command was this skill and the recipient is one named person or a small group.** A bare invocation with no recipient falls on the same side when the text to convert is your own last answer (steps, an explanation), not an artifact that predates the session: the sender will post it to colleagues, so it's a message. Take the voice from their messages in the session and the shape from `casual-message`.
+
+**An "update group" or "update the team" ask is a document, not that reply.** It names the whole space rather than a person whose message is being answered, so it is a status update: a new top-level post with a bold title line, bold section labels and `- ` items, shaped like the sender's earlier update posts in that space, even when the topic grew out of an older thread there. Post inside the thread only when the user says reply. Measured 20/11/2026: `/gchat-format update group` on an investigation follow-up was drafted as a lowercase casual reply in the original thread and was refused at send with "use gchat format, in main message". **Tell: the ask names the group, and your draft is lowercase prose aimed at a thread.**
+
+## Release notes: shape the content BEFORE formatting
+
+⚠️ **Where the note is going has usually answered the shape question already, and the answer is one read away.** A destination that has carried release notes before — a tracker list, a Chat space, a wiki page — holds dozens of prior entries establishing length, structure and voice, and those override every default in this section, including its own bias toward brevity. Nothing prompts you to look: the request arrives as "format this", the source changelog is in hand, and drafting from it feels like the whole job. Measured 2026-09-21 — a note was condensed hard and rejected, while the destination list's 68 existing entries were each verbatim from the changelog with the date headings intact; one read of the most recent would have settled it before the first draft. The prior entries are the strongest calibration available and cost one read. **Open the latest entry at the destination before drafting, and match what it does**, latest by date, not by title pattern, since entry names drift. A format the project's own instructions write down for that destination outranks both the prior entries and this section's defaults when `ship` or another skill sends you here. **Tell: you are about to draft for a destination whose existing entries you have not opened.** Prior entries set length, structure and voice, never whether to format: when the user invoked this skill by name and the space's earlier posts are plain text, the user is asking for the formatting those posts lack, so bold the headings and make the lists real (a plain draft matched to the space's history was refused with "What happened to gchat format ?").
+
+**A release note about a changed screen goes out with captures of the built screen**, phone and desktop, each opened first, attached to the post or sent as a reply in its thread; the same holds when the note is drafted outside `ship` and sent straight through a Chat send tool. `ship`'s `references/ship-deploy-verification.md` § Release Captures has the procedure. **Tell: the note names a screen and your send call carries no files.**
+
+When the input is a **release note / deployment announcement** (not already-final prose the user just wants reformatted), the Chat version is a short user-facing announcement, not a work log. Get to the point:
+
+| ❌ NEVER include | ✅ Keep only |
+|------------------|-------------|
+| HOW it works (mechanics, counts, prefixes, backfill numbers, verification steps) | WHAT changed, in one line, and why it matters to a user |
+| Deployment/ops steps ("Deployed to staging", "applied policy", "ran backfill") | A single status line IF relevant (e.g. "On staging for testing") |
+| "Still to come" / "outstanding" / caveats / data-integrity notes | — |
+| Multiple sections for one shipped thing | One outcome = 1-3 lines total |
+
+Lead with the outcome a non-engineer reads; delete everything explaining the underlying implementation.
+
+**Length follows what shipped, never which environment it shipped to.** A staging deploy of one fix is a one-line note; a staging deploy of ten days' work is not, and "staging" is not the fact that decides it. Size the note from the source: a handful of items compresses to a few lines, sixty items does not compress to sixteen without losing things the reader needed. Where the deploy is large, the environment is one clause at the top ("now on staging"), not a reason to summarise the body away.
+
+⚠️ **Terseness is the instruction this section can't help over-applying, because every cut feels like the rule working.** The guidance above is all subtractive, so a draft that keeps cutting reads as increasingly compliant right up to the point the reader asks where everything went — and the items that go first are the specifics that made each one land (the figure, the affected count, the before-state), since those look most like the "mechanics" the table bans. They are not: a count of who was affected is *what changed*, not *how it works*. Measured 2026-09-21 — sixty changelog items went to forty-six bullets and 3,507 words to 1,210, was rejected as not thorough enough, and the accepted rewrite was four times longer than the first draft. **When the source is long, draft at the source's own level of detail and cut only what the ❌ column actually names.** **Tell: your draft's word count is under half the source's and you reached that by trimming detail rather than by merging duplicates.**
+
+Regroup by feature instead of inheriting the source's `Added`/`Fixed` split. Those headings sort by what the change did to the code, so one feature lands in multiple sections while unrelated items sit as equals — the reader gets a flat list with no way to see what the release actually IS. Restructure to lead with a short prose sentence about what a user can now do and what they couldn't before, then group the main feature's items together (whichever heading they came from), then demote everything unrelated under a catch-all. A bug that reads as "this feature now works" goes under the feature, not beside it.
+
+If the source gives no before-state (a changelog rarely does), ask for it or pull it from the task doc — that contrast is what makes the rest legible. A note that opens with a bullet instead of a sentence, with every item at the same level, signals that the regroup didn't happen.
+
+### Progress and milestone posts to a team
+
+**A progress or celebration post to a team is the team's news, so it credits the team, never "my cards".** Lead with what the team reached ("as a team we've already built ..."), group by area of the product rather than by owner, and keep any ask neutral, naming nobody to chase it. A post listing only the sender's work with a thank-you to the others tacked on reads as self-promotion however accurate it is. Measured 19/11/2026: "my cards ahead of schedule" was refused with "put it as all, we are a team, this looks like selfish", and the same facts grouped by area went out.
+
+### Work not shipped: research, a plan, a proposal
+
+**A post about work nothing shipped explains the situation and what was done; it never reads as decided.** Shape it as what was found (the situation, with the spec or requirement lines that ask for it quoted), what was done (research, a plan written, where it lives), and anything acted on in a teammate's name (a tracker row, a card) listed in full so they can change it. Open with "nothing confirmed yet" where that is true, and keep the sender's own caveats in their words ("have to check first, since ..."). A `Decided` heading over a proposal commits the team to it. Measured 19/11/2026: a plan post drafted as a `Decided` list was turned back four times before it said what the situation was, that nothing was confirmed, which requirement rows applied, and which tracker row was written under a colleague's name.
+
+Before delivering a condensed release note, count the distinct shipped items in the source (each `###`-level bullet under Added/Changed/Fixed, per repo if multi-repo) and count the bullets in the condensed output. A lower count is expected only if items were deliberately merged as near-duplicates or cut as a caveat/ops-step per the table above — if a genuine shipped item is simply missing, the condense went too far. Re-scan the source once before sending.
+
+## Key Rules
+
+⚠️ **Where the text goes decides the syntax, and the two Chat routes disagree on `*`.** The rules below are for text **pasted or typed into the Chat app's composer** (the clipboard route), where `*text*` is bold. Text **posted through an API or MCP send tool** (a `message_send` or `message_edit` call) is read as Markdown instead: `**text**` is bold, a single `*text*` renders *italic*, each list item is its own line starting `- `, and a typed `•` is plain text whose lines run together into one paragraph. Two plain lines with only a line break between them also join into one paragraph there (17/11/2026: a release post's "Before:" and "Now:" lines arrived as one paragraph, and an edit with the same single break didn't fix it), so in a multi-point post with headings, the points go as `- ` items straight under their `**heading**` (list items and code blocks keep their own lines), with a blank line only between sections. Prose stays prose: a lead sentence, a short reply or a paragraph of reasoning is not split into bullets, and lines that must read as a pair (Before / Now) or a numbered list keep a blank line between them. A blank line after every plain line of a whole post doubles its height into a column of white space (22/11/2026: a release post written that way came back as "must we have alot of white spaces in the middle?", and the same text edited into bullets under each heading was accepted). For that route, keep each message within the send tool's limit (about 1,000 characters), showing a longer post already split at section boundaries before the user approves it; write headings and labels as `**bold**`, bullets as `- `, and links as bare URLs, and pass the text without the code fence § Output Format asks for, since the fence would post as literal backticks; the other conversions (tables to label lines, no em dashes) still apply. Measured 14/11/2026: a release note sent through the API with `*Heading*` and `•` items arrived with italic headings and every bullet merged into one line; edited through the API as `**Heading**` and `- ` items, it rendered bold with a real list. **Tell: your next step after formatting is a send tool call, and the text holds a single-asterisk heading.**
+
+Google Chat's composer does NOT support standard Markdown fully. For the clipboard route, apply these transformations:
+
+### Headers -> Bold text
+All `#` headers become `*bold*`. Remove the `#` symbols entirely.
+
+```
+# Title        ->  *Title*
+## Section     ->  *Section*
+### Sub        ->  *Sub*
+```
+
+### Bold
+```
+**text**   ->  *text*
+__text__   ->  *text*
+```
+
+### Italic
+```
+*text*     ->  _text_    (only if it was italic, not bold)
+_text_     ->  _text_    (unchanged)
+```
+
+> After converting bold, remaining `*text*` that was italic should become `_text_`.
+
+### Strikethrough
+```
+~~text~~   ->  ~text~
+```
+
+### Bullet lists
+```
+- item     ->  * item
+* item     ->  * item
++ item     ->  * item
+```
+
+When the destination is WhatsApp, bullets are `- item` instead; every other conversion here holds there (`casual-message` § Syntax).
+
+Numbered lists (`1.`, `2.`) stay as-is.
+
+### Inline code & code blocks
+Stay unchanged -- Google Chat supports both `` `inline` `` and ` ```blocks``` `.
+
+### Links
+```
+[text](url)              ->  <url|text>
+https://bare-url.com     ->  unchanged (auto-linked by Chat)
+```
+
+### Block quotes
+```
+> text     ->  > text    (unchanged, Chat supports this)
+```
+
+### Tables -> Bullet list with bold labels
+Tables are not supported in Google Chat. Convert each row to a bullet, with the first column always as `*bold*`.
+
+**Narrow tables (≤3 columns):** keep each row as a single inline bullet.
+```
+| Field     | Required | Notes       |
+|-----------|----------|-------------|
+| First Name | Yes     | Tenant name |
+
+->
+
+* *First Name*: Yes, Tenant name
+```
+
+**Wide tables (4+ columns):** do NOT cram all column values into one comma-separated line -- it becomes unreadable. Make the first column a **bold label line with no bullet marker**, and give each remaining column its own sub-line prefixed with a dash:
+```
+| Agency | Platform fee | Gateway fee | Net now | Impact |
+|--------|-------------:|------------:|--------:|-------:|
+| Acme   | 771.45       | 75.00       | 673.45  | -RM 10 |
+
+->
+
+*Acme*
+- Platform fee: 771.45
+- Gateway fee: 75.00
+- Net now: 673.45
+- Impact: -RM 10
+```
+
+Google Chat renders a `*` as a bullet **only when it is the first character of the line** — any leading whitespace converts it to a literal asterisk. Do not indent bullets to create nesting (`   * Platform fee` renders as literal text, not a nested bullet). The label-line + dash-sub-line pattern above is the only reliable way to show multiple values under a parent. If the wide table has many rows, offer a trimmed version (e.g. totals only, or top N rows).
+
+This same pattern applies to any parent-with-sub-values structure, such as a feature-comparison row: bold the parent as a plain line, then dash each sub-value under it.
+
+Use `*bold*` for labels and column headers, never `_italic_`. Italic is only for prose text that was explicitly italic in the source.
+
+### Em dashes
+⚠️ **NEVER output an em dash (`—`) in the converted result.** This applies to both Claude-generated prose and converted source content.
+
+Strip all em dashes from the source, both the Unicode `—` (U+2014) and ASCII `--` forms:
+
+```
+*Label* — description     ->  *Label*: description
+*Label* -- description     ->  *Label*: description
+sentence — continuation   ->  sentence, continuation
+sentence -- continuation   ->  sentence. Continuation
+```
+
+After a bold label: replace with `:`. In flowing prose: use a comma, full stop, or colon, whichever the sentence actually wants.
+
+⚠️ **Substituting a single ASCII hyphen for an em dash does not satisfy this.** What reads as an em dash to the person reviewing the draft is the *clause break*, not the character, so `sentence - continuation` is the same output with a narrower glyph and gets rejected the same way. A hyphen is only correct inside a compound modifier (`14-day`, `send-date`), where it isn't punctuating a clause. **Tell: the dash has a space on both sides** — that's a clause break needing a comma or a full stop, not a shorter dash.
+
+### Unsupported -- remove or simplify
+- `---` horizontal rules -> remove entirely
+- HTML tags -> strip or convert to plain text
+- Nested bold-italic combinations -> use just `*bold*` or `_italic_`
+- Em dashes (`—` or `--`) -> see Em dashes section above
+
+## Output Format
+
+**When the destination is an email, not Chat, drop the Chat syntax and write plain text.** Outlook and most mail clients show `*bold*` and `_italic_` as literal symbols, so headings become plain lines, lists keep `-` or `1.`, and links stay bare URLs; the fence, the em-dash ban and the shape rules above still apply. Say in one line above the fence that it is plain text for email (2026-10-27: this skill was invoked for a client review email).
+
+Wrap the entire output in a triple-backtick code fence by default, regardless of copy method — this is the default state; only omit it if the user explicitly asks for no fence. A prior version of this skill defaulted to no fence, reasoning that `/copy` reads raw source, but the user reverted that — don't reintroduce it. The fence is your final output container — anything you want to say to the user (caveats, "I trimmed the wide table", offers to reformat) goes above it, and nothing follows the closing backticks. Text after the fence reads as part of the message to paste, because the fenced content often ends on its own `Note:` line and the boundary is invisible to the reader. Label the fence so its extent is explicit ("copy everything inside the fence below, nothing outside it").
+
+Within the fence:
+- Strip inner inline backticks (`` `staging.dourr.com` `` becomes plain text) — Chat does not nest inline code inside a code block, so backticks render as literal characters.
+- Preserve blank lines between sections
+- Keep emojis as-is
+
+## See Also
+
+📖 `references/example-release-note.md` — a full changelog-to-Chat transformation showing the regroup-by-feature restructure, syntax conversion, and fencing applied together.

@@ -1,0 +1,117 @@
+# Deploy Verification by Artifact Type
+
+After CI passes (or a manual deploy completes), verify the user-facing change is live. A green pipeline run only proves the pipeline executed, not that the artifact was deployed or is running.
+
+## Key Principle
+
+Verify at the **destination**, not by reading the tool's exit code. A backgrounded or wrapper-mediated upload can hand back control before the transfer finishes, and the failure then surfaces later as a confusing error about something else.
+
+## By Artifact Type
+
+### Container Image in Registry
+
+```bash
+docker pull <registry>/<image>:<tag>
+docker inspect <image>:<tag> | jq '.Created'
+```
+
+Verify the image exists and has the expected creation timestamp.
+
+### File on Server (rsync, CI sync, SCP)
+
+```bash
+remote <server> "ls -l <path>/<file>"
+remote <server> "grep 'expected-string' <path>/<file>"
+```
+
+Never trust the upload command's exit code. Verify the file exists on the destination and contains what you deployed.
+
+### Git Repository
+
+```bash
+remote <server> "cd <deploy-path> && git log --oneline -1"
+remote <server> "cd <deploy-path> && grep 'expected-change' <file>"
+```
+
+The deployed checkout may not be a git repo (rsync deploys land plain files), so verify the actual file content and behavior, not just the commit history.
+
+### Database Schema (Migrations)
+
+Migrations are often run by a system separate from the deploy pipeline (container entrypoint, release phase, separate job, or manual trigger). A green CI run doesn't prove migrations ran.
+
+Ask the destination's database directly, in whatever way that stack allows: its migration tool's own status output, or a description of the table whose shape should have changed. What you are looking for is the new migration reported as run, or the new column present on the table — not a green pipeline.
+
+Confirm the specific migrations from this push appear as "Ran". Code expecting a column that doesn't exist usually breaks on first use, not at boot, so missing migrations surface as production errors hours after deploy.
+
+### Seeded Reference Data
+
+A migration creates the table; something else has to fill it. Where the seeder is wired into neither the app's seed entry point nor the deploy pipeline, the table arrives empty and stays that way — and this is the failure mode migrations verification does not catch, because the migration genuinely did run.
+
+Nothing errors. A guard testing that the table EXISTS passes on a migrated-but-empty table, so the code takes its normal path over an empty set and degrades quietly: the artifact renders with the seeded content missing rather than throwing. For a document assembled from reference rows, that is a document with no content in it.
+
+⚠️ **Worse where the reader treats a missing value as an ANSWER rather than as "not yet known."** A lookup that falls back to a registry default converts an unseeded row into a decision — an entitlement check reading an absent feature key as *denied* refuses the capability for everyone, including whoever was meant to have it, and every layer downstream then behaves consistently with that wrong answer. The tell is a fallback in the read path (`?? $default`, `default_enabled`, a null-coalescing config read) rather than a thrown error. Where one exists, query three-way — present-and-on, present-and-off, absent — because a two-way `enabled?` check reports "correctly gated" for a row that simply isn't there.
+
+```bash
+# Count rows for the identifier the app actually uses, read from source
+grep -rn "CURRENT_.*_VERSION\|const VERSION" <app-dir>   # find the constant first
+# then, at the destination:
+SELECT COUNT(*) FROM <table> WHERE <version_col> = '<that value>';
+```
+
+Four traps, in the order they bite:
+
+- **Running the seeder BEFORE the code deploy seeds the old seeder.** The container still holds the previous file, so a key added in this payload isn't in the copy that executes; the run prints its ordinary success line and writes nothing. This is worth naming because pre-seeding is the *considered* choice — it looks like the order that avoids an exposure window where new code meets missing data. It doesn't: it produces that window anyway and hides it behind a success message, so the follow-up read is what catches it and the failure otherwise reads as a broken seeder. Deploy, then seed, then read the row back.
+
+- **Guessing the identifier returns zero too**, which reads as confirmation of the bug you suspected. Read the constant from the source before querying: version strings are rarely the tidy `v1`/`v2` you would guess, and a wrong guess produces the same empty result for an entirely different reason.
+- **Existing records predate the feature** and carry a null/legacy version, so they render through the old path and look healthy. Spot-checking live data therefore shows everything fine while every FUTURE record is broken. Resolve against the current version, not against what is already stored.
+- **Counting the seeder file's entries disagrees with the database.** Loop-generated rows mean the file's literal count and the table's row count are different numbers; and one logical row can carry variants selected at render time, so a correct render legitimately returns fewer items than the table holds. Read both from the DB and expect the render to be ≤ the row count.
+
+Seeding by hand closes the exposure and not the defect: the seeder is still unwired, so the next environment — or a rebuilt database — lands empty again. Record it as still open.
+
+### User-Visible Behavior
+
+For any artifact type, verify the user-facing change:
+
+- A new UI element renders correctly
+- A config setting is actually applied (query the app's own bootstrap, not the config file)
+- An endpoint returns the expected response
+- A notification/email format matches what you deployed
+- A feature flag is active for the target audience
+
+A health check passes with or without the deployed change, so a green health probe is not verification.
+
+## Negative Controls
+
+Any verification returning "not found" needs a positive control before it's trusted. A grep returning 0 reads identically whether:
+- The deploy broke
+- The search string was never going to match (a closure-dispatched job doesn't print its class name; a bundler hoists a shared string out of the file you searched)
+
+Chain probes with `;`, never `&&`:
+
+```bash
+grep -c 'my-string' file && echo "CONTROL" file  # ← stops short if first grep hits 0
+grep -c 'my-string' file ; echo "CONTROL"        # ← both run, both print
+```
+
+Run unfiltered first to rule out a bad search pattern, then confirm with a control.
+
+## Reading a Destination That Is Still Reacting
+
+A measurement is a claim about one instant. When the system is mid-reaction to an event — a container start, a deploy, a retry loop, a failed credential refresh — a single read samples a transition and returns a value that is true, self-consistent, and about to stop being true. Nothing in the output marks it as provisional, which is what makes this different from a failed probe: the read succeeded, so the conclusion drawn from it inherits the confidence of a successful measurement.
+
+The discriminator is never the contents, which look plausible at every moment during the transition. It is a timestamp comparison: the artifact's mtime against when the triggering event began. An mtime *after* the event's start means the system has already written its reaction and the read is trustworthy; an mtime before it means you are looking at pre-event state that something is about to overwrite.
+
+Measured 2026-09-03: a container started at `12:38:44` and the CLI's failed token refresh blanked its credentials file at `12:41:02`. A read inside that window showed intact tokens, which was used to declare an existing incident write-up wrong and rewrite two files around the reversal. The write-up had been right. Recovering cost more than the original diagnosis, because the correction had to be un-made in docs that now read as authoritative.
+
+So before concluding from a live read, ask what the system is currently doing rather than only what the value says — and where an event is in flight, either wait for it to settle or take two reads far enough apart to disagree. A single read cannot distinguish a steady state from a transition, and the transition is exactly when someone is looking.
+
+**A path reported absent is a claim about where you looked.** `No such file or directory` answers for one filesystem or namespace, so the same probe run in the wrong container, host, or mount returns it while the artifact exists a layer away — and it reads as proof of absence rather than as a mislocated query. Same session: `docker exec <container> ls /opt/claude` returned not-found for a *host* path mounted elsewhere, and that became a user-facing claim that the docs were wrong about a file that was there all along. This is the Negative Controls rule above applied to location rather than to string matching: confirm which namespace answered before believing a negative.
+
+## Host Aliases and Container Paths
+
+- **A host alias outlives the host it names.** After a migration the old SSH entry stays in the config, so connecting by the environment's name can reach a decommissioned box. That fails as a timeout or refused handshake, which reads as "the server is down" when the infrastructure is healthy. When the workflow file names a different host than the alias does, believe the workflow, since it is what actually deployed.
+- **A containerised deploy has two paths**, the host's and the container's. Recipes and workflow files name the host one, so carrying it into `docker exec` or `podman exec` fails with `No such file or directory` at the moment you confirm a deploy. Get the container's own root first (`exec ... pwd`, or `ls /var/www`). Sibling environments often differ on the host and agree inside the container, so one environment's working recipe is no evidence for the next.
+
+## Release Captures (Step 5 item 6)
+
+A release note that changes something a person sees names the captures the session rendered (a design-review capture, a verification screenshot) above the fence. In Chat they go as a reply in the thread, with their own preview, and then send. Local and staging hold real customer data, so open each capture before it goes out and keep only seeded demo or test data: grep the seeders for the agency or person name shown. Drop, and name as dropped in the commentary, any capture you cannot view or that shows a real name, amount or account switcher. Judge each capture by its own content, not by the environment it came from. A full-page capture draws fixed elements (a dialog and its backdrop, a sheet, a sticky bar, a toast) over the first screen only, so the page below reads as undimmed or covered halfway; show those states with a screen-sized capture. A long page whose point is what sits below the first screen (a shop home of rails and sections, a long report) also goes as one full-page capture per width, with the fixed bars hidden for that shot, since a phone's bottom tab bar otherwise lands mid-page (23/11/2026: a home sent as first-screen shots only drew "the home page can show the below sections one ?"). Don't render a capture at ship time to fill the gap, unless the project's own instructions ask for fresh captures of the built screen: otherwise no capture, no images. Incidents behind this: 📖 `ship-incidents.md` (15/11/2026, two entries).

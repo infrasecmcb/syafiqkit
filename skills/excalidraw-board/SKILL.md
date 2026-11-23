@@ -1,0 +1,59 @@
+---
+name: excalidraw-board
+description: Turn a task doc, backlog, worklist or tracker of open questions into a black-and-white Excalidraw discussion board the team can read cold and doodle on later (or, for a decision meeting the user copies onto a physical whiteboard, a short whiteboard panel plus speaker-note cards), and read back or tidy a board the team has already drawn on (a `.excalidraw` path with "check this latest", "what changed on the board", "use the excalidraw mcp" on that file). Columns for now / gated on our own build / waiting on someone else, thick-bordered GATE cards with arrows to what they unblock, a PARKED table with a revive trigger per row, and a right-hand strip for decisions, open questions and actions filled in live. Use when the user says "excalidraw", "whiteboard", "let's draw the plan", "board for the meeting", "something to discuss with KL/HL", "what's on hand, what's deferred", or asks how best to lay out tasks for a discussion. Not for charts or dashboards (that is `dataviz`), not for architecture or sequence diagrams (draw those directly with the Excalidraw MCP), and not for deciding what to build (that is `plan-worklist`; this skill draws a worklist that already exists).
+---
+
+# Excalidraw discussion board
+
+A board exists to run a conversation, not to store the plan. The task doc stays the source of truth; the board is the thing three people look at while they argue about it, and then scribble on. That sets every design choice below.
+
+## What goes on it
+
+Read the task doc first (`read-summary`), then sort every item by what it is waiting for, since that is the question a planning conversation actually answers:
+
+- **Can start now.** No dependency on us or anyone else.
+- **After we build X.** Gated on our own work. Draw X once as a GATE card (thick border) at the top of the column and let the column header say "after X". One gate unblocking four items is the single most useful fact on the board; a lane called "blocked" hides it.
+- **Waiting on someone else.** Each card names who, in the card. A lawyer, a partner's API team, a regulator.
+- **Parked.** A table, not a lane: what, why parked, what brings it back, owner. A parked item with no revive trigger is the one that silently dies, so the empty cell is the finding.
+- **Done.** Left off by default: the board is for what is still in play, and a done card is one more box to read past (the user asked for them removed, 2026-10-19). Where the meeting wants to see movement, a dashed border at the bottom of the first column shows it without taking space.
+
+The right-hand strip holds three boxes filled during the meeting: already decided (pre-filled from the doc so nobody re-litigates), open questions, and actions as what / owner / date with blank lines left. Strip lines are not wrapped by the script, so each stays under about 58 characters; a longer thought is two lines or a shorter one. If the session ends with a question nobody owns, the board should make that visible.
+
+**A decision meeting the user will copy onto a physical whiteboard takes the meeting layout instead** (a spec with `topics`, see the script's docstring). The left panel is the whiteboard exactly as written: about five numbered topics with one cue each, a minute or two of writing, plus empty Decided and Actions. Beside it, one speaker-note card per topic for the presenter alone: about four one-sentence lines, the issue the topic solves, the suggestion with a real figure, and why with a real figure (measured from live data or the costing, never "set from usage later"). Group a tracker's questions into topics first and name each by what it asks, never by row number. Measured 23/11/2026, four corrections in a row: a card per question with today/options/decider branches was "too much for me to write"; notes holding only today/suggest/why were "too shallow"; suggestions without numbers drew "the suggestions dont have figure? and why behind it?"; seven-line cards carrying every reason were "too much for me to read". **Tell: the board will be copied by hand and has more than about eight lines to copy, a note card opens with a status rather than the problem, or a suggestion carries no number.**
+
+These lanes are confidence horizons rather than dates, which is the Now/Next/Later idea; the gate-and-fan-out is a precedence diagram in its plainest form; the revive-trigger rule is Shape Up's "important ideas come back" made checkable. That is the research behind the shape, and it is why the columns are named by what they wait for rather than by sprint.
+
+## How it should read
+
+**One point per box.** A card with a title plus a "waits on" plus a size is three facts in one rectangle and nobody reads the second one. The main box holds a short noun phrase; each further fact is its own small box branching to the right. When a card wants three lines, that is two boxes.
+
+**Black and white.** Meaning is carried by border weight (thick = gate, dashed = done) and by position. Colour was the first thing the user asked to remove; it costs a legend and buys nothing a column header does not already say.
+
+**Self-contained.** Spell things out as the reader would say them: "letter of demand" not LOD, "super admin" not SA, "registering with MyDigital ID" not RP registration. A briefing's section numbers or area letters mean nothing to someone who has not read the briefing; describe the area in words and put the letter mapping in the task doc instead. The subtitle names the attendees and what any tag like `#n` means.
+
+**Room to doodle.** The user will draw on it in the meeting. Generous gaps, no background zones, nothing decorative.
+
+## Reading one back
+
+A board that came back from a meeting is a record of decisions nobody typed up. Compare its text with the last committed copy (`scripts/preview_board.py <file> --text` on both, with the old one from `git show HEAD:<path>`), then look for what text can't show: lines and arrows the spec never generated, usually a strike through a card. Report additions, removals, rewordings and strikes, and ask what a strike means before writing it anywhere. To show the board, draw `scripts/preview_board.py <file> out.png` and show that PNG. The Excalidraw MCP's `create_view` returns a checkpoint id and paints nothing in Claude Code, so a reply saying the board is "rendered above" after calling it is a claim the user can't see. When the user asks for that MCP, say why the preview stands in for it.
+
+## Building it
+
+Generate raw Excalidraw JSON with `scripts/build_board.py` from a small spec; `assets/example-sprint-board.json` is a full worked example. The script sizes every box to its text, lays out branches, draws gate arrows, the parked table and the right-hand strips, writes the `.excalidraw`, and with `--clipboard` puts a paste-ready scene on the clipboard.
+
+```bash
+python3 ~/.claude/plugins/syafiqkit/skills/excalidraw-board/scripts/build_board.py spec.json \
+  <repo>/tasks/<domain>/<feature>/discussion-board.excalidraw --clipboard
+```
+
+⚠️ **Rebuilding over a board that has been used throws away the meeting.** The script writes the whole file from the spec, so anything the user drew since (a cluster of new cards, a line struck through an item) vanishes, and the result looks like a tidy board rather than a loss. Before overwriting an existing `.excalidraw`, compare its text elements with the spec's and list every line or arrow the spec did not generate. Read each addition as a decision: a new card is an item to add, and a strike through a card usually means it is done or dropped. Fold them into the spec, confirm the strikes with the user, and keep a copy of the old file. **Tell: the board's file is newer than its spec and you are about to run the script.**
+
+Save the file beside the task doc it draws, and add one Quick Start line in that doc saying the board exists, how to open it, and that it is the conversation aid rather than the record.
+
+Then put it in front of the user and look at it yourself: open excalidraw.com in the Chrome MCP, click the canvas, `cmd+a`, `Delete`, `cmd+v`, `Escape`, click empty canvas, `shift+1`, screenshot. Send the screenshot and the file with `SendUserFile`. The Excalidraw MCP's `create_view` paints nothing in Claude Code, so a screenshot is the only proof the board renders, and the first render usually finds one overlap or one clipped heading. Users expect that MCP to be used, so say in the reply why it was not. When the browser is unreachable, the local preview from *Reading one back* stands in for the screenshot, and the reply says the real render is still unchecked. Iterate from the spec, not by hand-editing JSON.
+
+Do not upload to excalidraw.com's share link unless asked. The board carries partner names and unshipped decisions, and a share link is publication. 📖 `references/loading-and-traps.md` for the four loading routes, and the traps indexed by symptom (the renderer freeze from a page-side fetch, clipped headings, the MCP that renders nowhere, the JSON you should not `cat`).
+
+## Handing over
+
+Tell the user three things: the tab already has the board, `Cmd+O` opens the file anywhere else, and Excalidraw does not save back to disk, so `Cmd+S` over the same file after the meeting is what keeps the repo copy honest. Live collaboration in the menu gives a temporary shared session with nothing stored afterwards, which is the right way to bring KL and HL in remotely.

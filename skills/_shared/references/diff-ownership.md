@@ -1,0 +1,66 @@
+# Determining Which Files in a Diff Are YOURS
+
+Referenced by skills whose steps branch on file ownership (commit, done, task-summary, read-summary). Apply before any step that writes, partitions, or scopes agents across a working tree.
+
+**Rule:** classify by diff **content**, never by status plane. The harness auto-stages edits, so your own writes land staged (`M `) exactly like another writer's pre-existing staged work — the plane carries no ownership signal at all.
+
+Read the file's diff against `HEAD` and look for a string this session introduced; finding one makes it yours, and finding none makes it someone else's.
+
+**Diffing against `HEAD` is the load-bearing part.** A bare `git diff` reads only the unstaged plane and `--cached` only the staged one, so either alone comes back empty on a file living in the other plane and reports the work as foreign. Since the harness auto-stages, most of your own edits sit exactly where a bare `git diff` cannot see them — a real run classified 8 of its own 11 files as another writer's this way, every one exiting 0 with no error to notice.
+
+The same split misleads in the other direction, when you're checking that an edit of your own landed rather than whose it is. `git diff HEAD --stat` compares HEAD to the working tree, so it goes empty the moment the working copy is right — while the staged copy can still hold the value you just undid. `git status` then shows `MM` and a peer reading the tree sees the old state, correctly. Reverting a version bump is where this bites: content on disk says one number, the index says another, and a check that consults one plane calls it done. `git status --short` distinguishes them at a glance; `git show :<path>` reads what's actually staged.
+
+**Mtime is not the cheap version of this check.** A file's timestamp separates two sessions only when they wrote at genuinely different times, and concurrent sessions in one checkout are by definition working the same window — a measured case had a peer's writes at 17:48–17:49 against this session's at 17:50–17:51, minutes apart and interleaved with each other. Nothing about that reading looks ambiguous: it returns a precise timestamp for every file, so it answers confidently and orders the files correctly while saying nothing about who wrote them. Treat a timestamp as evidence about *when*, never about *whose*, and settle ownership on content.
+
+Pick a marker only your session could have written: an identifier you added, a filename you created, a phrase from a rule you drafted. A word from the surrounding prose matches the other writer's copy too — and so does **a version number, which is the trap worth naming**, because a peer bumping in the same window writes that same string into their own changelog heading. Grepping `1.140.6` classified a file as owned whose diff was entirely someone else's release notes. A marker is safe when the peer had no reason to type it, which a shared version never satisfies.
+
+⚠️ **The failure is silent and inverts the guard.** Reading `M ` as "someone else's" marks your own work contested and scopes every downstream step to almost nothing — agents review an empty slice, doc skills skip the docs you changed, and each step reports success. **Tell: a file you edited minutes ago classifies as "pre-existing", or the guard leaves you owning one file out of a large diff.**
+
+⚠️ Both planes can be true at once. A file you edited that *also* carries another writer's staged work is contested-and-yours — treat it as contested (don't clobber) while still counting it in your own scope.
+
+⚠️ **A whole-file rewrite of a structured file destroys a peer's staged work, and correct parsing is what makes it invisible.** The anchor discipline that governs prose edits reads as inapplicable to JSON, YAML or a locale bundle, because there is no anchor to mismatch — parse, mutate the key, serialise back, and every value round-trips exactly. What the round-trip cannot preserve is anything the peer staged after your process read the file: their keys are simply absent from the object you serialise, so the write is a silent deletion that no assertion inside the script can catch. Measured 2026-09-10: adding four keys to a shared `common.json` this way produced 27 insertions and 14 deletions, the deletions being another session's onboarding copy, and it surfaced only because the diff stat was implausible for four keys. Use `Edit` per key even where a script is the obvious instrument — it fails loudly on a stale anchor instead of quietly on a stale read — and where a script is genuinely warranted, `git diff --stat` immediately after and read the change count against what you intended to add. **Tell: you are about to serialise a whole file you did not write all of.**
+
+This rule reads ownership off disk, so it can only see a peer that has already written something. A live peer can be known earlier and more cheaply, before the collision (`cross-session-messaging.md`) — worth starting a session with when one is plausible, since arriving here means a file is already contested.
+
+**In a project with no git repo, the command above errors rather than answering** (`fatal: not a git repository`), and so does every variant of it — there is no diff plane to classify against, so nothing here degrades gracefully. Ownership falls back to sole-by-construction, which is weaker than it sounds: `cross-session-messaging.md` is the only remaining way to learn a peer exists, and an empty listing isn't proof. `verifying-a-write-landed.md` carries the detection command and the rest of the substitutions. Note the caution inverts from the usual reassurance — with no stash, no `checkout --` and no reflog, anything a peer or an agent overwrites is unrecoverable, so a case this file would normally call merely contested is closer to fatal.
+
+## When a file you must patch is contested
+
+Do not edit it and do not defer the finding. Put the rule where it survives:
+
+| Situation | Action |
+|-----------|--------|
+| The rule is shared by 2+ skills anyway | Write it to `_shared/references/<topic>.md` — the canonical home regardless — and add pointers from whichever callers are free |
+| Only the contested file needs it | Write the finding into the run's report and name the exact edit owed, so the next session applies it in one step |
+| A peer asks you to write it because the file isn't theirs | Check who contests it before agreeing. A file can be contested by a *third* session, and taking the write then relocates the collision rather than resolving it |
+
+The same holds when the write is an agent's rather than yours. Dispatching an editing agent — a pruner, a rewriter, a simplifier — at a file whose ownership you settled earlier in the run does not carry that finding to the dispatch point, and an agent holding `Edit` treats a contested file exactly like a clean one unless its own brief says otherwise. Re-check where you dispatch, not where you first looked.
+
+Skipping a dispatch leaves an action owed rather than a rule homeless, so it needs the table's second row specifically: name the work deferred and the file it is owed against, in something that outlives the transcript — the run's report at minimum, and the relevant task doc's next-steps section where one exists. A deferral stated only in conversation is indistinguishable from never having noticed, since the session that resolves the contest is usually not this one.
+
+That last row is the case both this file and `contested-doc-sections.md` otherwise assume away: they are written for two parties, you and a peer, where "not mine" implies "free." With three sessions in one checkout it doesn't — a peer routing a write to you because the target isn't theirs has established only that, and the target can still be mid-write by someone neither of you has messaged. Settle it the same way as any other ownership question, by reading the diff's content rather than by who asked.
+
+A dictated edit carries a second question past ownership: it asserts behavior in files you have not read. Landing it makes you the author of claims you cannot check, in a team-visible file. Ask for the diffs and verify, or decline and let the party who can verify write it — the peer's convenience is not a reason to publish an unverified claim under your own session's name.
+
+Never `git stash`/`checkout -- .`/`reset`/`clean`/`restore` to "clear" contested work — these are repo-wide and take the other writer's uncommitted, unrecoverable changes with them.
+
+⚠️ **The same verbs are equally unsafe pointed at your OWN work, and that case reads as safe because nothing of anyone else's is at stake.** The framing above — and the agent-prompt verb ban that cites it — is about protecting a peer, so stashing your own file to answer "is this failure mine?" passes every guard while being the same repo-wide operation. On an auto-staged tree a plain `git stash push` can `pop` back *silently incomplete*: a new file is deleted outright, a modified one reverts to HEAD, and `git status` renders the result as a clean tree with no `UU`, no conflict markers and nothing for a marker-grep to find. Measured 2026-09-10 — two files lost for an hour, surfacing as a bundler's "failed to resolve import" that presented first as an E2E locator regression and then as a layout bug, none of which pointed at git.
+
+Two habits close it. **Read a baseline without moving anything** — `git show HEAD:<path>`, `git diff HEAD -- <path>`, or a second worktree at HEAD all answer "was this failing before?" while the working tree stays put, which is the question a stash is usually reached for. And **never chain the restore into a compound command**: `git stash pop >/dev/null && echo restored` prints success on a failed pop, so run it alone and read its output. Recovery, once it happens, is `git checkout stash@{0} -- <path>` per file rather than a second `pop` — a stash on a shared checkout holds several sessions' work and popping it wholesale is its own collision. **Tell: you are about to stash your own edits to test whether a failure is yours.**
+
+## When a peer's hunk sits inside a file you are committing {#peer-hunk-in-your-file}
+
+**A pathspec scopes FILES, not hunks.** `git commit -- <file>` takes the whole worktree copy, so a peer's in-flight key in a shared locale file, CHANGELOG or doc paragraph ships under your message. `git show --name-only` cannot reveal it either — the file list is exactly what you intended. Build the commit from a temporary index, which leaves the shared one alone:
+
+```bash
+export GIT_INDEX_FILE=/tmp/my-commit-index && git read-tree HEAD
+git update-index --add <files that are wholly yours>
+# shared file: write HEAD's copy plus only your lines to a scratch file, then
+git update-index --cacheinfo 100644,$(git hash-object -w <scratch>),<shared path>
+git diff --cached HEAD            # read every hunk: yours only
+git commit --no-verify -F <msg> && unset GIT_INDEX_FILE
+```
+
+⚠️ **`git commit-tree` writes an empty commit without complaint**, where `git commit` would refuse one. If the `update-index`/`add` step failed, the scripted chain still moves the branch to a commit carrying no files. zsh makes that failure likely: it does not word-split `$PATHS`, so a space-separated list held in a scalar reaches git as one path that doesn't exist. Hold the paths in an array (`P=(a b); git add -- "${P[@]}"`), and refuse to move the branch when `git write-tree` equals `git rev-parse HEAD^{tree}`.
+
+`--no-verify` is needed when a pre-commit hook stashes the tree (lint-staged does), since that restores the peer's files into your commit; run the hook's checks on your paths by hand first and say so in the body. ⚠️ **Afterwards the shared index still holds your PRE-commit copies** (`MM` in `git status`): a peer's next bare commit would silently revert your change. `git add` each of your paths so index matches worktree, then confirm `git diff --cached HEAD -- <shared path>` shows only the peer's hunks. A path you committed from a worktree copy the shared index never held has no index entry to match: `git add` it or `git reset -q -- <path>` (both leave the index at HEAD for that path), and `git diff --cached --name-only` must then come back empty for your paths.

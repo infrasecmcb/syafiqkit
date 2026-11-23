@@ -1,0 +1,8 @@
+- insert:
+    - id: syafiqkit
+      name: '@local/dsh-syafiqkit'
+      config:
+        # Set true to add syafiqkit's ADHD-oriented answer-style rules to every session.
+        outputStyle: false
+        # Skill names to hide, e.g. [casual-message, commit-invoice-generator]
+        exclude: []

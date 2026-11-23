@@ -1,0 +1,53 @@
+# Split Decision Tree
+
+When Process #4 indicates splitting is needed (dense table, distinct topics, or file exceeds budget), use this tree to decide the lever.
+
+## Lever #1: Subdir CLAUDE.md
+
+For sections that are subdir-local and auto-load additively (parent keeps a `📖` pointer).
+
+**Decision:** Does this rule apply primarily to one subdirectory?
+
+- Apply seam-test: grep 3-5 core symbols against sibling dirs; let usage counts decide.
+- If it fails seam-test but is **feature-scoped**, route it to that feature's task doc instead.
+- If it passes (used heavily in one subdir, lightly elsewhere), create `app/<subdir>/CLAUDE.md` (or `resources/js/CLAUDE.md`, `tests/CLAUDE.md`, etc.)
+
+Subdir CLAUDE.md auto-loads additively — no pointer setup needed in the parent.
+
+## Lever #2: Companion File
+
+For genuinely cross-cutting sections (no subdir owner, failed seam-test, or high reference frequency).
+
+**Decision:** Is this a rule governing a routine choice, or a symptom-indexed gotcha?
+
+- **Routine choice** (which tool to reach for, what to check before action) — keep inline in the always-loaded file however seldom it's referenced. Deferring behind a pointer means it only fires after someone violates it. There's no symptom to search under until failure, so moving it gains nothing.
+
+- **Symptom-indexed** (implementation detail, gotcha table, how to debug X) — move to `.claude-companions/<shared|local>/CLAUDE-<topic>.md`, clustered by reader-search topic, behind a symptom index. Frequency alone doesn't decide eviction; a reader only arrives when they're already holding a failure to solve.
+
+A row mixing judgment with exact values (IP, command, id) can split within itself instead of moving wholesale — extract the reference values to a companion, keep the mechanism inline. 📖 `prose-vs-value-split.md` for patterns.
+
+**Default shape: an index file, not a pointer block.** A split producing more than one companion gets `CLAUDE-<layer>-gotchas.md` as a thin router — subject rows and their destination files, nothing else — with the parent pointing at the index rather than enumerating siblings. Two things make this the default rather than a preference. The parent's pointer block is hand-maintained prose that drifts the moment a later session adds a companion without touching it, and the drift is invisible: the new file is written, correct, and unreachable, while the parent still reads as a complete list. An index file makes adding a companion a one-line edit in the obvious place, and makes the orphan check meaningful — every companion should have exactly one inbound citation, from the index. It also gives the set a subject-named front door, so the layer name that can't organize CONTENT (per SKILL step 4) does the one job it's suited to: routing. The same holds for deep links: a file outside the set points at the router, never at `leaf.md#{anchor}`, even when the pointer already knows its topic. The extra hop is the price of leaves that can move or split without touching their callers. Measured 2026-10-02: a reference turned into a router had its rules file repointed at eight leaf anchors, and the user reverted all eight to the router.
+
+Keep the index a router. Rows say when to read each file in the reader's own symptom vocabulary — the words they'd be holding when they arrive, not the filename restated. A reader who can't tell from the row whether it's their file will open two or three, which costs more than the single dense file the split replaced. Anything genuinely cross-cutting (a constraint every companion is subject to) is the one exception worth inlining in the index, since it belongs to no single file.
+
+**Pointer format:** `📖 See .claude-companions/shared/CLAUDE-<topic>.md`. `shared/` is tracked in git — a companion supporting a checked-in file belongs there, and its discovery depends on being indexed by parent pointers. `local/` is gitignored and is the right home for a companion supporting a local-only file (`CLAUDE.local.md`, `.env`-adjacent notes); never commit those regardless of what the parent's tracking state is.
+
+📖 `structural-splits.md` owns the execution detail this tree doesn't carry: where the `.claude-companions/` folder goes when the parent is the global `~/.claude/CLAUDE.md` or a multi-repo checkout, the `.gitignore` check on a repo's first `local/` write, the machine-specific-path sweep that a move into `shared/` requires, and the per-category symptom-index requirement that decides whether a multi-topic pointer actually gets followed. Read it before executing a companion split, not just before choosing one.
+
+## Lever #3: Task Doc
+
+Feature-scoped rules that belong in a task doc, not a CLAUDE.md.
+
+**Decision:** Is this rule specific to a feature-in-progress or a domain initiative?
+
+- If yes, route it to `tasks/<domain>/<feature>/current.md` via `update-claude-docs` rather than keeping it in CLAUDE.md or creating a companion.
+- Task-scoped rules live in their own time and can be retired when the feature is live or shelved; CLAUDE.md rules are perpetual and accumulate.
+
+## Reference: Pointer Requirements
+
+Every `📖` pointer to a companion must satisfy:
+
+1. The companion file exists in git (`ls` it before finishing)
+2. The pointer path matches the actual file path exactly — no trailing `.md`, correct case, correct nesting
+3. No dangling pointers — a pointer cited once in the prose anchors that file; if only the pointer cite exists and the file is stale/empty/misnamed, a reader lands nowhere
+4. Accompany each pointer with context — a pointer buried in a 200-line section reads as "maybe important"; a pointer preceded by "If you hit X, see…" reads as actionable

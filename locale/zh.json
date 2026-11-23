@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "syafiqkit 技能包",
+    "description": "移植自 Claude Code 插件 syafiqkit 的 59 个工作流技能：提交、发布、任务文档、AGENTS.md 维护、UI/UX 设计判断、动画、PDF、用户手册等。按名称请求技能，或让代理自动选择。加载时会映射为 Harness 工具。不包含仅限 Claude Code 的部分（菜单栏、/sk、haiku 代理）。可选：在插件配置中设置 outputStyle: true，为每个会话加入 syafiqkit 的 ADHD 友好回答风格。"
+  }
+}

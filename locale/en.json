@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "syafiqkit skills",
+    "description": "59 workflow skills from the syafiqkit Claude Code plugin: commits, shipping, task docs, AGENTS.md upkeep, UI/UX design judgement, animation, PDFs, user manuals and more. Ask for a skill by name or let the agent pick one. Each skill is translated to Harness tools when loaded. Claude Code-only parts (menu bar, /sk, haiku agents) are not included. Optional: set outputStyle: true in the plugin config to add syafiqkit's ADHD-oriented answer style to every session."
+  }
+}

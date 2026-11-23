@@ -1,0 +1,33 @@
+# Verification traps: when a screenshot lies
+
+A screenshot of your changes should prove the change works. Common traps where it silently doesn't.
+
+## Stale bundle: the change didn't deploy
+
+A dead dev server serves its last built bundle plausibly wrong, so a vanished control reads as broken conditional, a shifted layout reads as bad spacing, a failed selector reads as regression. Checking the server *process* fails here — it outlives its source file.
+
+Instead, verify the bundle is present, fetchable and newer than your edits.
+
+Measured 2026-09-10: live processes with the hot-reload gone, a three-week-old bundle served, an hour spent explaining a blank page with its own recent edits. If you are explaining something you SAW with something you WROTE and the two are not connected, suspect the bundle first.
+
+## Full-page capture: fixed elements land in the wrong place
+
+A full-page screenshot stitches the whole document into one image, but a `position: fixed` or `sticky` element (a bottom action bar, a pinned header, a sidebar) is drawn once at its viewport offset. In the composite it sits mid-page over whatever content happens to be there, so a correct sticky bar looks like it covers a form field, and a broken one looks the same. The composite can neither prove nor clear the defect.
+
+Judge any fixed or sticky element from viewport-sized shots at the scroll positions a user actually sees (top and bottom at minimum), plus a measured overlap check: `getBoundingClientRect()` of the fixed element against the content it might cover, after scrolling to the end. Never call a composite defect "just a capture artefact" without that check, because the dismissal and the real defect produce the same picture. Measured 2026-10-12: a sticky order bar was waved off as a full-page artefact, the user flagged it, and only a viewport capture at both scroll ends settled it.
+
+## Phone browser chrome: Playwright draws no Safari toolbar
+
+A bottom bar, a safe-area padding or a `100dvh` sheet can pass every Playwright phone viewport and still sit wrong on an iPhone, because Playwright's WebKit renders no Safari toolbar and no home indicator. Two facts decide it:
+- `env(safe-area-inset-*)` is 0 on iOS unless the viewport meta includes `viewport-fit=cover`. Padding written with it does nothing on the default `width=device-width, initial-scale=1`, and the CSS still reads correct.
+- iOS 26 Safari's toolbar floats; while it is expanded the page stops above it, so a fixed bottom bar looks fine. The risky state is after a scroll collapses the toolbar, when the page reaches the home-indicator strip. Adding `viewport-fit=cover` makes the page edge to edge, so landscape then needs left/right insets on the notch side.
+
+On a Mac with Xcode, `scripts/ios-safari-capture.sh open <url>` boots an iPhone simulator and opens the page in real Safari (Herd's `*.test` sites resolve inside it, and `open` trusts Herd's certificate for `https://*.test`); `scripts/ios-safari-capture.sh shot <file.png>` captures it. Once the terminal has macOS Accessibility, the same script drives Safari: `collapse` drags up to collapse the toolbar (wait a second after any tap, or the drag reads as a double tap and zooms; reload resets), `scroll <px>` scrolls the page with the toolbar left expanded, `tap <x> <y>` clicks at screen coordinates (`window` prints the Simulator window's bounds to aim from), and `type <text>` types into the focused field. Safari also zooms the page when a field under 16px takes focus and keeps the zoom afterwards, so a capture taken after typing looks cut off on the left: that zoom is a defect to report, not a capture artefact. The simulator is one per machine and shared with every session, so check `ListAgents` for a peer driving it before typing into it (20/11/2026: a peer's tap and login typing landed on another session's page). Capture each fixed element with the toolbar expanded and collapsed.
+
+## Saved login: check-render measures the sign-in page
+
+`check-render --storage-state` runs each width and scheme in a fresh browser context from the saved file, so a session the server has since dropped measures the login screen at every width (the script says "Redirected to a sign-in page" and exits 2). On 22/11/2026 a freshly saved Laravel session died within minutes, four times, with and without tests running, cause not found. Save the login with `scripts/save-login.mjs` immediately before each batch, run one render per account at a time, and when it still redirects, measure those screens from the project's e2e captures instead and say so in the Design row; never report the login page's findings as the screen's.
+
+## E2E vs screenshot
+
+Screenshots verify static state: spacing, alignment, readability, contrast. Where a browser-driving agent exists, verify flows with it — test that a click does what's intended.
