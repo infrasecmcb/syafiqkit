@@ -120,6 +120,13 @@ for (const f of fs.existsSync(path.join(ROOT, 'addenda')) ? fs.readdirSync(path.
   if (d && !d.content.includes('<harness-addendum')) fail(`addenda/${f}: not loaded`);
   if (d && /\{\{ROOT\}\}/.test(d.content.split('</harness-addendum>')[0])) fail(`addenda/${f}: unreplaced {{ROOT}}`);
 }
+// docs/SKILLS.md is generated; fail if it no longer matches skills.json
+try {
+  const doc = fs.readFileSync(path.join(ROOT, 'docs', 'SKILLS.md'), 'utf8');
+  const m = doc.match(/^(\d+) skills, (\d+) on by default/m);
+  if (!m || Number(m[1]) !== manifest.skills.length || Number(m[2]) !== defaultList.length) fail('docs/SKILLS.md is out of date: run node tools/docs.mjs');
+  for (const s of manifest.skills) if (!doc.includes('`' + s.name + '`')) fail(`docs/SKILLS.md is missing ${s.name}: run node tools/docs.mjs`);
+} catch { fail('docs/SKILLS.md not found: run node tools/docs.mjs'); }
 console.log(`skills: ${all.length} (${defaultList.length} on by default)`);
 console.log(`catalog: ${totalDesc} description chars (average ${Math.round(totalDesc / all.length)})`);
 console.log(`known and accepted reference gaps: ${known.length}`);

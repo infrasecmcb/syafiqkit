@@ -27,7 +27,8 @@
     "NOTICE.md",
     "tools",
     "local-skills",
-    "addenda"
+    "addenda",
+    "docs"
   ],
   "dsh": {
     "bundle": {
